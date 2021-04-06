@@ -18,37 +18,31 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Endereco {
-	
+
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 
 	@NotBlank
 	@Column(nullable = false)
 	private String cep;
-	
 
 	@NotBlank
 	@Column(nullable = false)
 	private String rua;
-	
 
 	@NotNull
 	@Column(nullable = false)
 	private String numero;
-	
 
-	@NotBlank
 	@Column(nullable = false)
 	private String complemento;
-	
 
 	@NotBlank
 	@Column(nullable = false)
 	private String bairro;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "endereco_cidade_id")
 	private Cidade cidade;

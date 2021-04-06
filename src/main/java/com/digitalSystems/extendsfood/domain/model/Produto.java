@@ -40,4 +40,8 @@ public class Produto {
 	@ManyToOne
 	@JoinColumn(name = "restaurante_id", nullable = false)
 	private Restaurante restaurante;
+	
+	@ManyToOne
+	@JoinColumn(name = "categoria_produto_id", nullable = false)
+	private CategoriaProduto categoriaProduco;
 }

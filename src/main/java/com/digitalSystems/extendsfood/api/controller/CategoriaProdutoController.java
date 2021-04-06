@@ -24,7 +24,7 @@ import com.digitalSystems.extendsfood.domain.repository.CategoriaProdutoReposito
 import com.digitalSystems.extendsfood.domain.service.CaregoriaProdutoService;
 
 @RestController
-@RequestMapping(value = "/categoria-produto")
+@RequestMapping(value = "/categorias-produto")
 public class CategoriaProdutoController {
 
 	@Autowired

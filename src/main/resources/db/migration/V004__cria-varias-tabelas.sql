@@ -8,7 +8,7 @@ create table endereco (
 	id bigint not null auto_increment, 
     bairro varchar(20) not null, 
     cep varchar(10) not null, 
-    complemento varchar(100) not null, 
+    complemento varchar(100), 
     numero varchar(20) not null, 
     rua varchar(100) not null, 
     endereco_cidade_id bigint, 
@@ -28,6 +28,7 @@ create table produto (
     disponivel bit not null, 
     preco decimal(19,2) not null, 
     restaurante_id bigint not null, 
+    categoria_produto_id bigint not null, 
     primary key (id)
 ) engine=InnoDB default charset=utf8;
 
@@ -35,9 +36,10 @@ create table restaurante (
 	id bigint not null auto_increment, 
     aberto bit, ativo bit, 
     cnpj varchar(18) not null, 
+    nome varchar(100) not null,
     data_atualizacao datetime not null, 
-    horario_fim_funcionamento time not null, 
-    horario_inicio_funcionamento time not null, 
+    horario_fim_funcionamento varchar(5) not null, 
+    horario_inicio_funcionamento varchar(5) not null, 
     taxa_frete decimal(19,2) not null, 
     telefone varchar(15) not null, 
     cozinha_id bigint not null, 
@@ -55,6 +57,8 @@ create table restaurante_forma_pagamento (
 alter table endereco add constraint fk_endereco_cidade foreign key (endereco_cidade_id) references cidade (id);
 
 alter table produto add constraint fk_produto_restaurante foreign key (restaurante_id) references restaurante (id);
+
+alter table produto add constraint fk_produto_categoria_produto foreign key (categoria_produto_id) references categoria_produto (id);
 
 alter table restaurante add constraint fk_restaurante_cozinha foreign key (cozinha_id) references cozinha (id);
 

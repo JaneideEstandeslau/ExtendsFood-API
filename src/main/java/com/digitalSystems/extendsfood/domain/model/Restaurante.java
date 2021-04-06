@@ -2,16 +2,13 @@ package com.digitalSystems.extendsfood.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +26,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -44,10 +40,15 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank
+	@Column(nullable = false)
+	private String nome;
+	
 	@CNPJ
 	@NotBlank
 	@Column(nullable = false)
 	private String cnpj;
+	
 	
 	@NotBlank
 	@Column(nullable = false)
@@ -62,18 +63,17 @@ public class Restaurante {
 	
 	private Boolean aberto  = Boolean.FALSE;
 	
-	@Column(nullable = false, columnDefinition = "time")
-	private LocalTime horarioInicioFuncionamento;
+	@Column(nullable = false)
+	private String horarioInicioFuncionamento;
 	
-	@Column(nullable = false, columnDefinition = "time")
-	private LocalTime horarioFimFuncionamento;
+	@Column(nullable = false)
+	private String horarioFimFuncionamento;
 	
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataAtualizacao;
 	
-	@JsonIgnoreProperties("hibernateLazyInitializer")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
 	
@@ -84,9 +84,8 @@ public class Restaurante {
 			inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private Set<FormaPagamento> formasPagamento = new HashSet<>();
 	
-
-	@JsonIgnoreProperties("hibernateLazyInitializer")
-	@OneToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToOne
 	private Endereco endereco;
 	
 	@JsonIgnore
