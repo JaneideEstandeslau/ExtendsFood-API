@@ -1,5 +1,7 @@
 package com.digitalSystems.extendsfood.domain.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,19 +17,27 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Cidade {
-	
+public class PromocaoProduto {
+
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
+	@NotNull
 	@Column(nullable = false)
-	private String nome;
+	private Boolean ativa;
 	
+	@NotNull
+	@Column(nullable = false)
+	private BigDecimal valorProdutoDesconto;
+	
+	@NotNull
+	@Column(nullable = false)
+	private Integer procentagemDesconto;
+	
+	@NotNull
 	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Estado estado;
-
+	@JoinColumn(name = "produto_id", nullable = false)
+	private Produto produto;
 }
