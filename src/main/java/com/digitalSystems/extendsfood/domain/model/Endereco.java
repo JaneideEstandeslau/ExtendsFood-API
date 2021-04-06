@@ -2,10 +2,14 @@ package com.digitalSystems.extendsfood.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,23 +24,33 @@ public class Endereco {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+
 	@NotBlank
 	@Column(nullable = false)
 	private String cep;
 	
+
 	@NotBlank
 	@Column(nullable = false)
 	private String rua;
 	
+
+	@NotNull
+	@Column(nullable = false)
+	private String numero;
+	
+
 	@NotBlank
 	@Column(nullable = false)
-	private String cidade;
+	private String complemento;
 	
+
 	@NotBlank
 	@Column(nullable = false)
-	private String estado;
+	private String bairro;
 	
-	private String prontoReferencia;
-	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "endereco_cidade_id")
+	private Cidade cidade;
 
 }
