@@ -39,14 +39,8 @@ public class CategoriaProdutoController {
 	}
 
 	@GetMapping("/{cozinhaId}")
-	public ResponseEntity<CategoriaProduto> buscar(@PathVariable Long categoriaProdutoId) {
-		Optional<CategoriaProduto> cozinha = categoriaProdutoRepository.findById(categoriaProdutoId);
-
-		if (cozinha.isPresent()) {
-			return ResponseEntity.ok(cozinha.get());
-		}
-
-		return ResponseEntity.notFound().build();
+	public CategoriaProduto buscar(@PathVariable Long categoriaProdutoId) {
+		return categoriaProdutoService.buscarOuFalhar(categoriaProdutoId);
 	}
 
 	@PostMapping
@@ -56,32 +50,20 @@ public class CategoriaProdutoController {
 	}
 
 	@PutMapping("/{cozinhaId}")
-	public ResponseEntity<CategoriaProduto> atualizar(@PathVariable Long categoriaProdutoId,
+	public CategoriaProduto atualizar(@PathVariable Long categoriaProdutoId,
 			@RequestBody CategoriaProduto categoriaProduto) {
-		
-		Optional<CategoriaProduto> categoriaProdutoAtual = categoriaProdutoRepository.findById(categoriaProdutoId);
 
-		if (categoriaProdutoAtual.isPresent()) {
-			BeanUtils.copyProperties(categoriaProduto, categoriaProdutoAtual.get(), "id");
+		CategoriaProduto categoriaProdutoAtual = categoriaProdutoService.buscarOuFalhar(categoriaProdutoId);
 
-			CategoriaProduto categoriaProdutoSalva = categoriaProdutoService.salvar(categoriaProdutoAtual.get());
-			return ResponseEntity.ok(categoriaProdutoSalva);
-		}
+		BeanUtils.copyProperties(categoriaProduto, categoriaProdutoAtual, "id");
 
-		return ResponseEntity.notFound().build();
+		return categoriaProdutoService.salvar(categoriaProdutoAtual);
+
 	}
 
 	@DeleteMapping("/{cozinhaId}")
-	public ResponseEntity<?> remover(@PathVariable Long categoriaProdutoId) {
-		try {
-			categoriaProdutoService.excluir(categoriaProdutoId);
-			return ResponseEntity.noContent().build();
-
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-
-		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-		}
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long categoriaProdutoId) {
+		categoriaProdutoService.excluir(categoriaProdutoId);			
 	}
 }
