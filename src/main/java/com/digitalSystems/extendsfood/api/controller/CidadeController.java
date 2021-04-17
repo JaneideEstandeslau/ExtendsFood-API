@@ -2,6 +2,8 @@ package com.digitalSystems.extendsfood.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.EstadoNaoEncontradoException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.model.Cidade;
@@ -44,7 +45,7 @@ public class CidadeController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cidade adicionar(@RequestBody Cidade cidade) {
+	public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
 		try {
 			
 			return cidadeService.salvar(cidade);
@@ -55,7 +56,7 @@ public class CidadeController {
 	}
 
 	@PutMapping("/{cidadeId}")
-	public Cidade atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
+	public Cidade atualizar(@PathVariable Long cidadeId, @RequestBody @Valid Cidade cidade) {
 
 		try {
 			Cidade cidadeAtual = cidadeService.buscarOuFalhar(cidadeId);

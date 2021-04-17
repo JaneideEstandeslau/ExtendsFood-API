@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,13 +19,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import com.digitalSystems.extendsfood.core.config.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -63,9 +68,11 @@ public class Restaurante {
 	
 	private Boolean aberto  = Boolean.FALSE;
 	
+	@NotNull
 	@Column(nullable = false)
 	private String horarioInicioFuncionamento;
 	
+	@NotNull
 	@Column(nullable = false)
 	private String horarioFimFuncionamento;
 	
@@ -73,9 +80,18 @@ public class Restaurante {
 	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataAtualizacao;
 	
+	@Valid
+	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
+	
+	@Valid
+	@NotNull
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name= "endereco_id")
+	private Endereco endereco;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -84,9 +100,6 @@ public class Restaurante {
 			inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private Set<FormaPagamento> formasPagamento = new HashSet<>();
 	
-	@JsonIgnore
-	@OneToOne
-	private Endereco endereco;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "restaurante")

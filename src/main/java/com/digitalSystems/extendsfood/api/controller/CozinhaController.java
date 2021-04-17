@@ -1,12 +1,12 @@
 package com.digitalSystems.extendsfood.api.controller;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digitalSystems.extendsfood.domain.exception.EntidadeEmUsoException;
-import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.model.Cozinha;
 import com.digitalSystems.extendsfood.domain.repository.CozinhaRepository;
 import com.digitalSystems.extendsfood.domain.service.CozinhaService;
@@ -45,12 +43,12 @@ public class CozinhaController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+	public Cozinha adicionar(@RequestBody @Valid Cozinha cozinha) {
 		return cozinhaService.salvar(cozinha);
 	}
 
 	@PutMapping("/{cozinhaId}")
-	public Cozinha atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
+	public Cozinha atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid Cozinha cozinha) {
 		Cozinha cozinhaAtual = cozinhaService.buscarOuFalhar(cozinhaId);
 
 		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");

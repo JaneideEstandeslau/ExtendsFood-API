@@ -2,6 +2,8 @@ package com.digitalSystems.extendsfood.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.digitalSystems.extendsfood.domain.exception.CidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.CozinhaNaoEncontradaException;
-import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.model.Restaurante;
 import com.digitalSystems.extendsfood.domain.repository.RestauranteRepository;
@@ -44,7 +45,7 @@ public class RestauranteController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante adicionar(@RequestBody Restaurante restaurante) {
+	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
 		try {
 			return restauranteService.salvar(restaurante);
 			
