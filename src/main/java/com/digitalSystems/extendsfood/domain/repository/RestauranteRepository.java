@@ -8,4 +8,8 @@ import com.digitalSystems.extendsfood.domain.model.Restaurante;
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long>{
 
+	
+	Restaurante findByCnpj(String cnpj);
+	
+	Restaurante findByCnpjAndIdNot(String cnpj, Long id);
 }

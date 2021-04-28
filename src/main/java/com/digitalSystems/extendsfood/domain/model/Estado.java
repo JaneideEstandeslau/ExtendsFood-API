@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-import com.digitalSystems.extendsfood.core.config.Groups;
+import com.digitalSystems.extendsfood.core.validation.Groups;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

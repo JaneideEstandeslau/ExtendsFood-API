@@ -1,4 +1,4 @@
-package com.digitalSystems.extendsfood.core.config;
+package com.digitalSystems.extendsfood.core.validation;
 
 public interface Groups {
 

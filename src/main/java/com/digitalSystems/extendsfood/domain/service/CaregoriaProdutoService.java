@@ -1,5 +1,7 @@
 package com.digitalSystems.extendsfood.domain.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,10 +19,12 @@ public class CaregoriaProdutoService {
 	@Autowired
 	private CategoriaProdutoRepository categoriaRepository;
 
+	@Transactional
 	public CategoriaProduto salvar(CategoriaProduto categoriaProduto) {
 		return categoriaRepository.save(categoriaProduto);
 	}
 
+	@Transactional
 	public void excluir(Long categoriaProdutoId) {
 		try {
 			categoriaRepository.deleteById(categoriaProdutoId);

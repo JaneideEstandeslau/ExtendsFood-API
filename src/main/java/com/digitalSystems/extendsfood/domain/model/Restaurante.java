@@ -29,7 +29,7 @@ import javax.validation.groups.Default;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.br.CNPJ;
 
-import com.digitalSystems.extendsfood.core.config.Groups;
+import com.digitalSystems.extendsfood.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;

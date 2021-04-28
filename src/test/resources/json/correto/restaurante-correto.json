@@ -1,0 +1,20 @@
+{
+    "nome": "Pizzaria do paulista",
+    "cnpj": "88.914.690/0001-35",
+    "telefone": "(83) 99959-7974",
+    "taxaFrete": "10.00",
+    "horarioInicioFuncionamento": "17:00",
+    "horarioFimFuncionamento": "23:00",
+    "cozinha":{
+        "id": 1
+    },
+    "endereco":{
+        "cep": "58.410-393",
+        "rua": "Barão da Passagem",
+        "numero": "19",
+        "bairro": "Catolé",
+        "cidade":{
+            "id": 1
+        }
+    }
+}

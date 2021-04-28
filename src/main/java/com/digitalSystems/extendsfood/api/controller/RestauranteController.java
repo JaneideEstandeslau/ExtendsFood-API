@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.digitalSystems.extendsfood.domain.exception.CNPJJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.CidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.CozinhaNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
@@ -48,7 +49,7 @@ public class RestauranteController {
 	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
 		try {
 			return restauranteService.salvar(restaurante);
-			
+
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}
@@ -60,7 +61,7 @@ public class RestauranteController {
 		try {
 			Restaurante restauranteAtual = restauranteService.buscarOuFalhar(restauranteId);
 	
-			BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento");
+			BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
 
 			return restauranteService.salvar(restauranteAtual);
 			

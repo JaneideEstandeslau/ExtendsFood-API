@@ -1,0 +1,14 @@
+{
+    "cozinha":{
+        "id": 1
+    },
+    "endereco":{
+        "cep": "58.410-393",
+        "rua": "Barão da Passagem",
+        "numero": "19",
+        "bairro": "Catolé",
+        "cidade":{
+            "id": 1
+        }
+    }
+}

@@ -50,17 +50,17 @@ insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id) values (
 insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id) values (4, "58.140.695", "Vigario Calixto", "1002", "Centro", 1);
 
 insert into restaurante (id, aberto, ativo, nome, cnpj, data_atualizacao, horario_inicio_funcionamento, horario_fim_funcionamento, taxa_frete, telefone, cozinha_id, endereco_id)
-values (1, 0, 1, "Ki Pastel", "05.890.872/0001-96", utc_timestamp, "18:00", "01:00", "10.00", "(83) 99986-8985", 1, 1);
+values (1, 0, 1, "Ki Pastel", "05.890.872/0001-96", current_timestamp, "18:00", "01:00", "10.00", "(83) 99986-8985", 1, 1);
 insert into restaurante (id, aberto, ativo, nome, cnpj, data_atualizacao, horario_inicio_funcionamento, horario_fim_funcionamento, taxa_frete, telefone, cozinha_id, endereco_id)
-values (2, 0, 1, "Chafaris", "23.109.212/0001-07", utc_timestamp, "18:00", "01:00", "10.00", "(83) 99986-8985", 1, 1);
+values (2, 0, 1, "Chafaris", "23.109.212/0001-07", current_timestamp, "18:00", "01:00", "10.00", "(83) 99986-8985", 1, 1);
 insert into restaurante (id, aberto, ativo, nome, cnpj, data_atualizacao, horario_inicio_funcionamento, horario_fim_funcionamento, taxa_frete, telefone, cozinha_id, endereco_id)
-values (3, 0, 1, "Rei da Pizza", "75.176.664/0001-05", utc_timestamp, "18:00", "01:00", "10.00", "(83) 99986-8985", 1, 1);
+values (3, 0, 1, "Rei da Pizza", "75.176.664/0001-05", current_timestamp, "18:00", "01:00", "10.00", "(83) 99986-8985", 1, 1);
 insert into restaurante (id, aberto, ativo, nome, cnpj, data_atualizacao, horario_inicio_funcionamento, horario_fim_funcionamento, taxa_frete, telefone, cozinha_id, endereco_id)
-values (4, 0, 1, "Kaio massas", "03.386.538/0001-74", utc_timestamp, "18:00", "01:00", "10.00", "(83) 99986-8985", 1, 1);
+values (4, 0, 1, "Kaio massas", "03.386.538/0001-74", current_timestamp, "18:00", "01:00", "10.00", "(83) 99986-8985", 1, 1);
 
-insert into forma_pagamento (id, descricao, data_atualizacao) values (1, 'Cartão de crédito', utc_timestamp);
-insert into forma_pagamento (id, descricao, data_atualizacao) values (2, 'Cartão de débito', utc_timestamp);
-insert into forma_pagamento (id, descricao, data_atualizacao) values (3, 'Dinheiro', utc_timestamp);
+insert into forma_pagamento (id, descricao, data_atualizacao) values (1, 'Cartão de crédito', current_timestamp);
+insert into forma_pagamento (id, descricao, data_atualizacao) values (2, 'Cartão de débito', current_timestamp);
+insert into forma_pagamento (id, descricao, data_atualizacao) values (3, 'Dinheiro', current_timestamp);
 
 insert into permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
