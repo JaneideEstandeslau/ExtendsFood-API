@@ -23,8 +23,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class Complemento {
 
-	@Id
 	@EqualsAndHashCode.Include
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	

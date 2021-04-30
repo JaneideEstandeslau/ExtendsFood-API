@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digitalSystems.extendsfood.domain.exception.CNPJJaCadastradoException;
+import com.digitalSystems.extendsfood.api.assembler.RestauranteModelAssembler;
+import com.digitalSystems.extendsfood.api.disassempler.RestauranteInputDisassembler;
+import com.digitalSystems.extendsfood.api.model.RestauranteModel;
+import com.digitalSystems.extendsfood.api.model.inputEntidade.RestauranteInput;
 import com.digitalSystems.extendsfood.domain.exception.CidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.CozinhaNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
@@ -33,22 +36,33 @@ public class RestauranteController {
 
 	@Autowired
 	private RestauranteService restauranteService;
+	
+	@Autowired
+	private RestauranteModelAssembler restauranteAssembler;
+	
+	@Autowired
+	private RestauranteInputDisassembler restauranteDisassembler;
 
 	@GetMapping
-	public List<Restaurante> listar() {
-		return restauranteRepository.findAll();
+	public List<RestauranteModel> listar() {
+		return restauranteAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 
 	@GetMapping("/{restauranteId}")
-	public Restaurante buscar(@PathVariable Long restauranteId) {
-		return restauranteService.buscarOuFalhar(restauranteId);
+	public RestauranteModel buscar(@PathVariable Long restauranteId) {
+		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
+		
+		return restauranteAssembler.toModel(restaurante);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			return restauranteService.salvar(restaurante);
+			
+			Restaurante restaurante = restauranteDisassembler.toDomainObject(restauranteInput);
+			
+			return  restauranteAssembler.toModel(restauranteService.salvar(restaurante));
 
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
@@ -56,14 +70,14 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+	public RestauranteModel atualizar(@PathVariable Long restauranteId, @RequestBody RestauranteInput restauranteInput) {
 
 		try {
 			Restaurante restauranteAtual = restauranteService.buscarOuFalhar(restauranteId);
 	
-			BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+			restauranteDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 
-			return restauranteService.salvar(restauranteAtual);
+			return restauranteAssembler.toModel(restauranteService.salvar(restauranteAtual));
 			
 		}catch(CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);

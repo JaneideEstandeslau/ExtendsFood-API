@@ -17,8 +17,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class DiasDisponiveis {
 
-	@Id
 	@EqualsAndHashCode.Include
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	

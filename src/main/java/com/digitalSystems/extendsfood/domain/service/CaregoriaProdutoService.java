@@ -28,6 +28,8 @@ public class CaregoriaProdutoService {
 	public void excluir(Long categoriaProdutoId) {
 		try {
 			categoriaRepository.deleteById(categoriaProdutoId);
+			
+			categoriaRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new CategoriaProdutoNaoEncontradoException(categoriaProdutoId);

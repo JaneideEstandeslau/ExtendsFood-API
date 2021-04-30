@@ -15,6 +15,7 @@ public class ContactAppConfig {
 
     private static final String dateFormat = "dd/MM/yyyy";
     private static final String dateTimeFormat = "dd/MM/yyyy HH:mm:ss";
+    private static final String timeZone = "America/Sao_Paulo";
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
@@ -22,7 +23,7 @@ public class ContactAppConfig {
             builder.simpleDateFormat(dateTimeFormat);
             builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)));
             builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
-            builder.timeZone(TimeZone.getDefault());
+            builder.timeZone(TimeZone.getTimeZone(timeZone));
         };
     }
 

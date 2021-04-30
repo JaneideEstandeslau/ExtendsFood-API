@@ -15,12 +15,11 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class CategoriaProduto {
 
-	@Id
 	@EqualsAndHashCode.Include
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
 	@Column(nullable = false)
 	private String descricao;
 }
