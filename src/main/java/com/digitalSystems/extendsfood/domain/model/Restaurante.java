@@ -78,5 +78,13 @@ public class Restaurante {
 	
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> cardapio = new ArrayList<>();	
+	
+	public void ativar() {
+		this.setAtivo(true);
+	}
+	
+	public void inativar() {
+		this.setAtivo(false);
+	}
 
 }

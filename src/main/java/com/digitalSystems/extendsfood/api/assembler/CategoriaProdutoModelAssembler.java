@@ -11,7 +11,7 @@ import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
 
 @Component
-public class CategoriaProdutoModelassembler {
+public class CategoriaProdutoModelAssembler {
 
 	@Autowired
 	private ModelMapper modelMapper;

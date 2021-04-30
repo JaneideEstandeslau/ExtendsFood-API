@@ -20,6 +20,8 @@ public class RestauranteModel {
 	private BigDecimal taxaFrete;
 
 	private Boolean aberto;
+	
+	private Boolean ativo;
 
 	private String horarioInicioFuncionamento;
 

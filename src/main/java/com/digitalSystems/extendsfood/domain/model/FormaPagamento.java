@@ -1,6 +1,6 @@
 package com.digitalSystems.extendsfood.domain.model;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,16 +19,15 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class FormaPagamento {
 
-	@Id
 	@EqualsAndHashCode.Include
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
 	@Column(nullable = false)
 	private String descricao;
 	
 	@UpdateTimestamp
-	private OffsetDateTime dataAtualizacao;
+	private LocalDateTime dataAtualizacao;
 
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digitalSystems.extendsfood.api.assembler.CategoriaProdutoModelassembler;
+import com.digitalSystems.extendsfood.api.assembler.CategoriaProdutoModelAssembler;
 import com.digitalSystems.extendsfood.api.disassempler.CategoriaProdutoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.CategoriaProdutoInput;
@@ -36,7 +36,7 @@ public class CategoriaProdutoController {
 	private CaregoriaProdutoService categoriaProdutoService;
 	
 	@Autowired
-	private CategoriaProdutoModelassembler categoriaProdutoAssembler;
+	private CategoriaProdutoModelAssembler categoriaProdutoAssembler;
 	
 	@Autowired
 	private CategoriaProdutoInputDisassembler categoriaProdutoDisassembler;
