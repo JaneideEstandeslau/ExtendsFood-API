@@ -90,3 +90,5 @@ insert into produto (descricao, disponivel, preco, categoria_produto_id, restaur
 
 insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Macrrão ao molho branco', 1, 79, 7, 4);
 insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Lasanha a bolonhesa', 1, 89, 8, 4);
+
+insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
