@@ -1,6 +1,7 @@
 package com.digitalSystems.extendsfood.domain.service;
 
 import java.beans.Transient;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -29,6 +30,8 @@ public class RestauranteService {
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 
+		restauranteRepository.detach(restaurante);
+		
 		validarCNPJ(restaurante);
 
 		Long cozinhaId = restaurante.getCozinha().getId();
@@ -65,15 +68,9 @@ public class RestauranteService {
 
 	private void validarCNPJ(Restaurante restaurante) {
 
-		Restaurante restauranteMesmoCNPJ;
+		Optional<Restaurante> restauranteExistente = restauranteRepository.findByCnpj(restaurante.getCnpj());
 
-		if (restaurante.getId() == null) {
-			restauranteMesmoCNPJ = restauranteRepository.findByCnpj(restaurante.getCnpj());
-		} else {
-			restauranteMesmoCNPJ = restauranteRepository.findByCnpjAndIdNot(restaurante.getCnpj(), restaurante.getId());
-		}
-
-		if (restauranteMesmoCNPJ != null) {
+		if (restauranteExistente.isPresent() && !restauranteExistente.get().equals(restaurante)) {
 			throw new CNPJJaCadastradoException();
 		}
 	}

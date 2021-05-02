@@ -22,6 +22,7 @@ create table permissao (
 
 create table usuario (
 	id bigint not null auto_increment,
+	cpf varchar(14) not null,
 	nome varchar(80) not null,
 	email varchar(255) not null,
 	senha varchar(255) not null,
