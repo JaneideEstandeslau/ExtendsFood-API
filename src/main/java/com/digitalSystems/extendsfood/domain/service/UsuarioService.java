@@ -2,6 +2,8 @@ package com.digitalSystems.extendsfood.domain.service;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import com.digitalSystems.extendsfood.domain.exception.CpfJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.EmailJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.exception.UsuarioNaoEncontradoException;
+import com.digitalSystems.extendsfood.domain.model.Grupo;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
 import com.digitalSystems.extendsfood.domain.repository.UsuarioRepository;
 
@@ -17,6 +20,9 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private GrupoService gruposervice;
 	
 	public Usuario salvar(Usuario usuario) {
 		
@@ -38,6 +44,22 @@ public class UsuarioService {
 		else {
 			throw new NegocioException("Senha atual informada não coincide com a senha do usuário.");
 		}
+	}
+	
+	@Transactional
+	public void desassociarGrupo(Long usuarioId, Long grupoId) {
+	    Usuario usuario = buscarOuFalhar(usuarioId);
+	    Grupo grupo = gruposervice.buscarOuFalhar(grupoId);
+	    
+	    usuario.removerGrupo(grupo);
+	}
+
+	@Transactional
+	public void associarGrupo(Long usuarioId, Long grupoId) {
+	    Usuario usuario = buscarOuFalhar(usuarioId);
+	    Grupo grupo = gruposervice.buscarOuFalhar(grupoId);
+	    
+	    usuario.adicionarGrupo(grupo);
 	}
 	
 	public Usuario buscarOuFalhar(Long usuarioId) {
