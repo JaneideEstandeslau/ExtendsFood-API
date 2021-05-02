@@ -12,6 +12,7 @@ import com.digitalSystems.extendsfood.domain.exception.CNPJJaCadastradoException
 import com.digitalSystems.extendsfood.domain.exception.RestauranteNaoEncontradoException;
 import com.digitalSystems.extendsfood.domain.model.Cidade;
 import com.digitalSystems.extendsfood.domain.model.Cozinha;
+import com.digitalSystems.extendsfood.domain.model.FormaPagamento;
 import com.digitalSystems.extendsfood.domain.model.Restaurante;
 import com.digitalSystems.extendsfood.domain.repository.RestauranteRepository;
 
@@ -26,6 +27,9 @@ public class RestauranteService {
 	
 	@Autowired
 	private CidadeService cidadeService;
+	
+	@Autowired
+	private FormaPagamentoService formaPagamentoService;
 
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
@@ -47,18 +51,50 @@ public class RestauranteService {
 
 	}
 
-	@Transient
+	@Transactional
 	public void ativar(Long restauranteId) {
 		Restaurante restaurante = buscarOuFalhar(restauranteId);
 
 		restaurante.ativar();
 	}
 
-	@Transient
+	@Transactional
 	public void inativar(Long restauranteId) {
 		Restaurante restaurante = buscarOuFalhar(restauranteId);
 
 		restaurante.inativar();
+	}
+	
+	@Transactional
+	public void abrirFuncionamento(Long restauranteId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+
+		restaurante.abrir();
+		
+		restauranteRepository.save(restaurante);
+	}
+	
+	@Transactional
+	public void fecharFuncionamento(Long restauranteId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+
+		restaurante.fechar();
+	}
+	
+	@Transactional
+	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalhar(formaPagamentoId);
+		
+		restaurante.removerFormaPagamento(formaPagamento);
+	}
+	
+	@Transactional
+	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = formaPagamentoService.buscarOuFalhar(formaPagamentoId);
+		
+		restaurante.adicionarFormaPagamento(formaPagamento);
 	}
 
 	public Restaurante buscarOuFalhar(Long restauranteId) {

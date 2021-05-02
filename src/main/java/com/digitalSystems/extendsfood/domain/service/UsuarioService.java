@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.digitalSystems.extendsfood.domain.exception.CpfJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.EmailJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.exception.UsuarioNaoEncontradoException;
@@ -21,7 +22,7 @@ public class UsuarioService {
 		
 		usuarioRepository.detach(usuario);
 		
-		validarEmail(usuario);
+		validarUsuario(usuario);
 		
 		return usuarioRepository.save(usuario);
 	}
@@ -44,11 +45,17 @@ public class UsuarioService {
 				.orElseThrow(() -> new UsuarioNaoEncontradoException(usuarioId));
 	}
 	
-	private void validarEmail(Usuario usuario) {
+	private void validarUsuario(Usuario usuario) {
 		Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
 		
 		if(usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
 			throw new EmailJaCadastradoException();
+		}
+		
+		usuarioExistente = usuarioRepository.findByCpf(usuario.getCpf());
+		
+		if(usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+			throw new CpfJaCadastradoException();
 		}
 	}
 }	

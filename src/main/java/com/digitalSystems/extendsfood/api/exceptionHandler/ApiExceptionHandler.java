@@ -23,6 +23,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.digitalSystems.extendsfood.domain.exception.CNPJJaCadastradoException;
+import com.digitalSystems.extendsfood.domain.exception.CpfJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.EmailJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.EntidadeEmUsoException;
 import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
@@ -266,6 +267,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(EmailJaCadastradoException.class)
 	public ResponseEntity<?> handleEmailJaCadastrado(EmailJaCadastradoException e, WebRequest request) {
+
+		HttpStatus status = HttpStatus.CONFLICT;
+		ProblemType problemType = ProblemType.ERRO_NEGOCIO;
+		String detail = e.getMessage();
+
+		Problem problem = createProblemBuilder(status, problemType, detail)
+				.userMessage(detail)
+				.build();
+
+		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.CONFLICT, request);
+	}
+	
+	@ExceptionHandler(CpfJaCadastradoException.class)
+	public ResponseEntity<?> handleCpfJaCadastrado(CpfJaCadastradoException e, WebRequest request) {
 
 		HttpStatus status = HttpStatus.CONFLICT;
 		ProblemType problemType = ProblemType.ERRO_NEGOCIO;

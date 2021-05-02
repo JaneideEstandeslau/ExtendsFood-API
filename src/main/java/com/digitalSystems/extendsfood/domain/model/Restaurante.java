@@ -80,11 +80,27 @@ public class Restaurante {
 	private List<Produto> cardapio = new ArrayList<>();	
 	
 	public void ativar() {
-		this.setAtivo(true);
+		setAtivo(true);
 	}
 	
 	public void inativar() {
-		this.setAtivo(false);
+		setAtivo(false);
+	}
+	
+	public void abrir() {
+		setAberto(true);
+	}
+	
+	public void fechar() {
+		setAberto(false);
+	}
+	
+	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
+		return getFormasPagamento().remove(formaPagamento);
+	}
+	
+	public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
+		return getFormasPagamento().add(formaPagamento);
 	}
 
 }
