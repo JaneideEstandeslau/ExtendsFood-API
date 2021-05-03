@@ -15,9 +15,11 @@ delete from usuario;
 delete from usuario_grupo;
 delete from categoria_produto;
 delete from restaurante_usuario_responsavel;
-delete from produto;
 delete from complemento;
 delete from item_complemento;
+delete from pedido;
+delete from item_pedido;
+delete from item_pedido_item_complemento;
 
 set foreign_key_checks = 1;
 
@@ -86,17 +88,27 @@ insert into categoria_produto (id, descricao) values (6, 'Pizza Doce');
 insert into categoria_produto (id, descricao) values (7, 'Macarrão');
 insert into categoria_produto (id, descricao) values (8, 'Lasanha');
 
-insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('pastel', 'Delicioso pastel de carne', 1, 78.90, 1, 1);
-insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('pastel', 'Delicioso pastel de romel e julieta', 1, 110, 2, 1);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (1, 'pastel', 'Delicioso pastel de carne', 1, 78.90, 1, 1);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (2, 'pastel', 'Delicioso pastel de romel e julieta', 1, 110, 2, 1);
 
-insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Hamburguer', 'Hamburguer vegetariano', 1, 87.20, 3, 2);
-insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('cachrro quente', 'Cachorro-quente com molho de frando', 1, 87.20, 4, 2);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (3, 'Hamburguer', 'Hamburguer vegetariano', 1, 87.20, 3, 2);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (4, 'cachrro quente', 'Cachorro-quente com molho de frando', 1, 87.20, 4, 2);
 
-insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Pizza', 'Calabresa mineira', 1, 21, 5, 3);
-insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Pizza', 'Ovomaltine', 1, 43, 6, 3);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (5, 'Pizza', 'Calabresa mineira', 1, 21, 5, 3);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (6, 'Pizza', 'Ovomaltine', 1, 43, 6, 3);
 
-insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Massa', 'Macrrão ao molho branco', 1, 79, 7, 4);
-insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Massa', 'Lasanha a bolonhesa', 1, 89, 8, 4);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (7, 'Massa', 'Macrrão ao molho branco', 1, 79, 7, 4);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (8, 'Massa', 'Lasanha a bolonhesa', 1, 89, 8, 4);
+
+insert into complemento (id, descricao, qtd_minima, qtd_maxima, obrigatorio, produto_id) values (1, 'Carne', 0, 3, true, 1);
+insert into complemento (id, descricao, qtd_minima, qtd_maxima, obrigatorio, produto_id) values (2, 'Queijo', 0, 3, true, 1);
+
+insert into item_complemento (id, nome, preco, disponivel, complemento_id) values (1, 'Crane de Sol', 30.00, true, 1);
+insert into item_complemento (id, nome, preco, disponivel, complemento_id) values (2, 'Crane moida', 30.00, true, 1);
+
+insert into item_complemento (id, nome, preco, disponivel, complemento_id) values (3, 'Queijo Coalho', 30.00, true, 2);
+insert into item_complemento (id, nome, preco, disponivel, complemento_id) values (4, 'Queijo Mussarela', 30.00, true, 2);
+
 
 insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
 
@@ -114,6 +126,26 @@ insert into usuario (id, nome, email, senha, cpf, data_cadastro) values
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
 
 insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
+
+insert into pedido (id, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_id,
+    status, data_criacao, sub_total, taxa_frete, valor_total)
+values (1, 1, 1, 1, 1, 'CRIADO', current_timestamp, 298.90, 10, 308.90);
+
+insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total)
+values (1, 1, 1, 1, 78.9, 78.9);
+
+insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total)
+values (2, 1, 2, 2, 110, 220);
+
+
+insert into pedido (id, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_id, 
+	status, data_criacao, sub_total, taxa_frete, valor_total)
+values (2, 4, 1, 2, 1, 'CRIADO', current_timestamp, 79, 0, 79);
+
+insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total)
+values (3, 2, 6, 1, 79, 79);
+
+insert into item_pedido_item_complemento (item_pedido_id, item_complemento_id) values (1, 1), (1, 2), (2, 2);
 
 
 

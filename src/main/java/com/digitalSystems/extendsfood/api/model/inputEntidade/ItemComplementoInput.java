@@ -15,9 +15,6 @@ public class ItemComplementoInput {
 	@NotBlank
 	private String nome;
 	
-	@NotBlank
-	private String descricao;
-	
 	@NotNull
 	private BigDecimal preco;
 	

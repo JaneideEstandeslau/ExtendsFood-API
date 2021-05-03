@@ -28,7 +28,6 @@ create table complemento (
 create table item_complemento (
 	id bigint not null auto_increment, 
     nome varchar(45) not null,
-    descricao varchar(120) not null,
     preco decimal(19,2) not null,
     disponivel bit not null,
     complemento_id bigint not null, 

@@ -13,8 +13,6 @@ public class ItemComplementoModel {
 	
 	private String nome;
 	
-	private String descricao;
-	
 	private BigDecimal preco;
 	
 	private Boolean disponivel;

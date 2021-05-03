@@ -1,6 +1,8 @@
 package com.digitalSystems.extendsfood.domain.model;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -37,10 +41,6 @@ public class ItemPedido {
 	@Column(nullable = false)
 	private Integer quantidade;
 	
-	@NotBlank
-	@Column(nullable = false)
-	private String observacao;
-	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "pedido_id", nullable = false)
@@ -50,4 +50,10 @@ public class ItemPedido {
 	@ManyToOne
 	@JoinColumn(name= "produto_id", nullable = false)
 	private Produto produto;
+	
+	@ManyToMany
+	@JoinTable(name = "item_pedido_item_complemento",
+			joinColumns = @JoinColumn(name = "item_pedido_id"),
+			inverseJoinColumns = @JoinColumn(name = "item_complemento_id"))
+	private Set<ItemComplemento> itemComplemento = new HashSet<>();
 }
