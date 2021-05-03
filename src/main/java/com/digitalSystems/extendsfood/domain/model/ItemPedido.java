@@ -55,5 +55,20 @@ public class ItemPedido {
 	@JoinTable(name = "item_pedido_item_complemento",
 			joinColumns = @JoinColumn(name = "item_pedido_id"),
 			inverseJoinColumns = @JoinColumn(name = "item_complemento_id"))
-	private Set<ItemComplemento> itemComplemento = new HashSet<>();
+	private Set<ItemComplemento> itensComplemento = new HashSet<>();
+	
+	public void calcularPrecoTotal() {
+		BigDecimal precoUnitario = this.getPrecoUnitario();
+	    Integer quantidade = this.getQuantidade();
+
+	    if (precoUnitario == null) {
+	        precoUnitario = BigDecimal.ZERO;
+	    }
+
+	    if (quantidade == null) {
+	        quantidade = 0;
+	    }
+
+	    this.setPrecoTotal(precoUnitario.multiply(new BigDecimal(quantidade)));
+	}
 }

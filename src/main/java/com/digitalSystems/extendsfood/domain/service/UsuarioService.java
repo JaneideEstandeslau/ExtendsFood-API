@@ -11,6 +11,7 @@ import com.digitalSystems.extendsfood.domain.exception.CpfJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.EmailJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.exception.UsuarioNaoEncontradoException;
+import com.digitalSystems.extendsfood.domain.model.Endereco;
 import com.digitalSystems.extendsfood.domain.model.Grupo;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
 import com.digitalSystems.extendsfood.domain.repository.UsuarioRepository;
@@ -22,8 +23,9 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 	
 	@Autowired
-	private GrupoService gruposervice;
+	private GrupoService grupoService;
 	
+	@Transactional
 	public Usuario salvar(Usuario usuario) {
 		
 		usuarioRepository.detach(usuario);
@@ -33,6 +35,7 @@ public class UsuarioService {
 		return usuarioRepository.save(usuario);
 	}
 	
+	@Transactional
 	public void atualizarSenha(Long usuarioId, String senhaAtual, String novaSenha) {
 		
 		Usuario usuario = buscarOuFalhar(usuarioId);
@@ -47,9 +50,23 @@ public class UsuarioService {
 	}
 	
 	@Transactional
+	public Usuario adicionarEndereco(Endereco endereco, Long usuarioId) {
+		
+		Usuario usuario = buscarOuFalhar(usuarioId);
+		
+		endereco.setUsuario(usuario);
+		endereco.setEnderecoAtivoUsuario(true);
+		
+		usuario.desativerEnderecosExistendes();
+		usuario.adicionarEndereco(endereco);		
+		
+		return usuario;
+	}
+	
+	@Transactional
 	public void desassociarGrupo(Long usuarioId, Long grupoId) {
 	    Usuario usuario = buscarOuFalhar(usuarioId);
-	    Grupo grupo = gruposervice.buscarOuFalhar(grupoId);
+	    Grupo grupo = grupoService.buscarOuFalhar(grupoId);
 	    
 	    usuario.removerGrupo(grupo);
 	}
@@ -57,7 +74,7 @@ public class UsuarioService {
 	@Transactional
 	public void associarGrupo(Long usuarioId, Long grupoId) {
 	    Usuario usuario = buscarOuFalhar(usuarioId);
-	    Grupo grupo = gruposervice.buscarOuFalhar(grupoId);
+	    Grupo grupo = grupoService.buscarOuFalhar(grupoId);
 	    
 	    usuario.adicionarGrupo(grupo);
 	}

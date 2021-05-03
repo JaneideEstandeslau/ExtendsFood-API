@@ -37,6 +37,9 @@ alter table categoria_produto auto_increment = 1;
 alter table produto auto_increment = 1;
 alter table complemento auto_increment = 1;
 alter table item_complemento auto_increment = 1;
+alter table pedido auto_increment = 1;
+alter table item_pedido auto_increment = 1;
+
 
 insert into cozinha (id, nome) values (1, 'Tailandesa');
 insert into cozinha (id, nome) values (2, 'Indiana');
@@ -54,9 +57,6 @@ insert into cidade (id, nome, estado_id) values (4, 'Campinas', 2);
 insert into cidade (id, nome, estado_id) values (5, 'Fortaleza', 3);
 
 insert into endereco (id, cep, rua, numero, complemento, bairro, endereco_cidade_id) values (1, "58.140.695", "Barão da Passagem", "19", "APTO 01", "Catolé", 1);
-insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id) values (2, "58.140.695", "Barão do Abiaí", "190", "Centro", 1);
-insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id) values (3, "58.140.695", "AV Elpidio de Almeida", "210", "Sandra Cavalcante", 1);
-insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id) values (4, "58.140.695", "Vigario Calixto", "1002", "Centro", 1);
 
 insert into restaurante (id, aberto, ativo, nome, cnpj, data_atualizacao, horario_inicio_funcionamento, horario_fim_funcionamento, taxa_frete, telefone, cozinha_id, endereco_id)
 values (1, 0, 1, "Ki Pastel", "05.890.872/0001-96", current_timestamp, "18:00", "01:00", "10.00", "(83) 99986-8985", 1, 1);
@@ -123,13 +123,17 @@ insert into usuario (id, nome, email, senha, cpf, data_cadastro) values
 insert into usuario (id, nome, email, senha, cpf, data_cadastro) values
 (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', '013.551.700-10', current_timestamp);
 
+insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id, endereco_usuario_id, ativo_usuario) values (2, "58.140.695", "Barão do Abiaí", "190", "Centro", 1, 1, true);
+insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id, endereco_usuario_id, ativo_usuario) values (3, "58.140.695", "AV Elpidio de Almeida", "210", "Sandra Cavalcante", 1, 2, true);
+insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id, endereco_usuario_id, ativo_usuario) values (4, "58.140.695", "Vigario Calixto", "1002", "Centro", 1,3, true);
+
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
 
 insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
 
 insert into pedido (id, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_id,
     status, data_criacao, sub_total, taxa_frete, valor_total)
-values (1, 1, 1, 1, 1, 'CRIADO', current_timestamp, 298.90, 10, 308.90);
+values (1, 1, 1, 1, 1, 'AGUARDANDO_CONFIRMACAO', current_timestamp, 298.90, 10, 308.90);
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total)
 values (1, 1, 1, 1, 78.9, 78.9);
@@ -140,7 +144,7 @@ values (2, 1, 2, 2, 110, 220);
 
 insert into pedido (id, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_id, 
 	status, data_criacao, sub_total, taxa_frete, valor_total)
-values (2, 4, 1, 2, 1, 'CRIADO', current_timestamp, 79, 0, 79);
+values (2, 4, 1, 2, 1, 'AGUARDANDO_CONFIRMACAO', current_timestamp, 79, 0, 79);
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total)
 values (3, 2, 6, 1, 79, 79);

@@ -5,7 +5,10 @@ create table endereco (
     complemento varchar(100), 
     numero varchar(20) not null, 
     rua varchar(100) not null, 
-    endereco_cidade_id bigint, 
+    ativo_usuario bit,
+    endereco_cidade_id bigint,
+    endereco_usuario_id bigint, 
+     
     primary key (id)
 ) engine=InnoDB default charset=utf8;
 
@@ -39,6 +42,8 @@ create table restaurante_forma_pagamento (
 
 
 alter table endereco add constraint fk_endereco_cidade foreign key (endereco_cidade_id) references cidade (id);
+
+alter table endereco add constraint fk_endereco_usuario foreign key (endereco_usuario_id) references usuario (id);
 
 alter table restaurante add constraint fk_restaurante_cozinha foreign key (cozinha_id) references cozinha (id);
 

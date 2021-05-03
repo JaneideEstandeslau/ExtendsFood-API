@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.digitalSystems.extendsfood.api.assembler.UsuarioEnderecoModelAssembler;
 import com.digitalSystems.extendsfood.api.assembler.UsuarioModelAssembler;
+import com.digitalSystems.extendsfood.api.disassempler.EnderecoUsuarioInputDisassembler;
 import com.digitalSystems.extendsfood.api.disassempler.UsuarioInputDisassembler;
+import com.digitalSystems.extendsfood.api.model.UsuarioEnderecoModel;
 import com.digitalSystems.extendsfood.api.model.UsuarioModel;
+import com.digitalSystems.extendsfood.api.model.inputEntidade.EnderecoUsuarioInput;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.SenhaInput;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.UsuarioComSenhaInput;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.UsuarioInput;
+import com.digitalSystems.extendsfood.domain.model.Endereco;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
 import com.digitalSystems.extendsfood.domain.repository.UsuarioRepository;
 import com.digitalSystems.extendsfood.domain.service.UsuarioService;
@@ -40,6 +45,12 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioInputDisassembler usuarioDisassembler;
+	
+	@Autowired
+	private EnderecoUsuarioInputDisassembler enderecoUsuarioDisassembler;
+	
+	@Autowired
+	private UsuarioEnderecoModelAssembler usuarioEnderecoDisassembler;
 
 	@GetMapping
 	public List<UsuarioModel> listar() {
@@ -69,6 +80,17 @@ public class UsuarioController {
 		usuarioDisassembler.copyToDomainObject(usuarioInput, usuarioAtual);
 		
 		return usuarioAssembler.toModel(usuarioService.salvar(usuarioAtual));
+	}
+	
+	@PutMapping("/{usuarioId}/endereco")
+	public UsuarioEnderecoModel atualizarEndereco(@RequestBody @Valid EnderecoUsuarioInput enderecoUsuarioInput, 
+			@PathVariable Long usuarioId) {
+		
+		Endereco endereco = enderecoUsuarioDisassembler.toDomainObject(enderecoUsuarioInput);
+		
+		Usuario usuario =  usuarioService.adicionarEndereco(endereco, usuarioId);
+		
+		return usuarioEnderecoDisassembler.toModel(usuario);
 	}
 	
 	@PutMapping("/{usuarioId}/senha")
