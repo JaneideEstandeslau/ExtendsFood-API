@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,19 +27,15 @@ public class Complemento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
 	@Column(nullable = false)
 	private String descricao;
 	
-	@NotNull
 	@Column(nullable = false)
 	private Integer qtdMinima;
 	
-	@NotNull
 	@Column(nullable = false)
 	private Integer qtdMaxima;
 	
-	@NotNull
 	@Column(nullable = false)
 	private Boolean obrigatorio;
 	
