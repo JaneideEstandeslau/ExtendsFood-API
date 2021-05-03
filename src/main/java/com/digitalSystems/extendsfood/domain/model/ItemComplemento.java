@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,12 +19,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class ItensComplemento {
+public class ItemComplemento {
 
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long d;
+	private Long id;
 	
 	@NotBlank
 	@Column(nullable = false)
@@ -41,8 +42,7 @@ public class ItensComplemento {
 	@Column(nullable = false)
 	private Boolean disponivel;
 	
-	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "complemento_id", nullable = false)
 	private Complemento complemento;
 }

@@ -13,7 +13,7 @@ import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
 import com.digitalSystems.extendsfood.domain.repository.CategoriaProdutoRepository;
 
 @Service
-public class CaregoriaProdutoService {
+public class CategoriaProdutoService {
 
 	private static final String COZINHA_PRODUTO_EM_USO = "Cozinha de código %d não pode ser removida, pois está em uso";
 	@Autowired

@@ -5,7 +5,8 @@ create table categoria_produto (
 )engine=InnoDB default charset=utf8;
 
 create table produto (
-	id bigint not null auto_increment, 
+	id bigint not null auto_increment,
+	nome varchar(25) not null,
     descricao varchar(80) not null, 
     disponivel bit not null, 
     preco decimal(19,2) not null, 
@@ -17,14 +18,14 @@ create table produto (
 create table complemento (
 	id bigint not null auto_increment,
     descricao varchar(30) not null,
-    qtdMinima smallint(6) not null,
-    qtdMaxima smallint(6) not null,
+    qtd_minima smallint(6) not null,
+    qtd_maxima smallint(6) not null,
     obrigatorio bit not null,
     produto_id bigint not null, 
     primary key (id)
 ) engine=InnoDB default charset=utf8;
 
-create table itens_complemento (
+create table item_complemento (
 	id bigint not null auto_increment, 
     nome varchar(45) not null,
     descricao varchar(120) not null,
@@ -62,7 +63,7 @@ alter table produto add constraint fk_produto_categoria_produto foreign key (cat
 
 alter table complemento add constraint fk_complemento_produto foreign key (produto_id) references produto (id);
 
-alter table itens_complemento add constraint fk_itens_complemento_complemento foreign key (complemento_id) references complemento (id);
+alter table item_complemento add constraint fk_item_complemento_complemento foreign key (complemento_id) references complemento (id);
 
 alter table promocao_produto add constraint fk_promocao_produto_produto foreign key (produto_id) references produto (id);
 

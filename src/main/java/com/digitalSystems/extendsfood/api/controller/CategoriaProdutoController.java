@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +22,7 @@ import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.CategoriaProdutoInput;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
 import com.digitalSystems.extendsfood.domain.repository.CategoriaProdutoRepository;
-import com.digitalSystems.extendsfood.domain.service.CaregoriaProdutoService;
+import com.digitalSystems.extendsfood.domain.service.CategoriaProdutoService;
 
 @RestController
 @RequestMapping(value = "/categorias-produto")
@@ -33,7 +32,7 @@ public class CategoriaProdutoController {
 	private CategoriaProdutoRepository categoriaProdutoRepository;
 
 	@Autowired
-	private CaregoriaProdutoService categoriaProdutoService;
+	private CategoriaProdutoService categoriaProdutoService;
 	
 	@Autowired
 	private CategoriaProdutoModelAssembler categoriaProdutoAssembler;

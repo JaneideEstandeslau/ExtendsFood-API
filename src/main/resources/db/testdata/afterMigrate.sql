@@ -79,17 +79,17 @@ insert into categoria_produto (id, descricao) values (6, 'Pizza Doce');
 insert into categoria_produto (id, descricao) values (7, 'Macarrão');
 insert into categoria_produto (id, descricao) values (8, 'Lasanha');
 
-insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Delicioso pastel de carne', 1, 78.90, 1, 1);
-insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Delicioso pastel de romel e julieta', 1, 110, 2, 1);
+insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('pastel', 'Delicioso pastel de carne', 1, 78.90, 1, 1);
+insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('pastel', 'Delicioso pastel de romel e julieta', 1, 110, 2, 1);
 
-insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Hamburguer vegetariano', 1, 87.20, 3, 2);
-insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Cachorro-quente com molho de frando', 1, 87.20, 4, 2);
+insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Hamburguer', 'Hamburguer vegetariano', 1, 87.20, 3, 2);
+insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('cachrro quente', 'Cachorro-quente com molho de frando', 1, 87.20, 4, 2);
 
-insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Salabresa mineira', 1, 21, 5, 3);
-insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Ovomaltine', 1, 43, 6, 3);
+insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Pizza', 'Calabresa mineira', 1, 21, 5, 3);
+insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Pizza', 'Ovomaltine', 1, 43, 6, 3);
 
-insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Macrrão ao molho branco', 1, 79, 7, 4);
-insert into produto (descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Lasanha a bolonhesa', 1, 89, 8, 4);
+insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Massa', 'Macrrão ao molho branco', 1, 79, 7, 4);
+insert into produto (nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values ('Massa', 'Lasanha a bolonhesa', 1, 89, 8, 4);
 
 insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
 
