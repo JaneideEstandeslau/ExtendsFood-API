@@ -24,6 +24,8 @@ public class PedidoModel {
 	
 	private LocalDateTime dataConfirmacao;
 	
+	private LocalDateTime dataSaiuParaEntrega;
+	
 	private LocalDateTime dataEntrega;
 	
 	private LocalDateTime dataCancelamento;

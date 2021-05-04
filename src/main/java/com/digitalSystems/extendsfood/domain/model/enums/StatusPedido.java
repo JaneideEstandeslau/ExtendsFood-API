@@ -1,26 +1,22 @@
 package com.digitalSystems.extendsfood.domain.model.enums;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum StatusPedido {
 
-	AGUARDANDO_CONFIRMACAO(1, "Aguardando Confirmação"),
-	CONFIRMADO(2, "Confirmado"),
-	ENTREGUE(3, "Entregue"),
-	CANCELADO(4, "Cancelado");
+	AGUARDANDO_CONFIRMACAO("Aguardando Confirmação"),
+	CONFIRMADO("Confirmado", AGUARDANDO_CONFIRMACAO),
+	SAUI_PARA_ENTREGA("Saiu para Entrega", CONFIRMADO),
+	ENTREGUE("Entregue", SAUI_PARA_ENTREGA),
+	CANCELADO("Cancelado", AGUARDANDO_CONFIRMACAO);
 	
-	private Integer codigo;
 	private String descricao;
+	private List<StatusPedido> statusAnteriores;
 	
-	private StatusPedido(Integer codigo, String descricao) {
-		this.codigo = codigo;
+	private StatusPedido(String descricao, StatusPedido... statusAnteriores) {
 		this.descricao = descricao;
-	}
-
-	public Integer getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(Integer codigo) {
-		this.codigo = codigo;
+		this.statusAnteriores = Arrays.asList(statusAnteriores);
 	}
 
 	public String getDescricao() {
@@ -29,5 +25,17 @@ public enum StatusPedido {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public List<StatusPedido> getStatusAnteriores() {
+		return statusAnteriores;
+	}
+
+	public void setStatusAnteriores(List<StatusPedido> statusAnteriores) {
+		this.statusAnteriores = statusAnteriores;
+	}
+
+	public boolean naoPodeAlterarPara(StatusPedido novoStatus) {
+		return !novoStatus.statusAnteriores.contains(this);
 	}
 }

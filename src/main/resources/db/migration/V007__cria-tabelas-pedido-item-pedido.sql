@@ -3,10 +3,13 @@ create table pedido (
     sub_total decimal(10,2) not null,
     taxa_frete decimal(10,2) not null,
     valor_total decimal(10,2) not null,
+    
     data_criacao datetime,
     data_confirmacao datetime,
+    data_saiu_para_entrega datetime,
     data_entrega datetime,
     data_cancelamento datetime,
+    
     status varchar(22) not null,    
     observacao varchar(100),
     
