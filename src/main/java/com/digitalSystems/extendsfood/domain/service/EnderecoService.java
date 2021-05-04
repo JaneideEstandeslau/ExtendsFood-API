@@ -17,4 +17,5 @@ public class EnderecoService {
 		return enderecoRepository.findById(enderecoId)
 				.orElseThrow(() -> new EnderecoNaoEncontradoException(enderecoId));
 	}
+
 }

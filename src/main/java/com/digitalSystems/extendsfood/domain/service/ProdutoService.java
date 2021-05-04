@@ -31,18 +31,7 @@ public class ProdutoService {
 	@Transactional
 	public Produto salvar(Produto produto, Long restauranteId) {
 		
-		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
-		CategoriaProduto categoriaProduto = categoriaService.buscarOuFalhar(produto.getCategoriaProduto().getId());
-		
-		produto.setRestaurante(restaurante);
-		produto.setCategoriaProduto(categoriaProduto);
-		
-		for(Complemento complemento: produto.getComplementos()) {
-			complemento.setProduto(produto);
-			for(ItemComplemento item: complemento.getItens()) {
-				item.setComplemento(complemento);
-			}
-		}
+		validarProduto(produto, restauranteId);
 		
 		return produtoRepository.save(produto);
 	}
@@ -65,5 +54,29 @@ public class ProdutoService {
 	public Produto buscarOuFalhar(Long produtoId) {
 		return produtoRepository.findById(produtoId)
 				.orElseThrow(() -> new ProdutoNaoCadastradoException(produtoId));
+	}
+	
+	public void validarProduto(Produto produto, Long restauranteId) {
+		
+		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
+		CategoriaProduto categoriaProduto = categoriaService.buscarOuFalhar(produto.getCategoriaProduto().getId());
+		
+		produto.setRestaurante(restaurante);
+		produto.setCategoriaProduto(categoriaProduto);
+		
+		produto.getComplementos().forEach(complemento -> {
+			complemento.setProduto(produto);
+			
+			complemento.getItens().forEach(item -> {
+				item.setComplemento(complemento);
+			});
+		});
+		
+//		for(Complemento complemento: produto.getComplementos()) {
+//			complemento.setProduto(produto);
+//			for(ItemComplemento item: complemento.getItens()) {
+//				item.setComplemento(complemento);
+//			}
+//		}
 	}
 }

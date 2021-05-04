@@ -1,5 +1,7 @@
 package com.digitalSystems.extendsfood.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +13,7 @@ public class CidadeResumoModel {
 
 	private String nome;
 
-	private String estado;
+	@JsonProperty("estado")
+	private String estadoNome;
 
 }

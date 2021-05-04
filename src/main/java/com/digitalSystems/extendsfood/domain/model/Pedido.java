@@ -34,62 +34,49 @@ public class Pedido {
 
 	@Id
 	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotNull
 	@Column(nullable = false)
 	private BigDecimal subTotal;
 	
-	@NotNull
 	@Column(nullable = false)
 	private BigDecimal taxaFrete;
 	
-	@NotNull
 	@Column(nullable = false)
 	private BigDecimal valorTotal;
 	
-	@NotNull
 	@CreationTimestamp
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime dataCriacao;
 	
-	@NotNull
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime dataConfirmacao;
 	
-	@NotNull
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime dataEntrega;
 	
-	@NotNull
 	@Column(columnDefinition = "datetime")
 	private LocalDateTime dataCancelamento;
 	
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	private StatusPedido status = StatusPedido.AGUARDANDO_CONFIRMACAO;
 	
-	@NotBlank
 	@Column(nullable = false)
 	private String observacao;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "restaurante_id", nullable = false)
 	private Restaurante restaurante;
 	
-	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "forma_pagamento_id", nullable = false)
 	private FormaPagamento formaPagamento;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "usuario_cliente_id", nullable = false)
 	private Usuario cliente;
 	
-	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "endereco_id", nullable = false)
 	private Endereco endereco;

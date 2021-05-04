@@ -11,6 +11,7 @@ import com.digitalSystems.extendsfood.domain.exception.CpfJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.EmailJaCadastradoException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.exception.UsuarioNaoEncontradoException;
+import com.digitalSystems.extendsfood.domain.model.Cidade;
 import com.digitalSystems.extendsfood.domain.model.Endereco;
 import com.digitalSystems.extendsfood.domain.model.Grupo;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
@@ -24,6 +25,9 @@ public class UsuarioService {
 	
 	@Autowired
 	private GrupoService grupoService;
+	
+	@Autowired
+	private CidadeService cidadeService;
 	
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
@@ -52,9 +56,13 @@ public class UsuarioService {
 	@Transactional
 	public Usuario adicionarEndereco(Endereco endereco, Long usuarioId) {
 		
+		Long cidadeId = endereco.getCidade().getId();
+		
+		Cidade cidade = cidadeService.buscarOuFalhar(cidadeId);
 		Usuario usuario = buscarOuFalhar(usuarioId);
 		
 		endereco.setUsuario(usuario);
+		endereco.setCidade(cidade);
 		endereco.setEnderecoAtivoUsuario(true);
 		
 		usuario.desativerEnderecosExistendes();

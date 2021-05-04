@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class Endereco {
 
-	@EqualsAndHashCode.Include
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -24,15 +24,18 @@ public class Endereco {
 	@Column(nullable = false)
 	private String cep;
 
+	@EqualsAndHashCode.Include
 	@Column(nullable = false)
 	private String rua;
 
+	@EqualsAndHashCode.Include
 	@Column(nullable = false)
 	private String numero;
 
 	@Column(nullable = false)
 	private String complemento;
 
+	@EqualsAndHashCode.Include
 	@Column(nullable = false)
 	private String bairro;
 	
@@ -43,6 +46,7 @@ public class Endereco {
 	@JoinColumn(name = "endereco_usuario_id")
 	private Usuario usuario;
 	
+	@EqualsAndHashCode.Include
 	@ManyToOne
 	@JoinColumn(name = "endereco_cidade_id")
 	private Cidade cidade;

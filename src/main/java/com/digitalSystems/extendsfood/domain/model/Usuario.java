@@ -56,6 +56,14 @@ public class Usuario {
 			inverseJoinColumns = @JoinColumn(name = "grupo_id"))
 	private Set<Grupo> grupos = new HashSet<>();
 	
+	public Endereco buscarEnderecoAtivo() {
+		for(Endereco endereco: getEnderecos()) {
+			if(endereco.getEnderecoAtivoUsuario()) {
+				return endereco;
+			}
+		}
+		return null;
+	}
 	public void desativerEnderecosExistendes() {
 		getEnderecos().forEach(Endereco::enderecoInativo);
 	}
