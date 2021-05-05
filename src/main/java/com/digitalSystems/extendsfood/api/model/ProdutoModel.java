@@ -25,4 +25,6 @@ public class ProdutoModel {
 	private RestauranteResumoModel restaurante;
 	
 	private List<ComplementoModel> complementos;
+	
+	private List<DiaSemanaModel> diasDisponiveis;
 }

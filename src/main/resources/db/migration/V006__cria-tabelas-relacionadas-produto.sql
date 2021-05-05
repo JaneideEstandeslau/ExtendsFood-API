@@ -43,13 +43,13 @@ create table promocao_produto (
     primary key (id)
 ) engine=InnoDB default charset=utf8;
 
-create table dias_disponiveis (
+create table dia_semana (
 	id bigint not null auto_increment,
-    dia_disponivel varchar(10) not null,
+    dia_semana varchar(20) not null,
     primary key (id)
 ) engine=InnoDB default charset=utf8;
 
-create table produto_dias_disponiveis (
+create table produto_dia_semana (
 	produto_id bigint not null, 
 	dia_disponivel_id bigint not null, 
 	primary key (produto_id, dia_disponivel_id)
@@ -66,7 +66,7 @@ alter table item_complemento add constraint fk_item_complemento_complemento fore
 
 alter table promocao_produto add constraint fk_promocao_produto_produto foreign key (produto_id) references produto (id);
 
-alter table produto_dias_disponiveis add constraint fk_produto foreign key (produto_id) references produto (id);
+alter table produto_dia_semana add constraint fk_produto foreign key (produto_id) references produto (id);
 
-alter table produto_dias_disponiveis add constraint fk_dias_disponiveis foreign key (dia_disponivel_id) references dias_disponiveis (id);
+alter table produto_dia_semana add constraint fk_dia_semana foreign key (dia_disponivel_id) references dia_semana (id);
 

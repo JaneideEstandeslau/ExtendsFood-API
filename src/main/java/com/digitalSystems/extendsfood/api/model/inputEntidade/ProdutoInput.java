@@ -6,8 +6,10 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.digitalSystems.extendsfood.api.model.inputRelacionamento.CategoriaIdInput;
+import com.digitalSystems.extendsfood.api.model.inputRelacionamento.DiaSemanaIdInput;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,4 +37,9 @@ public class ProdutoInput {
 	@Valid
 	@NotNull
 	private List<ComplementoInput> complementos;
+	
+	@Valid
+	@Size(min = 1)
+	@NotNull
+	private List<DiaSemanaIdInput> diasDisponiveis;
 }

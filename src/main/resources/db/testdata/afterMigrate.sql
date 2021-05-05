@@ -20,6 +20,8 @@ delete from item_complemento;
 delete from pedido;
 delete from item_pedido;
 delete from item_pedido_item_complemento;
+delete from dia_semana;
+delete from produto_dia_semana;
 
 set foreign_key_checks = 1;
 
@@ -39,6 +41,16 @@ alter table complemento auto_increment = 1;
 alter table item_complemento auto_increment = 1;
 alter table pedido auto_increment = 1;
 alter table item_pedido auto_increment = 1;
+alter table dia_semana auto_increment = 1;
+alter table produto_dia_semana auto_increment = 1;
+
+insert into dia_semana (id, dia_semana) values (1, 'DOMINGO');
+insert into dia_semana (id, dia_semana) values (2, 'SEGUNDA');
+insert into dia_semana (id, dia_semana) values (3, 'TERCA');
+insert into dia_semana (id, dia_semana) values (4, 'QUARTA');
+insert into dia_semana (id, dia_semana) values (5, 'QUINTA');
+insert into dia_semana (id, dia_semana) values (6, 'SEXTA');
+insert into dia_semana (id, dia_semana) values (7, 'SABADO');
 
 
 insert into cozinha (id, nome) values (1, 'Tailandesa');
@@ -99,6 +111,10 @@ insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_i
 
 insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (7, 'Massa', 'Macrrão ao molho branco', 1, 79, 7, 4);
 insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (8, 'Massa', 'Lasanha a bolonhesa', 1, 89, 8, 4);
+
+
+insert into produto_dia_semana (produto_id, dia_disponivel_id) values (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6);
+
 
 insert into complemento (id, descricao, qtd_minima, qtd_maxima, obrigatorio, produto_id) values (1, 'Carne', 0, 3, true, 1);
 insert into complemento (id, descricao, qtd_minima, qtd_maxima, obrigatorio, produto_id) values (2, 'Queijo', 0, 3, true, 1);

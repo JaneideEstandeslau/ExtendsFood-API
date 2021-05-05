@@ -53,10 +53,10 @@ public class Produto {
 	private CategoriaProduto categoriaProduto;
 	
 	@ManyToMany
-	@JoinTable(name = "produto_dias_disponiveis",
+	@JoinTable(name = "produto_dia_semana",
 			joinColumns = @JoinColumn(name = "produto_id"),
 			inverseJoinColumns = @JoinColumn(name = "dia_disponivel_id"))
-	private Set<DiasDisponiveis> diasDisponiveis = new HashSet<>();
+	private Set<DiaSemana> diasDisponiveis = new HashSet<>();
 	
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
 	private List<Complemento> complementos = new ArrayList<>();

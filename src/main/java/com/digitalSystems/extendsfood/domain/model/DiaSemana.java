@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class DiasDisponiveis {
+public class DiaSemana {
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -23,5 +23,5 @@ public class DiasDisponiveis {
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	private DiasSemana diaDisponivel;
+	private DiasSemana diaSemana;
 }

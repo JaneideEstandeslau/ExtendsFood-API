@@ -1,6 +1,8 @@
 package com.digitalSystems.extendsfood.domain.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -9,8 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.digitalSystems.extendsfood.domain.exception.ProdutoNaoCadastradoException;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
-import com.digitalSystems.extendsfood.domain.model.Complemento;
-import com.digitalSystems.extendsfood.domain.model.ItemComplemento;
+import com.digitalSystems.extendsfood.domain.model.DiaSemana;
 import com.digitalSystems.extendsfood.domain.model.Produto;
 import com.digitalSystems.extendsfood.domain.model.Restaurante;
 import com.digitalSystems.extendsfood.domain.repository.ProdutoRepository;
@@ -27,6 +28,9 @@ public class ProdutoService {
 	
 	@Autowired
 	private CategoriaProdutoService categoriaService;
+	
+	@Autowired
+	private DiaSemanaService disSemanaService;
 	
 	@Transactional
 	public Produto salvar(Produto produto, Long restauranteId) {
@@ -58,6 +62,8 @@ public class ProdutoService {
 	
 	public void validarProduto(Produto produto, Long restauranteId) {
 		
+		Set<DiaSemana> diasDisponiveis = new HashSet<>();
+		
 		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
 		CategoriaProduto categoriaProduto = categoriaService.buscarOuFalhar(produto.getCategoriaProduto().getId());
 		
@@ -72,11 +78,13 @@ public class ProdutoService {
 			});
 		});
 		
-//		for(Complemento complemento: produto.getComplementos()) {
-//			complemento.setProduto(produto);
-//			for(ItemComplemento item: complemento.getItens()) {
-//				item.setComplemento(complemento);
-//			}
-//		}
+		produto.getDiasDisponiveis().forEach(dia -> {
+			
+			DiaSemana diaSemana = disSemanaService.buscarOuFalhar(dia.getId());
+			
+			diasDisponiveis.add(diaSemana);
+		});
+		
+		produto.setDiasDisponiveis(diasDisponiveis);
 	}
 }
