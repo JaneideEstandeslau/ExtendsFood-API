@@ -1,10 +1,15 @@
 package com.digitalSystems.extendsfood.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +25,15 @@ import com.digitalSystems.extendsfood.api.disassempler.PedidoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.PedidoModel;
 import com.digitalSystems.extendsfood.api.model.PedidoResumoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.PedidoInput;
+import com.digitalSystems.extendsfood.core.data.PageableTranslator;
 import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.model.Pedido;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
 import com.digitalSystems.extendsfood.domain.repository.PedidoRepository;
+import com.digitalSystems.extendsfood.domain.repository.filter.PedidoFilter;
 import com.digitalSystems.extendsfood.domain.service.EmissaoPedidoService;
+import com.digitalSystems.extendsfood.infrastructure.spec.PedidoSpecs;
 
 @RestController
 @RequestMapping(value = "/pedidos")
@@ -47,10 +55,18 @@ public class PedidoController {
 	private PedidoInputDisassembler pedidoInputDisassembler;
 	
 	@GetMapping
-    public List<PedidoResumoModel> listar() {
-        List<Pedido> todosPedidos = pedidoRepository.findAll();
+    public Page<PedidoResumoModel> pesuisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
+		
+		pageable = traduzirPageable(pageable);
+		
+        Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.filtrarPedidos(filtro), pageable);
         
-        return pedidoresumoAssembler.toCollectionModel(todosPedidos);
+        List<PedidoResumoModel> pedidosResumoModel = pedidoresumoAssembler.toCollectionModel(pedidosPage.getContent());
+        
+        Page<PedidoResumoModel> pedidosResumoModelPage = new PageImpl<>(
+                pedidosResumoModel, pageable, pedidosPage.getTotalElements());
+        
+        return pedidosResumoModelPage;
     }
     
     @GetMapping("/{pedidoId}")
@@ -77,4 +93,14 @@ public class PedidoController {
             throw new NegocioException(e.getMessage(), e);
         }
     }
+    
+    private Pageable traduzirPageable(Pageable apiPageable) {
+		var mapeamento = Map.of(
+				"valorTotal", "valorTotal",
+				"restaurante.nome", "restaurante.nome",
+				"status", "status"
+			);
+		
+		return PageableTranslator.translate(apiPageable, mapeamento);
+	}
 }

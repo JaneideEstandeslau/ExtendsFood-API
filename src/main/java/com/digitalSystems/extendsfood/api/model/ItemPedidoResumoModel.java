@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class ItemPedidoResumoModel {
 	
+	private Long produtoId;
 	private String produtoNome;
 }
