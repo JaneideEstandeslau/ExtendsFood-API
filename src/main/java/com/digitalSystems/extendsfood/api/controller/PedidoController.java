@@ -28,10 +28,10 @@ import com.digitalSystems.extendsfood.api.model.inputEntidade.PedidoInput;
 import com.digitalSystems.extendsfood.core.data.PageableTranslator;
 import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
+import com.digitalSystems.extendsfood.domain.filter.PedidoFilter;
 import com.digitalSystems.extendsfood.domain.model.Pedido;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
 import com.digitalSystems.extendsfood.domain.repository.PedidoRepository;
-import com.digitalSystems.extendsfood.domain.repository.filter.PedidoFilter;
 import com.digitalSystems.extendsfood.domain.service.EmissaoPedidoService;
 import com.digitalSystems.extendsfood.infrastructure.spec.PedidoSpecs;
 

@@ -1,4 +1,4 @@
-package com.digitalSystems.extendsfood.domain.repository.filter;
+package com.digitalSystems.extendsfood.domain.filter;
 
 
 import java.time.LocalDateTime;

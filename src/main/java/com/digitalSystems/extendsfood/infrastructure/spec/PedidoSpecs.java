@@ -9,10 +9,10 @@ import javax.persistence.criteria.Subquery;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.digitalSystems.extendsfood.domain.filter.PedidoFilter;
 import com.digitalSystems.extendsfood.domain.model.ItemPedido;
 import com.digitalSystems.extendsfood.domain.model.Pedido;
 import com.digitalSystems.extendsfood.domain.model.Produto;
-import com.digitalSystems.extendsfood.domain.repository.filter.PedidoFilter;
 
 public class PedidoSpecs {
 
