@@ -5,13 +5,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.digitalSystems.extendsfood.domain.filter.VendaFilter;
+import com.digitalSystems.extendsfood.domain.model.FormaPagamento;
 import com.digitalSystems.extendsfood.domain.model.Pedido;
+import com.digitalSystems.extendsfood.domain.model.Restaurante;
 import com.digitalSystems.extendsfood.domain.model.dto.VendaDiaria;
 import com.digitalSystems.extendsfood.domain.model.enums.StatusPedido;
 import com.digitalSystems.extendsfood.domain.service.VendaQueryService;
@@ -27,6 +30,8 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 		var builder = manager.getCriteriaBuilder();				// Cria um builder para contruir a criteria
 		var query = builder.createQuery(VendaDiaria.class);		// Informa o TIPO DE RETORNO da consulta criteria
 		var root = query.from(Pedido.class);					// cláusula FROM é Pedido
+		Join<Pedido, FormaPagamento> formaPagamento = root.join("formaPagamento");
+		Join<Pedido, Restaurante> restaurante = root.join("restaurante");
 		
 		var predicates = new ArrayList<Predicate>();
 		
@@ -39,6 +44,9 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 		// "Construa VendaDiaria a partir da seleção
 		var selection = builder.construct(VendaDiaria.class,
 				functionDateDataCriacao,
+				restaurante.get("nome"),
+				root.get("status"),
+				formaPagamento.get("descricao"),
 				builder.count(root.get("id")),
 				builder.sum(root.get("valorTotal")));
 		

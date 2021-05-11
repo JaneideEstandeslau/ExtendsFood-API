@@ -1,6 +1,8 @@
 package com.digitalSystems.extendsfood.domain.filter;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
+
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -14,10 +16,12 @@ public class VendaFilter {
 
 	private Long restauranteId;
 	
+	@NotNull
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private OffsetDateTime dataCriacaoInicio;
+	private LocalDateTime dataCriacaoInicio;
 	
+	@NotNull
 	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private OffsetDateTime dataCriacaoFim;
+	private LocalDateTime dataCriacaoFim;
 
 }
