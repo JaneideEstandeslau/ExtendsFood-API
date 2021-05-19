@@ -32,10 +32,6 @@ public class ProdutoInput {
 	
 	@Valid
 	@NotNull
-	private CategoriaIdInput categoriaProduto;
-	
-	@Valid
-	@NotNull
 	private List<ComplementoInput> complementos;
 	
 	@Valid

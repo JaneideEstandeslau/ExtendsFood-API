@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,4 +23,8 @@ public class CategoriaProduto {
 	
 	@Column(nullable = false)
 	private String descricao;
+	
+	@ManyToOne
+	@JoinColumn(name = "restaurante_id", nullable = false)
+	private Restaurante restaurante;
 }

@@ -8,14 +8,39 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
+import com.digitalSystems.extendsfood.domain.model.DiaSemana;
+import com.digitalSystems.extendsfood.domain.model.FotoProduto;
+import com.digitalSystems.extendsfood.domain.model.ItemComplemento;
 import com.digitalSystems.extendsfood.domain.model.Produto;
 import com.digitalSystems.extendsfood.domain.model.Restaurante;
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long>{
+public interface ProdutoRepository extends JpaRepository<Produto, Long>, ProdutoRepositoryQueries{
 
-	@Query("from Produto where restaurante.id = :restaurante and id = :produto")
-	Optional<Produto> findById(@Param("restaurante") Long restauranteId, @Param("produto") Long produtoId);
+	@Query("select p from Produto p join p.categoriaProduto c "
+			+ "where p.id = :produto and c.id = :categoria and c.restaurante.id = :restaurante")
+	Optional<Produto> findById(@Param("produto") Long produtoId, @Param("categoria") Long categoriaId, 
+			@Param("restaurante") Long restauranteId);
 	
-	List<Produto> findByRestaurante(Restaurante restaurante);
+	@Query("select p from Produto p join p.categoriaProduto c "
+			+ "where p.disponivel = true and c = :categoriaProduto and c.restaurante = :restaurante")
+	List<Produto> findByAtivoByCategoriaByRestaurante(CategoriaProduto categoriaProduto, Restaurante restaurante);
+	
+	@Query("select p from Produto p join p.categoriaProduto c "
+			+ "where c.restaurante.id = :restauranteId and p.id = :produtoId")
+	Optional<Produto> findByRestaurante(Long restauranteId, Long produtoId);
+	
+	@Query("select f from FotoProduto f join f.produto p "
+			+ "where p.categoriaProduto.id = :categoriaId and f.produto.id = :produtoId")
+	Optional<FotoProduto> findFotoById(Long categoriaId, Long produtoId);
+	
+	@Query("from ItemComplemento where id = :itemComplmentoId")
+	Optional<ItemComplemento> findByItemComplementoByid(Long itemComplmentoId);
+	
+	@Query("from DiaSemana where id = :diaSemanaId")
+	Optional<DiaSemana> findByDiaSemanaById(Long diaSemanaId);
+	
+	@Query("from DiaSemana d")
+	List<DiaSemana> findByDiaSemana();
 }

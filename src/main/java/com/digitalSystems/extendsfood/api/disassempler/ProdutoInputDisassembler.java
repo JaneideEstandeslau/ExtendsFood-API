@@ -1,13 +1,15 @@
 package com.digitalSystems.extendsfood.api.disassempler;
 
+import java.util.HashSet;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.digitalSystems.extendsfood.api.model.inputEntidade.ProdutoInput;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
+import com.digitalSystems.extendsfood.domain.model.DiaSemana;
 import com.digitalSystems.extendsfood.domain.model.Produto;
-import com.digitalSystems.extendsfood.domain.model.Restaurante;
 
 @Component
 public class ProdutoInputDisassembler {
@@ -22,7 +24,7 @@ public class ProdutoInputDisassembler {
 	public void copyToDomainObject(ProdutoInput produtoInput, Produto produto) {
 		
 		produto.setCategoriaProduto(new CategoriaProduto());
-		produto.setRestaurante(new Restaurante());
+		produto.setDiasDisponiveis(new HashSet<DiaSemana>());
 		modelMapper.map(produtoInput, produto);
 	}
 }

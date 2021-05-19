@@ -5,16 +5,16 @@ import org.springframework.stereotype.Service;
 
 import com.digitalSystems.extendsfood.domain.exception.DiaSemanaNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.model.DiaSemana;
-import com.digitalSystems.extendsfood.domain.repository.DiaSemanaRepository;
+import com.digitalSystems.extendsfood.domain.repository.ProdutoRepository;
 
 @Service
 public class DiaSemanaService {
 
 	@Autowired
-	private DiaSemanaRepository diaSemanaRepository;
+	private ProdutoRepository produtoRepository;
 	
 	public DiaSemana buscarOuFalhar(Long diaSemanaId) {
-		return diaSemanaRepository.findById(diaSemanaId)
+		return produtoRepository.findByDiaSemanaById(diaSemanaId)
 				.orElseThrow(() -> new DiaSemanaNaoEncontradaException(diaSemanaId));
 	}
 }

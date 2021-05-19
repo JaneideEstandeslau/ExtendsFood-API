@@ -22,6 +22,7 @@ delete from item_pedido;
 delete from item_pedido_item_complemento;
 delete from dia_semana;
 delete from produto_dia_semana;
+delete from foto_produto;
 
 set foreign_key_checks = 1;
 
@@ -88,29 +89,29 @@ insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permi
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2);
 
-insert into categoria_produto (id, descricao) values (1, 'Pastel Salgado');
-insert into categoria_produto (id, descricao) values (2, 'Pastel Doce');
+insert into categoria_produto (id, descricao, restaurante_id) values (1, 'Pastel Salgado', 1);
+insert into categoria_produto (id, descricao, restaurante_id) values (2, 'Pastel Doce', 1);
 
-insert into categoria_produto (id, descricao) values (3, 'Hamburguer');
-insert into categoria_produto (id, descricao) values (4, 'Cachrro-quente');
+insert into categoria_produto (id, descricao, restaurante_id) values (3, 'Hamburguer', 2);
+insert into categoria_produto (id, descricao, restaurante_id) values (4, 'Cachrro-quente', 2);
 
-insert into categoria_produto (id, descricao) values (5, 'Pizza Salgada');
-insert into categoria_produto (id, descricao) values (6, 'Pizza Doce');
+insert into categoria_produto (id, descricao, restaurante_id) values (5, 'Pizza Salgada', 3);
+insert into categoria_produto (id, descricao, restaurante_id) values (6, 'Pizza Doce', 3);
 
-insert into categoria_produto (id, descricao) values (7, 'Macarrão');
-insert into categoria_produto (id, descricao) values (8, 'Lasanha');
+insert into categoria_produto (id, descricao, restaurante_id) values (7, 'Macarrão', 4);
+insert into categoria_produto (id, descricao, restaurante_id) values (8, 'Lasanha', 4);
 
-insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (1, 'pastel', 'Delicioso pastel de carne', 1, 78.90, 1, 1);
-insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (2, 'pastel', 'Delicioso pastel de romel e julieta', 1, 110, 2, 1);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id) values (1, 'pastel', 'Delicioso pastel de carne', 1, 78.90, 1);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id) values (2, 'pastel', 'Delicioso pastel de romel e julieta', 1, 110, 2);
 
-insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (3, 'Hamburguer', 'Hamburguer vegetariano', 1, 87.20, 3, 2);
-insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (4, 'cachrro quente', 'Cachorro-quente com molho de frando', 1, 87.20, 4, 2);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id) values (3, 'Hamburguer', 'Hamburguer vegetariano', 1, 87.20, 3);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id) values (4, 'cachrro quente', 'Cachorro-quente com molho de frando', 1, 87.20, 4);
 
-insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (5, 'Pizza', 'Calabresa mineira', 1, 21, 5, 3);
-insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (6, 'Pizza', 'Ovomaltine', 1, 43, 6, 3);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id) values (5, 'Pizza', 'Calabresa mineira', 1, 21, 5);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id) values (6, 'Pizza', 'Ovomaltine', 1, 43, 6);
 
-insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (7, 'Massa', 'Macrrão ao molho branco', 1, 79, 7, 4);
-insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id, restaurante_id) values (8, 'Massa', 'Lasanha a bolonhesa', 1, 89, 8, 4);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id) values (7, 'Massa', 'Macrrão ao molho branco', 1, 79, 7);
+insert into produto (id, nome, descricao, disponivel, preco, categoria_produto_id) values (8, 'Massa', 'Lasanha a bolonhesa', 1, 89, 8);
 
 
 insert into produto_dia_semana (produto_id, dia_disponivel_id) values (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6);

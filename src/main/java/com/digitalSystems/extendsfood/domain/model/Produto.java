@@ -44,10 +44,6 @@ public class Produto {
 	@Column(nullable = false)
 	private Boolean disponivel;
 	
-	@ManyToOne
-	@JoinColumn(name = "restaurante_id", nullable = false)
-	private Restaurante restaurante;
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "categoria_produto_id", nullable = false)
 	private CategoriaProduto categoriaProduto;

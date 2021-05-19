@@ -82,7 +82,7 @@ public class Restaurante {
 	private Set<Usuario> responsaveis = new HashSet<>(); 
 	
 	@OneToMany(mappedBy = "restaurante")
-	private List<Produto> cardapio = new ArrayList<>();	
+	private List<CategoriaProduto> categoriaCardapio = new ArrayList<>();	
 	
 	public void ativar() {
 		setAtivo(true);

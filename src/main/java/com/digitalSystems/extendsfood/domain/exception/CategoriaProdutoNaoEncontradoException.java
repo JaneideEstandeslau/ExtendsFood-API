@@ -12,5 +12,9 @@ public class CategoriaProdutoNaoEncontradoException extends EntidadeNaoEncontrad
 		super(String.format("Não existe o cadastro de Categoria Produto com codigo %d", categoriaProdutoId));
 	}
 	
+	public CategoriaProdutoNaoEncontradoException(Long categoriaProdutoId, Long restauranteId) {
+		super(String.format("Não existe o cadastro de Categoria com codigo %d no Restaurantecom codigo %d", categoriaProdutoId, restauranteId));
+	}
+	
 
 }

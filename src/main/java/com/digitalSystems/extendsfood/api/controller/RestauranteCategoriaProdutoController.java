@@ -23,8 +23,8 @@ import com.digitalSystems.extendsfood.domain.model.Produto;
 import com.digitalSystems.extendsfood.domain.service.ProdutoService;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/produtos")
-public class ProdutoController {
+@RequestMapping(value = "restaurante/{restauranteId}/categorias/{categoriaId}/produtos")
+public class RestauranteCategoriaProdutoController {
 
 	
 	@Autowired
@@ -37,37 +37,42 @@ public class ProdutoController {
 	private ProdutoModelAssembler produtoAssembler;
 
 	@GetMapping
-	public List<ProdutoModel> listar(@PathVariable Long restauranteId){
-		List<Produto> produtos = produtoService.buscarProdutosDoRestaurante(restauranteId);
+	public List<ProdutoModel> listar(@PathVariable Long restauranteId, @PathVariable Long categoriaId){
+		
+		List<Produto> produtos = produtoService.buscarTodosProdutosCategoriaRestaurante(restauranteId, categoriaId);
 		
 		return produtoAssembler.toCollectionModel(produtos);
 	}
 	
 	@GetMapping("/{produtoId}")
-	public ProdutoModel buscarProdutoRestaurante(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-		Produto produto = produtoService.buscarProdutoDoRestaurante(restauranteId, produtoId);
+	public ProdutoModel buscarProdutoCategoriaRestaurante(@PathVariable Long restauranteId, 
+			@PathVariable Long categoriaId, @PathVariable Long produtoId) {
+		
+		Produto produto = produtoService.buscarOuFalhar(restauranteId, categoriaId, produtoId);
 		
 		return produtoAssembler.toModel(produto);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ProdutoModel adicionar(@RequestBody @Valid ProdutoInput produtoInput, @PathVariable Long restauranteId) {
+	public ProdutoModel adicionar(@RequestBody @Valid ProdutoInput produtoInput, @PathVariable Long restauranteId,
+			@PathVariable Long categoriaId) {
 
 		Produto produto = produtoDisassembler.toDomainObject(produtoInput);
 
-		return produtoAssembler.toModel(produtoService.salvar(produto, restauranteId));
+		return produtoAssembler.toModel(produtoService.salvar(produto, categoriaId, restauranteId));
 
 	}
 	
 	@PutMapping("/{produtoId}")
-	public ProdutoModel atualizar(@RequestBody @Valid ProdutoInput produtoInput, @PathVariable Long restauranteId,  @PathVariable Long produtoId) {
+	public ProdutoModel atualizar(@RequestBody @Valid ProdutoInput produtoInput,  @PathVariable Long restauranteId, 
+			@PathVariable Long categoriaId,  @PathVariable Long produtoId) {
 		
-		Produto produtoAtual = produtoService.buscarOuFalhar(produtoId);
+		Produto produtoAtual = produtoService.buscarOuFalhar(restauranteId, categoriaId, produtoId);
 		
 		produtoDisassembler.copyToDomainObject(produtoInput, produtoAtual);
 		
-		return produtoAssembler.toModel(produtoService.salvar(produtoAtual, restauranteId));
+		return produtoAssembler.toModel(produtoService.salvar(produtoAtual, categoriaId, restauranteId));
 		
 	}
 }

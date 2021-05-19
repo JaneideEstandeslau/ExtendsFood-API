@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.digitalSystems.extendsfood.domain.exception.ProdutoNaoCadastradoException;
+import com.digitalSystems.extendsfood.domain.exception.ProdutoNaoEncontradoException;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
 import com.digitalSystems.extendsfood.domain.model.DiaSemana;
 import com.digitalSystems.extendsfood.domain.model.Produto;
@@ -19,55 +19,77 @@ import com.digitalSystems.extendsfood.domain.repository.ProdutoRepository;
 @Service
 public class ProdutoService {
 
+	private static final String PRODUTO_NAO_ENCONTRADO = "Não existe um cadastro de Produto com o código %d no Restestaurante de código %d";
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
 	@Autowired
-	private RestauranteService restauranteService;
+	private CategoriaProdutoService categoriaService;
 	
 	@Autowired
-	private CategoriaProdutoService categoriaService;
+	private RestauranteService restauranteService;
 	
 	@Autowired
 	private DiaSemanaService disSemanaService;
 	
 	@Transactional
-	public Produto salvar(Produto produto, Long restauranteId) {
+	public Produto salvar(Produto produto, Long categoriaId, Long restauranteId) {
 		
-		validarProduto(produto, restauranteId);
+		validarProduto(produto, categoriaId, restauranteId);
 		
 		return produtoRepository.save(produto);
 	}
 	
-	public List<Produto> buscarProdutosDoRestaurante(Long restauranteId){
-		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
+	/**
+	 * Busca todos os produtos da categoria do restaurante
+	 * @param restauranteId
+	 * @param categoriaId
+	 * @return
+	 */
+	public List<Produto> buscarTodosProdutosCategoriaRestaurante(Long restauranteId, Long categoriaId){
 		
-		return produtoRepository.findByRestaurante(restaurante);
+		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
+		CategoriaProduto categoria = categoriaService.buscarOuFalhar(restaurante.getId(), categoriaId);
+		
+		return produtoRepository.findByAtivoByCategoriaByRestaurante(categoria, restaurante);
+	}
+	
+	/**
+	 * Busca um produto específico da categoria do restaurante
+	 * @param restauranteId
+	 * @param categoriaId
+	 * @param produtoId
+	 * @return
+	 */
+	public Produto buscarOuFalhar(Long restauranteId, Long categoriaId, Long produtoId) {
+		
+		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
+		CategoriaProduto categoria = categoriaService.buscarOuFalhar(restaurante.getId(), categoriaId);
+		
+		return produtoRepository.findById(produtoId, categoria.getId(), restaurante.getId())
+				.orElseThrow(() -> new ProdutoNaoEncontradoException(produtoId, categoriaId));
+		
 	}
 	
 	public Produto buscarProdutoDoRestaurante(Long restauranteId, Long produtoId) {
 		
-		Produto produto = buscarOuFalhar(produtoId);
 		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
 		
-		return produtoRepository.findById(restaurante.getId(), produto.getId()).get();
+		return produtoRepository.findByRestaurante(restaurante.getId(), produtoId)
+				.orElseThrow(() -> new ProdutoNaoEncontradoException(
+						String.format(PRODUTO_NAO_ENCONTRADO, produtoId, restauranteId)));
 		
 	}
 	
-	public Produto buscarOuFalhar(Long produtoId) {
-		return produtoRepository.findById(produtoId)
-				.orElseThrow(() -> new ProdutoNaoCadastradoException(produtoId));
-	}
-	
-	public void validarProduto(Produto produto, Long restauranteId) {
+	public void validarProduto(Produto produto, Long categoriaId, Long restauranteId) {
 		
 		Set<DiaSemana> diasDisponiveis = new HashSet<>();
 		
 		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
-		CategoriaProduto categoriaProduto = categoriaService.buscarOuFalhar(produto.getCategoriaProduto().getId());
+		CategoriaProduto categoriaProduto = categoriaService.buscarOuFalhar(restauranteId, categoriaId);
 		
-		produto.setRestaurante(restaurante);
+		categoriaProduto.setRestaurante(restaurante);
 		produto.setCategoriaProduto(categoriaProduto);
 		
 		produto.getComplementos().forEach(complemento -> {

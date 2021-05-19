@@ -25,7 +25,7 @@ import com.digitalSystems.extendsfood.domain.repository.CategoriaProdutoReposito
 import com.digitalSystems.extendsfood.domain.service.CategoriaProdutoService;
 
 @RestController
-@RequestMapping(value = "/categorias-produto")
+@RequestMapping(value = "/restaurantes/{restauranteId}/categorias")
 public class CategoriaProdutoController {
 
 	@Autowired
@@ -41,35 +41,38 @@ public class CategoriaProdutoController {
 	private CategoriaProdutoInputDisassembler categoriaProdutoDisassembler;
 
 	@GetMapping
-	public List<CategoriaProdutoModel> listar() {
-		return categoriaProdutoAssembler.toCollectionModel(categoriaProdutoRepository.findAll());
+	public List<CategoriaProdutoModel> listar(@PathVariable Long restauranteId) {
+		return categoriaProdutoAssembler.toCollectionModel(
+				categoriaProdutoService.buscarCategoriasRestarante(restauranteId));
 	}
 
 	@GetMapping("/{categoriaProdutoId}")
-	public CategoriaProdutoModel buscar(@PathVariable Long categoriaProdutoId) {
-		CategoriaProduto categoriaProduto = categoriaProdutoService.buscarOuFalhar(categoriaProdutoId);
+	public CategoriaProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long categoriaProdutoId) {
+		
+		CategoriaProduto categoriaProduto = categoriaProdutoService.buscarOuFalhar(restauranteId, categoriaProdutoId);
 		
 		return categoriaProdutoAssembler.toModel(categoriaProduto);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CategoriaProdutoModel adicionar(@RequestBody @Valid CategoriaProdutoInput categoriaProdutoInput) {
+	public CategoriaProdutoModel adicionar(@PathVariable Long restauranteId, 
+			@RequestBody @Valid CategoriaProdutoInput categoriaProdutoInput) {
 		
 		CategoriaProduto categoriaProduto = categoriaProdutoDisassembler.toDomainObject(categoriaProdutoInput);
 		
-		return categoriaProdutoAssembler.toModel(categoriaProdutoService.salvar(categoriaProduto));
+		return categoriaProdutoAssembler.toModel(categoriaProdutoService.salvar(categoriaProduto, restauranteId));
 	}
 
 	@PutMapping("/{categoriaProdutoId}")
-	public CategoriaProdutoModel atualizar(@PathVariable Long categoriaProdutoId,
+	public CategoriaProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long categoriaProdutoId,
 			@RequestBody @Valid CategoriaProdutoInput categoriaProdutoInput) {
 
-		CategoriaProduto categoriaProdutoAtual = categoriaProdutoService.buscarOuFalhar(categoriaProdutoId);
+		CategoriaProduto categoriaProdutoAtual = categoriaProdutoService.buscarOuFalhar(restauranteId, categoriaProdutoId);
 
 		categoriaProdutoDisassembler.copyToDomainObject(categoriaProdutoInput, categoriaProdutoAtual);
 
-		return  categoriaProdutoAssembler.toModel(categoriaProdutoService.salvar(categoriaProdutoAtual));
+		return  categoriaProdutoAssembler.toModel(categoriaProdutoService.salvar(categoriaProdutoAtual, restauranteId));
 
 	}
 

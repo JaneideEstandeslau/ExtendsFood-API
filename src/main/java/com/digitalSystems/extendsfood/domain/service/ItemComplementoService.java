@@ -5,16 +5,16 @@ import org.springframework.stereotype.Service;
 
 import com.digitalSystems.extendsfood.domain.exception.CidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.model.ItemComplemento;
-import com.digitalSystems.extendsfood.domain.repository.ItemComplementoRepository;
+import com.digitalSystems.extendsfood.domain.repository.ProdutoRepository;
 
 @Service
 public class ItemComplementoService {
 
 	@Autowired
-	private ItemComplementoRepository itemComplementoRepository;
+	private ProdutoRepository produtoRepository;
 	
 	public ItemComplemento buscarOuFalhar(Long itemComplementoId) {
-		return itemComplementoRepository.findById(itemComplementoId).orElseThrow(
+		return produtoRepository.findByItemComplementoByid(itemComplementoId).orElseThrow(
 				() -> new CidadeNaoEncontradaException(itemComplementoId));
 	}
 }

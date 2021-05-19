@@ -1,6 +1,7 @@
 create table categoria_produto (
 	id bigint not null auto_increment, 
     descricao varchar(25) not null, 
+    restaurante_id bigint not null, 
     primary key (id)
 )engine=InnoDB default charset=utf8;
 
@@ -10,7 +11,6 @@ create table produto (
     descricao varchar(80) not null, 
     disponivel bit not null, 
     preco decimal(19,2) not null, 
-    restaurante_id bigint not null, 
     categoria_produto_id bigint not null, 
     primary key (id)
 ) engine=InnoDB default charset=utf8;
@@ -56,7 +56,7 @@ create table produto_dia_semana (
 ) engine=InnoDB default charset=utf8;
 
 
-alter table produto add constraint fk_produto_restaurante foreign key (restaurante_id) references restaurante (id);
+alter table categoria_produto add constraint fk_categoria_produto_restaurante foreign key (restaurante_id) references restaurante (id);
 
 alter table produto add constraint fk_produto_categoria_produto foreign key (categoria_produto_id) references categoria_produto (id);
 
