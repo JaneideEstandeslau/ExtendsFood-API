@@ -37,4 +37,12 @@ public class FotoProduto {
 		return null;
 	}
 	
+	public Long getRestauranteId() {
+		if (getProduto() != null) {
+			return getProduto().getCategoriaProduto().getRestaurante().getId();
+		}
+		
+		return null;
+	}
+	
 }

@@ -24,12 +24,15 @@ public class CatalogoFotoProdutoService {
 	@Transactional
 	public FotoProduto salvar(FotoProduto foto, InputStream dadosArquivo) {
 		Long categoriaId = foto.getCategoriaId();
+		Long restauranteId = foto.getRestauranteId();
 		Long produtoId = foto.getProduto().getId();
+		
+		Optional<FotoProduto> fotoExistente = produtoRepository
+				.findFotoById(categoriaId, restauranteId, produtoId);
+		
 		String nomeNovoArquivo = fotoStorage.gerarNomeArquivo(foto.getNomeArquivo());
 		String nomeArquivoExistente= null;
 		
-		Optional<FotoProduto> fotoExistente = produtoRepository
-				.findFotoById(categoriaId, produtoId);
 		
 		if (fotoExistente.isPresent()) {
 			nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
@@ -50,8 +53,19 @@ public class CatalogoFotoProdutoService {
 		return foto;
 	}
 	
-	public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
-		return produtoRepository.findFotoById(restauranteId, produtoId)
+	@Transactional
+	public void remover(Long categoriaId, Long restauranteId, Long produtoId) {
+		
+		FotoProduto fotoProduto = buscarOuFalhar(categoriaId, restauranteId, produtoId);
+		
+		produtoRepository.delete(fotoProduto);
+		produtoRepository.flush();
+		
+		fotoStorage.remover(fotoProduto.getNomeArquivo());
+	}
+	
+	public FotoProduto buscarOuFalhar(Long categoriaId, Long restauranteId, Long produtoId) {
+		return produtoRepository.findFotoById(categoriaId, restauranteId, produtoId)
 				.orElseThrow(() -> new FotoProdutoNaoEncontradoException(produtoId));
 	}
 }

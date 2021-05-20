@@ -28,12 +28,14 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long>, Produto
 	List<Produto> findByAtivoByCategoriaByRestaurante(CategoriaProduto categoriaProduto, Restaurante restaurante);
 	
 	@Query("select p from Produto p join p.categoriaProduto c "
-			+ "where c.restaurante.id = :restauranteId and p.id = :produtoId")
-	Optional<Produto> findByRestaurante(Long restauranteId, Long produtoId);
+			+ "where c.restaurante.id = :restaurante and p.id = :produto")
+	Optional<Produto> findByRestaurante(@Param("restaurante") Long restauranteId, @Param("produto") Long produtoId);
 	
-	@Query("select f from FotoProduto f join f.produto p "
-			+ "where p.categoriaProduto.id = :categoriaId and f.produto.id = :produtoId")
-	Optional<FotoProduto> findFotoById(Long categoriaId, Long produtoId);
+	@Query("select f from FotoProduto f join f.produto p join p.categoriaProduto c "
+			+ "where c.id = :categoria and c.restaurante.id = :restaurante"
+			+ " and p.id = :produto")
+	Optional<FotoProduto> findFotoById(@Param("categoria") Long categoriaId, @Param("restaurante") Long restauranteId,
+			@Param("produto") Long produtoId);
 	
 	@Query("from ItemComplemento where id = :itemComplmentoId")
 	Optional<ItemComplemento> findByItemComplementoByid(Long itemComplmentoId);

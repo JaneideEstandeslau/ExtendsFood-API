@@ -18,7 +18,7 @@ public class LocalFotoStorageService implements FotoStorageService {
 	private Path diretorioFotos;
 	
 	@Override
-	public InputStream rcuperara(String nomeArquivo) {
+	public InputStream recuperar(String nomeArquivo) {
 		
 		try {
 			Path arquivoPath = getArquivoPath(nomeArquivo);
