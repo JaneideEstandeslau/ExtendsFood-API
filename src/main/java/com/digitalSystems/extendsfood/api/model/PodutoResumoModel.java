@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProdutoModel {
+public class PodutoResumoModel {
 
 	private Long id;
 	
@@ -19,10 +19,4 @@ public class ProdutoModel {
 	private BigDecimal preco;
 	
 	private Boolean disponivel;
-	
-	private CategoriaProdutoResumoModel categoriaProduto;
-	
-	private List<ComplementoModel> complementos;
-	
-	private List<DiaSemanaModel> diasDisponiveis;
 }

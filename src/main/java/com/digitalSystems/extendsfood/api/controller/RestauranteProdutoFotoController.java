@@ -1,13 +1,13 @@
 package com.digitalSystems.extendsfood.api.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.digitalSystems.extendsfood.api.assembler.FotoProdutoModelAssembler;
 import com.digitalSystems.extendsfood.api.model.FotoProdutoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.FotoProdutoInput;
-import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.model.FotoProduto;
 import com.digitalSystems.extendsfood.domain.model.Produto;
 import com.digitalSystems.extendsfood.domain.service.CatalogoFotoProdutoService;
 import com.digitalSystems.extendsfood.domain.service.FotoStorageService;
+import com.digitalSystems.extendsfood.domain.service.FotoStorageService.FotoRecuperada;
 import com.digitalSystems.extendsfood.domain.service.ProdutoService;
 
 @RestController
@@ -58,27 +58,35 @@ public class RestauranteProdutoFotoController {
 	}
 
 	@GetMapping
-	public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId,
+	public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId,
 			@PathVariable Long categoriaId, @PathVariable Long produtoId,
 			@RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 		
-		try {
+		FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(categoriaId, restauranteId, produtoId);
+
+		// Pega o MediaType da foto salva
+		MediaType mediaTypeFoto = MediaType.parseMediaType(fotoProduto.getContentType());
+
+		// pega a lista de MediaType que o usuário informou no cabeçalho
+		List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
+
+		// compara o MediaType da foto recuperada com a da passada por parâmetro
+		// verifica se o MediaType da foto recuperada e compativel com os MediaType
+		// passados como parâmetro
+		verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
+
+		FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoProduto.getNomeArquivo());
+
+		if (fotoRecuperada.temUrl()) {
 			
-			FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(categoriaId, restauranteId, produtoId);
-
-			MediaType mediaTypeFoto = MediaType.parseMediaType(fotoProduto.getContentType());
-			List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
-
-			verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
-
-			InputStream inputStream = fotoStorage.recuperar(fotoProduto.getNomeArquivo());
-
-			return ResponseEntity.ok()
-					.contentType(mediaTypeFoto)
-					.body(new InputStreamResource(inputStream));
-
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
+			//HttpStatus.FOUND indica que o recurso existe, mas precisa seguir uma URL até ele
+			//HttpHeaders.LOCATION indica a URL que o usuário dele serguir (Onde se encontra a foto)
+			return ResponseEntity.status(HttpStatus.FOUND)
+					.header(HttpHeaders.LOCATION, fotoRecuperada.getUrl())
+					.build();
+		} else {
+			return ResponseEntity.ok().contentType(mediaTypeFoto)
+					.body(new InputStreamResource(fotoRecuperada.getInputStream()));
 		}
 	}
 	

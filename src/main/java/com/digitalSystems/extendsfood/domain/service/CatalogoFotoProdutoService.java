@@ -1,5 +1,6 @@
 package com.digitalSystems.extendsfood.domain.service;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class CatalogoFotoProdutoService {
 	private FotoStorageService fotoStorage;
 	
 	@Transactional
-	public FotoProduto salvar(FotoProduto foto, InputStream dadosArquivo) {
+	public FotoProduto salvar(FotoProduto foto, InputStream dadosArquivo) throws IOException {
 		Long categoriaId = foto.getCategoriaId();
 		Long restauranteId = foto.getRestauranteId();
 		Long produtoId = foto.getProduto().getId();
@@ -45,6 +46,7 @@ public class CatalogoFotoProdutoService {
 		
 		NovaFoto novaFoto = NovaFoto.builder()
 				.nomeAquivo(foto.getNomeArquivo())
+				.contentType(foto.getContentType())
 				.inputStream(dadosArquivo)
 				.build();
 				

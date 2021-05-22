@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
+import com.digitalSystems.extendsfood.api.model.CategoriaProdutoResumoModel;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
 
 @Component
@@ -20,9 +21,13 @@ public class CategoriaProdutoModelAssembler {
 		return modelMapper.map(categoriaProduto, CategoriaProdutoModel.class);
 	}
 	
-	public List<CategoriaProdutoModel> toCollectionModel(List<CategoriaProduto> categorias){
+	private CategoriaProdutoResumoModel toModelResumo(CategoriaProduto categoriaProduto) {
+		return modelMapper.map(categoriaProduto, CategoriaProdutoResumoModel.class);
+	}
+	
+	public List<CategoriaProdutoResumoModel> toCollectionModel(List<CategoriaProduto> categorias){
 		return categorias.stream()
-				.map(categoriaProduto -> toModel(categoriaProduto))
+				.map(categoriaProduto -> toModelResumo(categoriaProduto))
 				.collect(Collectors.toList());
 	}
 }

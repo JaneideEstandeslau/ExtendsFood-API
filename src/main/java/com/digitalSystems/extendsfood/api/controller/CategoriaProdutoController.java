@@ -19,17 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.digitalSystems.extendsfood.api.assembler.CategoriaProdutoModelAssembler;
 import com.digitalSystems.extendsfood.api.disassempler.CategoriaProdutoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
+import com.digitalSystems.extendsfood.api.model.CategoriaProdutoResumoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.CategoriaProdutoInput;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
-import com.digitalSystems.extendsfood.domain.repository.CategoriaProdutoRepository;
 import com.digitalSystems.extendsfood.domain.service.CategoriaProdutoService;
 
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/categorias")
 public class CategoriaProdutoController {
-
-	@Autowired
-	private CategoriaProdutoRepository categoriaProdutoRepository;
 
 	@Autowired
 	private CategoriaProdutoService categoriaProdutoService;
@@ -41,7 +38,7 @@ public class CategoriaProdutoController {
 	private CategoriaProdutoInputDisassembler categoriaProdutoDisassembler;
 
 	@GetMapping
-	public List<CategoriaProdutoModel> listar(@PathVariable Long restauranteId) {
+	public List<CategoriaProdutoResumoModel> listar(@PathVariable Long restauranteId) {
 		return categoriaProdutoAssembler.toCollectionModel(
 				categoriaProdutoService.buscarCategoriasRestarante(restauranteId));
 	}

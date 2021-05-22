@@ -1,31 +1,33 @@
 package com.digitalSystems.extendsfood.infrastructure.service.storage;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
+import com.digitalSystems.extendsfood.core.storage.StorageProperties;
 import com.digitalSystems.extendsfood.domain.service.FotoStorageService;
 
-@Service
 public class LocalFotoStorageService implements FotoStorageService {
 
-	@Value("${extendsfood.storage.local.diretorio-fotos}")
-	private Path diretorioFotos;
+	@Autowired
+	private StorageProperties storageProperties;
 	
 	@Override
-	public InputStream recuperar(String nomeArquivo) {
+	public FotoRecuperada recuperar(String nomeArquivo) {
 		
 		try {
 			Path arquivoPath = getArquivoPath(nomeArquivo);
-		
-			return Files.newInputStream(arquivoPath);
+
+			FotoRecuperada fotoRecuperada = FotoRecuperada.builder()
+					.inputStream(Files.newInputStream(arquivoPath))
+					.build();
 			
-		} catch (IOException e) {
+			return fotoRecuperada;
+			
+		} catch (Exception e) {
 			throw new StorageException("Não foi possível recuperar arquivo.", e);
 		}
 	}
@@ -55,7 +57,7 @@ public class LocalFotoStorageService implements FotoStorageService {
 
 	
 	private Path getArquivoPath(String nomeArquivo) {
-		return diretorioFotos.resolve(Path.of(nomeArquivo));
+		return storageProperties.getLocal().getDiretorioFotos().resolve(Path.of(nomeArquivo));
 	}
 
 }
