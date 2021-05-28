@@ -79,7 +79,7 @@ public class UsuarioController {
 		
 		usuarioDisassembler.copyToDomainObject(usuarioInput, usuarioAtual);
 		
-		return usuarioAssembler.toModel(usuarioService.salvar(usuarioAtual));
+		return usuarioAssembler.toModel(usuarioService.atuaizar(usuarioAtual));
 	}
 	
 	@PutMapping("/{usuarioId}/endereco")

@@ -132,7 +132,7 @@ insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secret
 insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1); 
 
 insert into usuario (id, nome, email, senha, cpf, data_cadastro) values
-(1, 'João da Silva', 'joao.ger@algafood.com', '123', '481.051.910-40', current_timestamp),
+(1, 'João da Silva', 'janeide.estan@gmail.com', '123', '481.051.910-40', current_timestamp),
 (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', '825.920.850-41', current_timestamp),
 (3, 'José Souza', 'jose.aux@algafood.com', '123', '440.483.740-28', current_timestamp),
 (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', '642.165.460-64', current_timestamp);

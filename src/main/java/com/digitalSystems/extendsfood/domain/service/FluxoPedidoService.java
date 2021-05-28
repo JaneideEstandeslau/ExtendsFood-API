@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.digitalSystems.extendsfood.domain.model.Pedido;
+import com.digitalSystems.extendsfood.domain.repository.PedidoRepository;
+import com.digitalSystems.extendsfood.domain.service.EnvioEmailService.Mensagem;
 
 @Service
 public class FluxoPedidoService {
@@ -13,11 +15,16 @@ public class FluxoPedidoService {
 	@Autowired
 	private EmissaoPedidoService pedidoService;
 	
+	@Autowired
+	private PedidoRepository pedidoReposiory;
+	
 	@Transactional
 	public void confirmarPedido(Long pedidoId) {
 		
 		Pedido pedido = pedidoService.buscarOuFalhar(pedidoId);
 		pedido.confirmar();
+		
+		pedidoReposiory.save(pedido);
 	}
 	
 	@Transactional

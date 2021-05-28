@@ -26,4 +26,5 @@ public class UsuarioInput {
 	@Email
 	@NotBlank
 	private String email;
+	
 }
