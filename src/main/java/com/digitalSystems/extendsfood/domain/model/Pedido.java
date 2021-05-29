@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.digitalSystems.extendsfood.domain.event.PedidoCanceladoEvent;
 import com.digitalSystems.extendsfood.domain.event.PedidoConfirmadoEvent;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.model.enums.StatusPedido;
@@ -118,6 +119,8 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 	public void cancelar() {
 		setStatus(StatusPedido.CANCELADO);
 		setDataCancelamento(LocalDateTime.now());
+		
+		registerEvent(new PedidoCanceladoEvent(this));
 	}
 	
 	private void setStatus(StatusPedido novoStatus) {
