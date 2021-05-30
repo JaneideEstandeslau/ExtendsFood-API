@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.digitalSystems.extendsfood.core.email.EmailProperties;
+import com.digitalSystems.extendsfood.core.email.OffsetDateTimeFormat;
 import com.digitalSystems.extendsfood.domain.service.EnvioEmailService;
 
 import freemarker.template.Configuration;
@@ -24,6 +25,9 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
 	
 	@Autowired
 	private Configuration freemarkerConfig;
+	
+	 @Autowired
+	 private OffsetDateTimeFormat offsetDateTimeFormat;
 	
 	@Override
 	public void enviar(Mensagem mensagem) {
@@ -55,6 +59,9 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
 	
 	protected String processarTemplate(Mensagem mensagem) {
 		try {
+			
+			//Adiciona a formatação da Data
+			freemarkerConfig.setSharedVariable("offsetDateTimeFormat", offsetDateTimeFormat);
 			
 			//Buscar o tamplate HTML no sistema
 			Template template = freemarkerConfig.getTemplate(mensagem.getTemplatePath());

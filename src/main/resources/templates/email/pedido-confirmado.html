@@ -24,8 +24,8 @@
 
 		<h1 style="color: red; font-size: 26px">Pedido confirmado!</h1>
 
-		<p>${pedido.cliente.nome}, seu pedido foi confirmado pelo
-			restaurante e já está sendo preparado.</p>
+		<p>Pedido: #${pedido.id} ${offsetDateTimeFormat(pedido.dataConfirmacao)}</p>
+		<p>Foi confirmado pelo restaurante e já está sendo preparado.</p>
 
 		<h2 style="font-size: 20px">${pedido.restaurante.nome}</h2>
 
