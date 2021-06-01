@@ -1,7 +1,9 @@
 package com.digitalSystems.extendsfood.domain.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,5 +134,14 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 		}
 		
 		this.status = novoStatus;
+	}
+	
+	public LocalDate formatarDataCriacao() {
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		String dataCriacao = getDataCriacao().format(formatter);
+		
+		return LocalDate.parse(dataCriacao, formatter);
 	}
 }

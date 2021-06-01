@@ -1,7 +1,12 @@
 package com.digitalSystems.extendsfood.domain.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +20,7 @@ import com.digitalSystems.extendsfood.domain.model.Pedido;
 import com.digitalSystems.extendsfood.domain.model.Produto;
 import com.digitalSystems.extendsfood.domain.model.Restaurante;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
+import com.digitalSystems.extendsfood.domain.model.dto.PedidoUsuario;
 import com.digitalSystems.extendsfood.domain.repository.PedidoRepository;
 
 @Service
@@ -92,6 +98,44 @@ public class EmissaoPedidoService {
 	        
 	        item.setItensComplemento(itensComplemento);
 	    });
+	}
+	
+	public List<PedidoUsuario> buscarPedidosUsuario(Usuario cliente){
+		
+		List<PedidoUsuario> pedidosResumoUsuario = new ArrayList<>();
+		
+		List<Pedido> pedidosJaAdicionados = new ArrayList<>();
+		
+		List<Pedido> pedidos = pedidoRepository.findByUsuario(cliente);
+		
+		for(Pedido pedido: pedidos) {
+			
+			if(!pedidosJaAdicionados.contains(pedido)) {
+			
+				LocalDate dataCriacao = pedido.formatarDataCriacao();
+				
+				//Pega todos os Pedidos que foram feitos na dataCriacao
+				List<Pedido> pedidosUsuario = pedidos.stream()
+					.filter(p -> p.formatarDataCriacao().isEqual(dataCriacao))
+					.collect(Collectors.toList());
+				
+				//Adiciona os pedidos que foram feitos na dataCriacao para serem ignorados
+				pedidosJaAdicionados.addAll(pedidosUsuario);
+				
+				//Instancia o DTO de retorno para uma data
+				PedidoUsuario pedidoUsuario = PedidoUsuario.builder()
+					.data(dataCriacao)
+					.build();
+				
+				//Adiciona os pedidos e os itens de uma mesma data
+				pedidoUsuario.adicionarPedidos(pedidosUsuario);
+				
+				pedidosResumoUsuario.add(pedidoUsuario);
+			}
+			
+		}
+		
+		return pedidosResumoUsuario;
 	}
 	
 	public Pedido buscarOuFalhar(Long pedidoId) {

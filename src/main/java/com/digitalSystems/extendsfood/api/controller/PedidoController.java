@@ -31,6 +31,7 @@ import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.filter.PedidoFilter;
 import com.digitalSystems.extendsfood.domain.model.Pedido;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
+import com.digitalSystems.extendsfood.domain.model.dto.PedidoUsuario;
 import com.digitalSystems.extendsfood.domain.repository.PedidoRepository;
 import com.digitalSystems.extendsfood.domain.service.EmissaoPedidoService;
 import com.digitalSystems.extendsfood.infrastructure.spec.PedidoSpecs;
@@ -68,6 +69,15 @@ public class PedidoController {
         
         return pedidosResumoModelPage;
     }
+	
+	@GetMapping("/usuario")
+	public List<PedidoUsuario> buscarPedidosUsuario(){
+		
+		Usuario cliente = new Usuario();
+		cliente.setId(1L);
+		
+		return  emissaoPedidoService.buscarPedidosUsuario(cliente);		
+	}
     
     @GetMapping("/{pedidoId}")
     public PedidoModel buscar(@PathVariable Long pedidoId) {
