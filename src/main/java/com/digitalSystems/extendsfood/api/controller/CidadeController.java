@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +21,7 @@ import com.digitalSystems.extendsfood.api.assembler.CidadeModelAssembler;
 import com.digitalSystems.extendsfood.api.disassempler.CidadeInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.CidadeModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.CidadeInput;
+import com.digitalSystems.extendsfood.api.openapi.controller.CidadeControllerOpenApi;
 import com.digitalSystems.extendsfood.domain.exception.EstadoNaoEncontradoException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.model.Cidade;
@@ -28,8 +29,8 @@ import com.digitalSystems.extendsfood.domain.repository.CidadeRepository;
 import com.digitalSystems.extendsfood.domain.service.CidadeService;
 
 @RestController
-@RequestMapping(value = "/cidades")
-public class CidadeController {
+@RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CidadeController implements CidadeControllerOpenApi {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -88,6 +89,7 @@ public class CidadeController {
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long cidadeId) {
+		
 		cidadeService.excluir(cidadeId);
 
 	}

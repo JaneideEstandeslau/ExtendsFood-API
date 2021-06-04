@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import com.digitalSystems.extendsfood.api.model.inputRelacionamento.EstadoIdInput;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Setter
 public class CidadeInput {
 
+	@ApiModelProperty(example = "Campina Grande", required = true)
 	@NotBlank
 	private String nome;
 	
