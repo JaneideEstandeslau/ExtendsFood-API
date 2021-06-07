@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +22,13 @@ import com.digitalSystems.extendsfood.api.disassempler.CategoriaProdutoInputDisa
 import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
 import com.digitalSystems.extendsfood.api.model.CategoriaProdutoResumoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.CategoriaProdutoInput;
+import com.digitalSystems.extendsfood.api.openapi.controller.CategoriaProdutoControllerOpenApi;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
 import com.digitalSystems.extendsfood.domain.service.CategoriaProdutoService;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/categorias")
-public class CategoriaProdutoController {
+@RequestMapping(path = "/restaurantes/{restauranteId}/categorias", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CategoriaProdutoController implements CategoriaProdutoControllerOpenApi{
 
 	@Autowired
 	private CategoriaProdutoService categoriaProdutoService;
@@ -53,29 +55,29 @@ public class CategoriaProdutoController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public CategoriaProdutoModel adicionar(@PathVariable Long restauranteId, 
+	public CategoriaProdutoResumoModel adicionar(@PathVariable Long restauranteId, 
 			@RequestBody @Valid CategoriaProdutoInput categoriaProdutoInput) {
 		
 		CategoriaProduto categoriaProduto = categoriaProdutoDisassembler.toDomainObject(categoriaProdutoInput);
 		
-		return categoriaProdutoAssembler.toModel(categoriaProdutoService.salvar(categoriaProduto, restauranteId));
+		return categoriaProdutoAssembler.toModelResumo(categoriaProdutoService.salvar(categoriaProduto, restauranteId));
 	}
 
 	@PutMapping("/{categoriaProdutoId}")
-	public CategoriaProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long categoriaProdutoId,
+	public CategoriaProdutoResumoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long categoriaProdutoId,
 			@RequestBody @Valid CategoriaProdutoInput categoriaProdutoInput) {
 
 		CategoriaProduto categoriaProdutoAtual = categoriaProdutoService.buscarOuFalhar(restauranteId, categoriaProdutoId);
 
 		categoriaProdutoDisassembler.copyToDomainObject(categoriaProdutoInput, categoriaProdutoAtual);
 
-		return  categoriaProdutoAssembler.toModel(categoriaProdutoService.salvar(categoriaProdutoAtual, restauranteId));
+		return  categoriaProdutoAssembler.toModelResumo(categoriaProdutoService.salvar(categoriaProdutoAtual, restauranteId));
 
 	}
 
 	@DeleteMapping("/{categoriaProdutoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long categoriaProdutoId) {
-		categoriaProdutoService.excluir(categoriaProdutoId);			
+	public void remover(@PathVariable Long restauranteId, @PathVariable Long categoriaProdutoId) {
+		categoriaProdutoService.excluir(restauranteId, categoriaProdutoId);			
 	}
 }

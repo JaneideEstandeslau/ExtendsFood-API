@@ -14,7 +14,9 @@ import lombok.Getter;
 @Getter
 public class PedidoUsuario {
 	
+	
 	private LocalDate data;
+	
 	private List<PedidoResumo> pedidos;
 	
 	public void adicionarPedidos(List<Pedido> pedidos) {

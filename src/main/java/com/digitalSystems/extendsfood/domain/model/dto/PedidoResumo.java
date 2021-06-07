@@ -14,8 +14,11 @@ import lombok.Getter;
 public class PedidoResumo {
 
 	private Long id;
+	
 	private String restauranteNome;
+	
 	private StatusPedido status;
+	
 	private List<ItemPedidoResumo> itensPedido;
 	
 	public void adicionarItens(List<ItemPedido> itensPedido) {

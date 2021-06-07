@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +20,13 @@ import com.digitalSystems.extendsfood.api.assembler.ProdutoModelAssembler;
 import com.digitalSystems.extendsfood.api.disassempler.ProdutoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.ProdutoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.ProdutoInput;
+import com.digitalSystems.extendsfood.api.openapi.controller.RestauranteCategoriaProdutoControllerOpenApi;
 import com.digitalSystems.extendsfood.domain.model.Produto;
 import com.digitalSystems.extendsfood.domain.service.ProdutoService;
 
 @RestController
-@RequestMapping(value = "restaurante/{restauranteId}/categorias/{categoriaId}/produtos")
-public class RestauranteCategoriaProdutoController {
+@RequestMapping(path = "restaurante/{restauranteId}/categorias/{categoriaId}/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteCategoriaProdutoController implements RestauranteCategoriaProdutoControllerOpenApi{
 
 	
 	@Autowired

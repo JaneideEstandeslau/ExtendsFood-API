@@ -18,7 +18,7 @@ import com.digitalSystems.extendsfood.domain.repository.CategoriaProdutoReposito
 @Service
 public class CategoriaProdutoService {
 
-	private static final String COZINHA_PRODUTO_EM_USO = "Cozinha de código %d não pode ser removida, pois está em uso";
+	private static final String CATEGORIA_PRODUTO_EM_USO = "Categoria de código %d não pode ser removida, pois está em uso";
 	
 	@Autowired
 	private CategoriaProdutoRepository categoriaRepository;
@@ -37,9 +37,12 @@ public class CategoriaProdutoService {
 	}
 
 	@Transactional
-	public void excluir(Long categoriaProdutoId) {
+	public void excluir(Long restauranteId, Long categoriaProdutoId) {
 		try {
-			categoriaRepository.deleteById(categoriaProdutoId);
+			
+			CategoriaProduto categoriaProduto = buscarOuFalhar(restauranteId, categoriaProdutoId);
+					
+			categoriaRepository.delete(categoriaProduto);
 			
 			categoriaRepository.flush();
 
@@ -47,7 +50,7 @@ public class CategoriaProdutoService {
 			throw new CategoriaProdutoNaoEncontradoException(categoriaProdutoId);
 
 		} catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(String.format(COZINHA_PRODUTO_EM_USO, categoriaProdutoId));
+			throw new EntidadeEmUsoException(String.format(CATEGORIA_PRODUTO_EM_USO, categoriaProdutoId));
 		}
 	}
 	

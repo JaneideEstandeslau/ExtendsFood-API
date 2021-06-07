@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.digitalSystems.extendsfood.api.assembler.RestauranteModelAssembler;
 import com.digitalSystems.extendsfood.api.disassempler.RestauranteInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.RestauranteModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.RestauranteInput;
+import com.digitalSystems.extendsfood.api.openapi.controller.RestauranteControllerOpenApi;
 import com.digitalSystems.extendsfood.domain.exception.CidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.CozinhaNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
@@ -28,8 +30,8 @@ import com.digitalSystems.extendsfood.domain.repository.RestauranteRepository;
 import com.digitalSystems.extendsfood.domain.service.RestauranteService;
 
 @RestController
-@RequestMapping(value = "/restaurantes")
-public class RestauranteController {
+@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteController implements RestauranteControllerOpenApi{
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;

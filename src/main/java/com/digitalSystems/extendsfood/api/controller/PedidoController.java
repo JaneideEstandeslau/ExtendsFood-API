@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import com.digitalSystems.extendsfood.api.disassempler.PedidoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.PedidoModel;
 import com.digitalSystems.extendsfood.api.model.PedidoResumoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.PedidoInput;
+import com.digitalSystems.extendsfood.api.openapi.controller.PedidoControllerOpenApi;
 import com.digitalSystems.extendsfood.core.data.PageableTranslator;
 import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
@@ -37,8 +39,8 @@ import com.digitalSystems.extendsfood.domain.service.EmissaoPedidoService;
 import com.digitalSystems.extendsfood.infrastructure.spec.PedidoSpecs;
 
 @RestController
-@RequestMapping(value = "/pedidos")
-public class PedidoController {
+@RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PedidoController implements PedidoControllerOpenApi{
 
 	@Autowired
 	private PedidoRepository pedidoRepository;

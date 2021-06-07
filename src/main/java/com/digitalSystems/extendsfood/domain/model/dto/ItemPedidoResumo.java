@@ -9,5 +9,6 @@ import lombok.Getter;
 public class ItemPedidoResumo {
 
 	private Integer quantidade;
+	
 	private String produtoNome;
 }

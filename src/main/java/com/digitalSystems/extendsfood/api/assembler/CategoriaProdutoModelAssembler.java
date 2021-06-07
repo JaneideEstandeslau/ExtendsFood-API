@@ -21,7 +21,7 @@ public class CategoriaProdutoModelAssembler {
 		return modelMapper.map(categoriaProduto, CategoriaProdutoModel.class);
 	}
 	
-	private CategoriaProdutoResumoModel toModelResumo(CategoriaProduto categoriaProduto) {
+	public CategoriaProdutoResumoModel toModelResumo(CategoriaProduto categoriaProduto) {
 		return modelMapper.map(categoriaProduto, CategoriaProdutoResumoModel.class);
 	}
 	

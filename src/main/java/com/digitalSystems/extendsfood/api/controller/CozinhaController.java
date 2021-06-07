@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,13 +21,14 @@ import com.digitalSystems.extendsfood.api.assembler.CozinhaModelAssembler;
 import com.digitalSystems.extendsfood.api.disassempler.CozinhaInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.CozinhaModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.CozinhaInput;
+import com.digitalSystems.extendsfood.api.openapi.controller.CozinhaControllerOpenApi;
 import com.digitalSystems.extendsfood.domain.model.Cozinha;
 import com.digitalSystems.extendsfood.domain.repository.CozinhaRepository;
 import com.digitalSystems.extendsfood.domain.service.CozinhaService;
 
 @RestController
-@RequestMapping(value = "/cozinhas")
-public class CozinhaController {
+@RequestMapping(value = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CozinhaController implements CozinhaControllerOpenApi{
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;

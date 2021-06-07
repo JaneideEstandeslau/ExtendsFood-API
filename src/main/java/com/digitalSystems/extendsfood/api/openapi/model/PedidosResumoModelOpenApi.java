@@ -4,7 +4,7 @@ import com.digitalSystems.extendsfood.api.model.PedidoResumoModel;
 
 import io.swagger.annotations.ApiModel;
 
-@ApiModel("CozinhasModel")
-public class PedidoResumoModelOpenApi extends PagedModelOpenApi<PedidoResumoModel> {
+@ApiModel("PedidosResumoModel")
+public class PedidosResumoModelOpenApi extends PagedModelOpenApi<PedidoResumoModel> {
 	
 }
