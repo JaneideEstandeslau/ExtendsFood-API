@@ -1,6 +1,7 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.ProdutoModel;
@@ -20,12 +21,14 @@ public interface RestauranteCategoriaProdutoControllerOpenApi {
 		@ApiResponse(code = 400, message = "ID do Restaurante ou da Categoria inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Restaurante ou da Categoria não encontrado", response = Problem.class)
 	})
-	List<ProdutoModel> listar(
+	Page<ProdutoModel> listar(
 			@ApiParam(value = "ID do restaurante", example = "1", required = true)
 			Long restauranteId, 
 			
 			@ApiParam(value = "ID da Categoria", example = "1", required = true)
-			Long categoriaId);
+			Long categoriaId,
+			
+			Pageable pageable);
 	
 	@ApiOperation("Busca um Produto por ID de uma Categoria")
 	@ApiResponses({

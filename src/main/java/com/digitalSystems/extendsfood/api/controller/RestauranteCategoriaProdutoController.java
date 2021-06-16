@@ -5,6 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +26,16 @@ import com.digitalSystems.extendsfood.api.model.ProdutoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.ProdutoInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.RestauranteCategoriaProdutoControllerOpenApi;
 import com.digitalSystems.extendsfood.domain.model.Produto;
+import com.digitalSystems.extendsfood.domain.repository.ProdutoRepository;
 import com.digitalSystems.extendsfood.domain.service.ProdutoService;
+import com.digitalSystems.extendsfood.infrastructure.spec.ProdutoSpecs;
 
 @RestController
 @RequestMapping(path = "restaurante/{restauranteId}/categorias/{categoriaId}/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteCategoriaProdutoController implements RestauranteCategoriaProdutoControllerOpenApi{
 
+	@Autowired
+	private ProdutoRepository produtoRepository;
 	
 	@Autowired
 	private ProdutoService produtoService;
@@ -39,11 +47,17 @@ public class RestauranteCategoriaProdutoController implements RestauranteCategor
 	private ProdutoModelAssembler produtoAssembler;
 
 	@GetMapping
-	public List<ProdutoModel> listar(@PathVariable Long restauranteId, @PathVariable Long categoriaId){
-		
-		List<Produto> produtos = produtoService.buscarTodosProdutosCategoriaRestaurante(restauranteId, categoriaId);
-		
-		return produtoAssembler.toCollectionModel(produtos);
+	public Page<ProdutoModel> listar(@PathVariable Long restauranteId, @PathVariable Long categoriaId,
+			@PageableDefault(size = 10) Pageable pageable) {
+
+		Page<Produto> produtosPage = produtoRepository
+				.findAll(ProdutoSpecs.buscarProdutosdaCategoriaDoRestaurante(restauranteId, categoriaId), pageable);
+
+		List<ProdutoModel> produtosModel = produtoAssembler.toCollectionModel(produtosPage.getContent());
+
+		Page<ProdutoModel> produtoModelPage = new PageImpl<>(produtosModel, pageable, produtosPage.getTotalElements());
+
+		return produtoModelPage;
 	}
 	
 	@GetMapping("/{produtoId}")

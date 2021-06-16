@@ -21,7 +21,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.amazonaws.auth.policy.Resource;
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
+import com.digitalSystems.extendsfood.api.model.CategoriaProdutoResumoModel;
 import com.digitalSystems.extendsfood.api.model.PedidoResumoModel;
+import com.digitalSystems.extendsfood.api.openapi.model.CategoriaProdutoResumoModelOpenApi;
 import com.digitalSystems.extendsfood.api.openapi.model.PageableModelOpenApi;
 import com.digitalSystems.extendsfood.api.openapi.model.PedidosResumoModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
@@ -74,12 +76,14 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 																					// PageableModelOpenApi
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(Page.class, PedidoResumoModel.class),
-						PedidosResumoModelOpenApi.class)) // Faz a substituição do Page<CozinhaModel> para
-														// CozinhasModelOpenApi, ou seja, ao invéz de retornar um Page
-														// com
-														// uma lista de cozinhas, vai retornar CozinhasModelOpenApi com
-														// uma
-														// lista de cozinha model.
+						PedidosResumoModelOpenApi.class)) // Faz a substituição do Page<PedidoResumoModel> para
+														// PedidosResumoModelOpenApi, ou seja, ao invéz de retornar um Page
+														// com uma lista de pedidos, vai retornar PedidosResumoModelOpenApi com
+														// uma lista de cozinha model.
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(Page.class, CategoriaProdutoResumoModel.class),
+						CategoriaProdutoResumoModelOpenApi.class))
+				
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"))
 				.tags(new Tag("Categorias dos Produtos", "Gerencia as Categorias dos Produtos"))

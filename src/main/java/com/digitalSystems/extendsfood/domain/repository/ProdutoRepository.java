@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,8 @@ import com.digitalSystems.extendsfood.domain.model.Produto;
 import com.digitalSystems.extendsfood.domain.model.Restaurante;
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long>, ProdutoRepositoryQueries{
+public interface ProdutoRepository
+		extends JpaRepository<Produto, Long>, ProdutoRepositoryQueries, JpaSpecificationExecutor<Produto> {
 
 	@Query("select p from Produto p join p.categoriaProduto c "
 			+ "where p.id = :produto and c.id = :categoria and c.restaurante.id = :restaurante")
