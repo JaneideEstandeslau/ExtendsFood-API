@@ -1,21 +1,22 @@
 package com.digitalSystems.extendsfood.domain.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.digitalSystems.extendsfood.domain.event.ConfirmarCadastradoEvent;
 import com.digitalSystems.extendsfood.domain.service.EnvioEmailService;
 import com.digitalSystems.extendsfood.domain.service.EnvioEmailService.Mensagem;
 
 @Component
-public class NotificarClienteAtivarConta implements ApplicationListener<ConfirmarCadastradoEvent> {
+public class NotificarClienteAtivarContaListener {
 
 	@Autowired
 	private EnvioEmailService envioEmail;
 	
-	@Override
-	public void onApplicationEvent(ConfirmarCadastradoEvent event) {
+	@TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+	public void aoCadastrarCliente(ConfirmarCadastradoEvent event) {
 		
 		var mensagem = Mensagem.builder()
 				.assunto("Confirmação de Cadastro")

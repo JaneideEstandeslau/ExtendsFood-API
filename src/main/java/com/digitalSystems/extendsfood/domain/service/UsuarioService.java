@@ -42,7 +42,6 @@ public class UsuarioService {
 		validarUsuario(usuario);
 
 		usuario = usuarioRepository.save(usuario);		
-		usuarioRepository.flush();
 
 		ConfirmarCadastradoEvent usuarioCadastradoEvent = new ConfirmarCadastradoEvent(this, usuario);
 		applicationEventPublisher.publishEvent(usuarioCadastradoEvent);
