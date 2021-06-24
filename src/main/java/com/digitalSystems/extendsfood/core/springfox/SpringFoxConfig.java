@@ -1,4 +1,4 @@
-package com.digitalSystems.extendsfood.core.openapi;
+package com.digitalSystems.extendsfood.core.springfox;
 
 import java.io.File;
 import java.io.InputStream;

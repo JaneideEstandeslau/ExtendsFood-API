@@ -1,10 +1,9 @@
 package com.digitalSystems.extendsfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,7 +44,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	private CidadeInputDisassembler cidadeDisassembler;
 
 	@GetMapping
-	public List<CidadeModel> listar() {
+	public CollectionModel<CidadeModel> listar() {
 		return cidadeAssembler.toCollectionModel(cidadeRepository.findAll());
 	}
 
@@ -67,7 +66,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 			
 		}catch(EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
-		}
+		}  
 	}
 
 	@PutMapping("/{cidadeId}")

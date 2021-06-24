@@ -1,6 +1,6 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.UsuarioEnderecoModel;
@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiResponses;
 public interface UsuarioControllerOpenApi {
 
 	@ApiOperation("Lista os Usuários")
-	List<UsuarioModel> listar();
+	CollectionModel<UsuarioModel> listar();
 
 	@ApiOperation("Busca um Usuário por ID")
 	@ApiResponses({

@@ -1,6 +1,6 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.UsuarioModel;
@@ -19,7 +19,7 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class),
 		@ApiResponse(code = 400, message = "ID inválido", response = Problem.class)
 	})
-	List<UsuarioModel> listar(
+	CollectionModel<UsuarioModel> listar(
 			@ApiParam(value = "ID do restaurante", example = "1", required = true)
 			Long restauranteId);
 
