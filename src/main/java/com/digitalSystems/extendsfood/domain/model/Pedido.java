@@ -136,6 +136,22 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 		this.status = novoStatus;
 	}
 	
+	public boolean podeSerConfirmado() {
+		return getStatus().podeAlterarPara(StatusPedido.CONFIRMADO);
+	}
+	
+	public boolean podeSairParaEntrega() {
+		return getStatus().podeAlterarPara(StatusPedido.SAUI_PARA_ENTREGA);
+	}
+	
+	public boolean podeSerEntregue() {
+		return getStatus().podeAlterarPara(StatusPedido.ENTREGUE);
+	}
+	
+	public boolean podeSerCancelado() {
+		return getStatus().podeAlterarPara(StatusPedido.CANCELADO);
+	}
+	
 	public LocalDate formatarDataCriacao() {
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

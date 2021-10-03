@@ -1,7 +1,7 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
@@ -21,7 +21,7 @@ public interface CategoriaProdutoControllerOpenApi {
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "ID do Restaurante inválido", response = Problem.class)
 	})
-	Page<CategoriaProdutoResumoModel> listar(
+	PagedModel<CategoriaProdutoResumoModel> listar(
 			
 			@ApiParam(value = "ID do Restaurante", example = "1")
 			Long restauranteId, 

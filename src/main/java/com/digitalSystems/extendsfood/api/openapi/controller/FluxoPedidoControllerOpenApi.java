@@ -1,5 +1,7 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
+import org.springframework.http.ResponseEntity;
+
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 
 import io.swagger.annotations.Api;
@@ -17,7 +19,7 @@ public interface FluxoPedidoControllerOpenApi {
 		@ApiResponse(code = 404, message = "Pedido não encontrado", response = Problem.class),
 		@ApiResponse(code = 204, message = "Pedido condirmado com sucesso", response = Problem.class)
 	})
-	void confirmarPedido(
+	ResponseEntity<Void> confirmarPedido(
 			@ApiParam(value = "ID de um Pedido", example = "1", required = true)
 			Long pedidoId);
 	
@@ -27,7 +29,7 @@ public interface FluxoPedidoControllerOpenApi {
 		@ApiResponse(code = 404, message = "Pedido não encontrado", response = Problem.class),
 		@ApiResponse(code = 204, message = "Pedido saiu para entrega", response = Problem.class)
 	})
-	void pedidoSaiuParaEntrega(
+	ResponseEntity<Void> pedidoSaiuParaEntrega(
 			@ApiParam(value = "ID de um Pedido", example = "1", required = true)
 			Long pedidoId);
 	
@@ -37,7 +39,7 @@ public interface FluxoPedidoControllerOpenApi {
 		@ApiResponse(code = 404, message = "Pedido não encontrado", response = Problem.class),
 		@ApiResponse(code = 204, message = "Pedido entregue com sucesso", response = Problem.class)
 	})
-	void entregarPedido(
+	ResponseEntity<Void> entregarPedido(
 			@ApiParam(value = "ID de um Pedido", example = "1", required = true)
 			Long pedidoId);
 	
@@ -47,7 +49,7 @@ public interface FluxoPedidoControllerOpenApi {
 		@ApiResponse(code = 404, message = "Pedido não encontrado", response = Problem.class),
 		@ApiResponse(code = 204, message = "Pedido entregue com sucesso", response = Problem.class)
 	})
-	void cancelarPedido(
+	ResponseEntity<Void> cancelarPedido(
 			@ApiParam(value = "ID de um Pedido", example = "1", required = true)
 			Long pedidoId);
 }

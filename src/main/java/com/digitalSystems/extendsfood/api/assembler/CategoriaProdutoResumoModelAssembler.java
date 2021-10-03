@@ -8,32 +8,30 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import com.digitalSystems.extendsfood.api.controller.CategoriaProdutoController;
-import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
+import com.digitalSystems.extendsfood.api.model.CategoriaProdutoResumoModel;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
 
 @Component
-public class CategoriaProdutoModelAssembler 
-	extends RepresentationModelAssemblerSupport<CategoriaProduto, CategoriaProdutoModel>{
+public class CategoriaProdutoResumoModelAssembler 
+	extends RepresentationModelAssemblerSupport<CategoriaProduto, CategoriaProdutoResumoModel>{
 
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	public CategoriaProdutoModelAssembler() {
-		super(CategoriaProdutoController.class, CategoriaProdutoModel.class);
+	public CategoriaProdutoResumoModelAssembler() {
+		super(CategoriaProdutoController.class, CategoriaProdutoResumoModel.class);
 	}
 
 	@Override
-	public CategoriaProdutoModel toModel(CategoriaProduto categoriaProduto) {
+	public CategoriaProdutoResumoModel toModel(CategoriaProduto categoriaProduto) {
+
+		CategoriaProdutoResumoModel categoriaProdutoResumoModel = modelMapper.map(categoriaProduto,
+				CategoriaProdutoResumoModel.class);
 		
-		CategoriaProdutoModel categoriaProdutoModel = createModelWithId(categoriaProduto.getId(), categoriaProduto);
+//		categoriaProdutoResumoModel.add(linkTo(CategoriaProdutoController.class).withRel("categorias"));
 		
-		modelMapper.map(categoriaProduto, categoriaProdutoModel);
-		
-//		categoriaProdutoModel.add(linkTo(CategoriaProdutoController.class).withRel("categorias"));
-		
-		return categoriaProdutoModel;
+		return categoriaProdutoResumoModel;
 	}
-	
 	
 //	public List<CategoriaProdutoResumoModel> toCollectionModel(List<CategoriaProduto> categorias){
 //		return categorias.stream()

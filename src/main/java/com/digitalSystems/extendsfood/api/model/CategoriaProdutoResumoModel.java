@@ -1,12 +1,16 @@
 package com.digitalSystems.extendsfood.api.model;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "categorias")
 @Getter
 @Setter
-public class CategoriaProdutoResumoModel {
+public class CategoriaProdutoResumoModel extends RepresentationModel<CategoriaProdutoResumoModel>{
 
 	@ApiModelProperty(example = "1", position = 5)
 	private Long id;

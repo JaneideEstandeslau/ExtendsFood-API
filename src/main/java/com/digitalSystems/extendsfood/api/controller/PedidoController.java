@@ -7,9 +7,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import com.digitalSystems.extendsfood.api.model.PedidoModel;
 import com.digitalSystems.extendsfood.api.model.PedidoResumoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.PedidoInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.PedidoControllerOpenApi;
+import com.digitalSystems.extendsfood.core.data.PageWrapper;
 import com.digitalSystems.extendsfood.core.data.PageableTranslator;
 import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
@@ -57,19 +59,22 @@ public class PedidoController implements PedidoControllerOpenApi{
 	@Autowired
 	private PedidoInputDisassembler pedidoInputDisassembler;
 	
+	@Autowired
+	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+	
 	@GetMapping
-    public Page<PedidoResumoModel> pesuisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
+    public PagedModel<PedidoResumoModel> pesuisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		
-		pageable = traduzirPageable(pageable);
+		Pageable pageableTraduzido = traduzirPageable(pageable);
 		
-        Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.filtrarPedidos(filtro), pageable);
+        Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.filtrarPedidos(filtro), pageableTraduzido);
         
-        List<PedidoResumoModel> pedidosResumoModel = pedidoresumoAssembler.toCollectionModel(pedidosPage.getContent());
+        pedidosPage = new PageWrapper<>(pedidosPage, pageable);
         
-        Page<PedidoResumoModel> pedidosResumoModelPage = new PageImpl<>(
-                pedidosResumoModel, pageable, pedidosPage.getTotalElements());
-        
-        return pedidosResumoModelPage;
+        PagedModel<PedidoResumoModel> pedidosPagedModel = pagedResourcesAssembler
+				.toModel(pedidosPage, pedidoresumoAssembler);
+
+		return pedidosPagedModel;
     }
 	
 	@GetMapping("/usuario")

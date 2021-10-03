@@ -1,14 +1,13 @@
 package com.digitalSystems.extendsfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.digitalSystems.extendsfood.api.assembler.CategoriaProdutoModelAssembler;
+import com.digitalSystems.extendsfood.api.assembler.CategoriaProdutoResumoModelAssembler;
 import com.digitalSystems.extendsfood.api.disassempler.CategoriaProdutoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
 import com.digitalSystems.extendsfood.api.model.CategoriaProdutoResumoModel;
@@ -46,22 +46,26 @@ public class CategoriaProdutoController implements CategoriaProdutoControllerOpe
 	private CategoriaProdutoModelAssembler categoriaProdutoAssembler;
 	
 	@Autowired
+	private CategoriaProdutoResumoModelAssembler categoriaProdutoResumoAssembler;
+	
+	@Autowired
 	private CategoriaProdutoInputDisassembler categoriaProdutoDisassembler;
+	
+	@Autowired
+	private PagedResourcesAssembler<CategoriaProduto> pagedResourcesAssembler;
 
 	@GetMapping
-	public Page<CategoriaProdutoResumoModel> listar(@PathVariable Long restauranteId,
+	public PagedModel<CategoriaProdutoResumoModel> listar(@PathVariable Long restauranteId,
 			@PageableDefault(size = 10) Pageable pageable) {
 
 		Page<CategoriaProduto> categoriasPage = categoriaProdutoRepository
 				.findAll(CategoriaProdutoSpecs.peginarCategoriasDosProdutos(restauranteId), pageable);
+		
+		PagedModel<CategoriaProdutoResumoModel> categoriasPagedModel = pagedResourcesAssembler
+				.toModel(categoriasPage, categoriaProdutoResumoAssembler);
 
-		List<CategoriaProdutoResumoModel> categoriasResumoModel = categoriaProdutoAssembler
-				.toCollectionModel(categoriasPage.getContent());
-
-		Page<CategoriaProdutoResumoModel> categoriasResumoModelPage = new PageImpl<>(categoriasResumoModel, pageable,
-				categoriasPage.getTotalElements());
-
-		return categoriasResumoModelPage;
+		return categoriasPagedModel;
+		
 	}
 
 	@GetMapping("/{categoriaProdutoId}")
@@ -79,7 +83,7 @@ public class CategoriaProdutoController implements CategoriaProdutoControllerOpe
 		
 		CategoriaProduto categoriaProduto = categoriaProdutoDisassembler.toDomainObject(categoriaProdutoInput);
 		
-		return categoriaProdutoAssembler.toModelResumo(categoriaProdutoService.salvar(categoriaProduto, restauranteId));
+		return categoriaProdutoResumoAssembler.toModel(categoriaProdutoService.salvar(categoriaProduto, restauranteId));
 	}
 
 	@PutMapping("/{categoriaProdutoId}")
@@ -90,7 +94,7 @@ public class CategoriaProdutoController implements CategoriaProdutoControllerOpe
 
 		categoriaProdutoDisassembler.copyToDomainObject(categoriaProdutoInput, categoriaProdutoAtual);
 
-		return  categoriaProdutoAssembler.toModelResumo(categoriaProdutoService.salvar(categoriaProdutoAtual, restauranteId));
+		return  categoriaProdutoResumoAssembler.toModel(categoriaProdutoService.salvar(categoriaProdutoAtual, restauranteId));
 
 	}
 

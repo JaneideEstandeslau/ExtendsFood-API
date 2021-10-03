@@ -2,8 +2,8 @@ package com.digitalSystems.extendsfood.api.openapi.controller;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.PedidoModel;
@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiResponses;
 public interface PedidoControllerOpenApi {
 
 	@ApiOperation("Pesquisa os pedidos")
-	Page<PedidoResumoModel> pesuisar(PedidoFilter filtro, Pageable pageable);
+	PagedModel<PedidoResumoModel> pesuisar(PedidoFilter filtro, Pageable pageable);
 	
 	@ApiOperation("Busca os Pedidos de um Cliente")
 	List<PedidoUsuario> buscarPedidosUsuario();
