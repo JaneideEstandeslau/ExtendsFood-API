@@ -9,6 +9,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.digitalSystems.extendsfood.api.ExtendsLinks;
 import com.digitalSystems.extendsfood.api.controller.CidadeController;
 import com.digitalSystems.extendsfood.api.controller.EstadoController;
 import com.digitalSystems.extendsfood.api.model.CidadeModel;
@@ -20,6 +21,9 @@ public class CidadeModelAssembler
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private ExtendsLinks extendsLinks;
 	
 	public CidadeModelAssembler() {
 		super(CidadeController.class, CidadeModel.class);
@@ -36,11 +40,9 @@ public class CidadeModelAssembler
 		
 		//Adiciona Hypermedia		
 		//Cria uma chamada fictícia do método para gerar o LINK de acesso a esse método.
-		cidadeModel.add(linkTo(methodOn(CidadeController.class)
-				.listar()).withRel("cidades"));
+		cidadeModel.add(extendsLinks.linkToCidades("cidades"));
 		
-		cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-				.buscar(cidadeModel.getEstado().getId())).withSelfRel());
+		cidadeModel.getEstado().add(extendsLinks.linkToEstado(cidadeModel.getEstado().getId()));
 		
 		return cidadeModel;
 	}
@@ -48,13 +50,6 @@ public class CidadeModelAssembler
 	@Override
 	public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
 		return super.toCollectionModel(entities)
-				.add(linkTo(CidadeController.class).withSelfRel());
+				.add(extendsLinks.linkToCidades());
 	}
-	
-	
-//	public List<CidadeModel> toCollectionModel(List<Cidade> cidades){
-//		return cidades.stream()
-//				.map(cidade -> toModel(cidade))
-//				.collect(Collectors.toList());
-//	}
 }
