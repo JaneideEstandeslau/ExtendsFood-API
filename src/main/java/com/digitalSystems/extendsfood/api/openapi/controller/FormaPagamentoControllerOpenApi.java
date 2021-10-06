@@ -1,6 +1,6 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.FormaPagamentoModel;
@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 public interface FormaPagamentoControllerOpenApi {
 
 	@ApiOperation("Lista todas as Formas de Pagamento")
-	List<FormaPagamentoModel> listar();
+	CollectionModel<FormaPagamentoModel> listar();
 
 	@ApiOperation("Busca uma Forma de Pagamento por ID")
 	@ApiResponses({

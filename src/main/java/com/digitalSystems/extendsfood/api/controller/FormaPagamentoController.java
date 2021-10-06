@@ -1,10 +1,9 @@
 package com.digitalSystems.extendsfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,7 +42,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	private FormaPagamentoInputDisassembler formaPagamentoDisassembler;
 
 	@GetMapping
-	public List<FormaPagamentoModel> listar() {
+	public CollectionModel<FormaPagamentoModel> listar() {
 		return formaPagamentoAssembler.toCollectionModel(formaPagamentoRepository.findAll());
 	}
 

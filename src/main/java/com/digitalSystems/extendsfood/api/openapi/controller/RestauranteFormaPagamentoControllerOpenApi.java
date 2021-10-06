@@ -1,6 +1,7 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.FormaPagamentoModel;
@@ -19,7 +20,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
 		@ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class),
 		@ApiResponse(code = 400, message = "ID Invalido", response = Problem.class)
 	})
-	List<FormaPagamentoModel> listar(
+	CollectionModel<FormaPagamentoModel> listar(
 			@ApiParam(value = "ID do restaurante", example = "1", required = true)
 			Long restauranteId);
 
@@ -29,7 +30,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
 		@ApiResponse(code = 404, message = "Restaurante ou Forma de Pagamento não encontrado", response = Problem.class),
 		@ApiResponse(code = 400, message = "ID do Restaurante ou da Forma de Pagamento Invalido", response = Problem.class)
 	})
-	void desassociar(
+	ResponseEntity<Void> desassociar(
 			@ApiParam(value = "ID do Restaurante", example = "1", required = true)
 			Long restauranteId,
 			
@@ -42,7 +43,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
 		@ApiResponse(code = 404, message = "Restaurante ou forma de pagamento não encontrado", response = Problem.class),
 		@ApiResponse(code = 400, message = "ID do Restaurante ou da Forma de Pagamento Invalido", response = Problem.class)
 	})
-	void associar(
+	ResponseEntity<Void> associar(
 			@ApiParam(value = "ID do Restaurante", example = "1", required = true)
 			Long restauranteId,
 			
