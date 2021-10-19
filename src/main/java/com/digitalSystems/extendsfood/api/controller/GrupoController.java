@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,8 +44,9 @@ public class GrupoController implements GrupoControllerOpenApi{
 	private GrupoInputDisassembler grupoDisassembler;
 
 	@GetMapping
-	public List<GrupoModel> listar() {
-		return grupoAssembler.toCollectionModel(grupoRepository.findAll());
+	public CollectionModel<GrupoModel> listar() {
+		List<Grupo> todosGrupos = grupoRepository.findAll();
+		return grupoAssembler.toCollectionModel(todosGrupos);
 	}
 
 	@GetMapping("/{grupoId}")

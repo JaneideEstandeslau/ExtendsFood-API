@@ -1,6 +1,6 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.GrupoModel;
@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 public interface GrupoControllerOpenApi {
 
 	@ApiOperation("Lista os Grupos")
-	List<GrupoModel> listar();
+	CollectionModel<GrupoModel> listar();
 
 	@ApiOperation("Lista um Grupo por ID")
 	@ApiResponses({

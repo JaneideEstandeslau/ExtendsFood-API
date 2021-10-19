@@ -1,6 +1,7 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.GrupoModel;
@@ -19,7 +20,7 @@ public interface UsuarioGrupoControllerOpenApi {
 		@ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class),
 		@ApiResponse(code = 400, message = "ID inválido", response = Problem.class)
 	})
-	List<GrupoModel> listar(
+	CollectionModel<GrupoModel> listar(
 			@ApiParam(value = "ID do usuário", example = "1", required = true)
 			Long usuarioId);
 
@@ -29,7 +30,7 @@ public interface UsuarioGrupoControllerOpenApi {
 		@ApiResponse(code = 400, message = "ID do Usuário ou do Grupo inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Usuário ou grupo não encontrado", response = Problem.class)
 	})
-	void desassociar(
+	ResponseEntity<Void> desassociar(
 			@ApiParam(value = "ID do usuário", example = "1", required = true)
 			Long usuarioId,
 			
@@ -42,7 +43,7 @@ public interface UsuarioGrupoControllerOpenApi {
 		@ApiResponse(code = 400, message = "ID do Usuário ou do Grupo inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Usuário ou grupo não encontrado", response = Problem.class)
 	})
-	void associar(
+	ResponseEntity<Void> associar(
 			@ApiParam(value = "ID do usuário", example = "1", required = true)
 			Long usuarioId,
 			

@@ -1,6 +1,7 @@
 package com.digitalSystems.extendsfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.PermissaoModel;
@@ -19,7 +20,7 @@ public interface GrupoPermissaoControllerOpenApi {
 		@ApiResponse(code = 400, message = "ID do Grupo inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
 	})
-	List<PermissaoModel> listar(
+	CollectionModel<PermissaoModel> listar(
 			@ApiParam(value = "ID do Grupo", example = "1", required = true)
 			Long grupoId);
 	
@@ -29,7 +30,7 @@ public interface GrupoPermissaoControllerOpenApi {
 		@ApiResponse(code = 400, message = "ID do Grupo ou da Permissão inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Grupo ou Permissão não encontrado", response = Problem.class)
 	})
-	void associar(
+	ResponseEntity<Void> associar(
 			@ApiParam(value = "ID do Grupo", example = "1", required = true)
 			Long grupoId, 
 			
@@ -42,7 +43,7 @@ public interface GrupoPermissaoControllerOpenApi {
 		@ApiResponse(code = 400, message = "ID do Grupo ou da Permissão inválido", response = Problem.class),
 		@ApiResponse(code = 404, message = "Grupo ou Permissão não encontrado", response = Problem.class)
 	})
-	void desassociar(
+	ResponseEntity<Void> desassociar(
 			@ApiParam(value = "ID do Grupo", example = "1", required = true)
 			Long grupoId, 
 			

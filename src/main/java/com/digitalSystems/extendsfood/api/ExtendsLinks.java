@@ -10,6 +10,7 @@ import org.springframework.hateoas.TemplateVariable.VariableType;
 import org.springframework.hateoas.TemplateVariables;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.digitalSystems.extendsfood.api.controller.CategoriaProdutoController;
 import com.digitalSystems.extendsfood.api.controller.CidadeController;
@@ -17,6 +18,8 @@ import com.digitalSystems.extendsfood.api.controller.CozinhaController;
 import com.digitalSystems.extendsfood.api.controller.EstadoController;
 import com.digitalSystems.extendsfood.api.controller.FluxoPedidoController;
 import com.digitalSystems.extendsfood.api.controller.FormaPagamentoController;
+import com.digitalSystems.extendsfood.api.controller.GrupoController;
+import com.digitalSystems.extendsfood.api.controller.GrupoPermissaoController;
 import com.digitalSystems.extendsfood.api.controller.PedidoController;
 import com.digitalSystems.extendsfood.api.controller.RestauranteCategoriaProdutoController;
 import com.digitalSystems.extendsfood.api.controller.RestauranteController;
@@ -271,6 +274,44 @@ public class ExtendsLinks {
 
 	public Link linkToFotoProduto(Long restauranteId, Long categoriaId, Long produtoId) {
 	    return linkToFotoProduto(restauranteId, categoriaId, produtoId, IanaLinkRelations.SELF.value());
+	}
+	
+	//Grupo
+	
+	public Link linkToGrupos() {
+		return linkToGrupos(IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToGrupos(String rel) {
+		return linkTo(GrupoController.class).withRel(rel);
+	}
+	
+	public Link linkToAssociarUsuarioAoGrupo(Long usuarioId, String rel) {
+		return linkTo(methodOn(UsuarioGrupoController.class).associar(usuarioId, null)).withRel(rel);
+	}
+	
+	public Link linkToDesassociarUsuarioAoGrupo(Long usuarioId, Long grupoId, String rel) {
+		return linkTo(methodOn(UsuarioGrupoController.class).desassociar(usuarioId, grupoId)).withRel(rel);
+	}
+	
+	//Permissao
+	
+	public Link linkToGrupoPermissao(Long grupoId, String rel) {
+		return linkTo(methodOn(GrupoPermissaoController.class).listar(grupoId)).withRel(rel);
+	}
+	
+	public Link linkToGrupoPermissao(Long grupoId) {
+		return linkToGrupoPermissao(grupoId, IanaLinkRelations.SELF.value());
+	}
+	
+	public Link linkToGrupoPermissaoAssociacao(Long grupoId, String rel) {
+	    return linkTo(methodOn(GrupoPermissaoController.class)
+	            .associar(grupoId, null)).withRel(rel);
+	}
+
+	public Link linkToGrupoPermissaoDesassociacao(Long grupoId, Long permissaoId, String rel) {
+	    return linkTo(methodOn(GrupoPermissaoController.class)
+	            .desassociar(grupoId, permissaoId)).withRel(rel);
 	}
 
 }
