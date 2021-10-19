@@ -67,7 +67,6 @@ public class CategoriaProdutoController implements CategoriaProdutoControllerOpe
 		return categoriasPagedModel;
 		
 	}
-
 	@GetMapping("/{categoriaProdutoId}")
 	public CategoriaProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long categoriaProdutoId) {
 		

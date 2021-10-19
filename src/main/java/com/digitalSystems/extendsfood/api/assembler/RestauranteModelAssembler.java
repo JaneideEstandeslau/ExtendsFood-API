@@ -30,25 +30,24 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
 
 		modelMapper.map(restaurante, restauranteModel);
 
-		restauranteModel.getCozinha().add(extendsLinks.linkToCidade(restauranteModel.getCozinha().getId()));
-
-		restauranteModel.getEndereco().getCidade()
-				.add(extendsLinks.linkToCidade(restauranteModel.getEndereco().getCidade().getId()));
 
 		restauranteModel.add(extendsLinks.linkToRestaurantes("restaurante"));
 
-		restauranteModel
-				.add(extendsLinks.linkToRestauranteFormasPagamento(restauranteModel.getId(), "forma-pagamento"));
+		restauranteModel.add(extendsLinks.linkToRestauranteFormasPagamento(restauranteModel.getId(), "forma-pagamento"));
+		
+		restauranteModel.getCozinha().add(extendsLinks.linkToCidade(restauranteModel.getCozinha().getId()));
+		
+		restauranteModel.getEndereco().getCidade()
+		.add(extendsLinks.linkToCidade(restauranteModel.getEndereco().getCidade().getId()));
 
 		restauranteModel.add(extendsLinks.linkToRestauranteResponsaveis(restauranteModel.getId(), "responsaveis"));
-
+		
 		if (restaurante.inativacaoPermitida()) {
 			restauranteModel.add(extendsLinks.linkToInativarRestaurante(restauranteModel.getId(), "inativar"));
 		}
 		if (restaurante.ativacaoPermitida()) {
 			restauranteModel.add(extendsLinks.linkToAtivarRestaurante(restauranteModel.getId(), "ativar"));
 		}
-
 		if (restaurante.fechamentoPermitido()) {
 			restauranteModel.add(extendsLinks.linkToFecharRestaurante(restauranteModel.getId(), "fechar"));
 		}

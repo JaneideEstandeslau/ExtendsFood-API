@@ -3,13 +3,17 @@ package com.digitalSystems.extendsfood.api.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "produtos")
 @Getter
 @Setter
-public class ProdutoModel {
+public class ProdutoModel extends RepresentationModel<ProdutoModel>{
 
 	@ApiModelProperty(example = "1", position = 5)
 	private Long id;
