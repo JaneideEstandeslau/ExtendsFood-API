@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.digitalSystems.extendsfood.api.ExtendsLinks;
 import com.digitalSystems.extendsfood.api.openapi.controller.EstatisticasControllerOpenApi;
 import com.digitalSystems.extendsfood.domain.filter.VendaFilter;
 import com.digitalSystems.extendsfood.domain.model.dto.Venda;
@@ -22,6 +23,9 @@ import com.digitalSystems.extendsfood.domain.service.VendaReportService;
 @RequestMapping(path = "/estatisticas")
 public class EstatisticasController implements EstatisticasControllerOpenApi{
 
+	@Autowired
+	private ExtendsLinks extendsLinks;
+	
 	@Autowired
 	private VendaQueryService vendaQueryService;
 	
@@ -51,6 +55,16 @@ public class EstatisticasController implements EstatisticasControllerOpenApi{
 				.contentType(MediaType.APPLICATION_PDF)
 				.headers(headers)
 				.body(bytesPdf);
+	}
+
+	@Override
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public Venda estatisticas() {
+		var estatisticasModel = new Venda(null, null, null, null, null);
+	    
+	    estatisticasModel.add(extendsLinks.linkToEstatisticasVendasDiarias("vendas-diarias"));
+	    
+	    return estatisticasModel;
 	}
 	
 	

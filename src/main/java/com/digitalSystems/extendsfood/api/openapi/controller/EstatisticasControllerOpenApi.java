@@ -25,5 +25,8 @@ public interface EstatisticasControllerOpenApi {
 	Venda consultarVendas(VendaFilter filtro);
 
 	ResponseEntity<byte[]> consultarVendasPdf(VendaFilter filtro);
+	
+	@ApiOperation(value = "Estatísticas", hidden = true)
+	Venda estatisticas();
 
 }

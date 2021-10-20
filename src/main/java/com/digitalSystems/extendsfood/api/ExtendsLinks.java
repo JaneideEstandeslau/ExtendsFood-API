@@ -10,12 +10,12 @@ import org.springframework.hateoas.TemplateVariable.VariableType;
 import org.springframework.hateoas.TemplateVariables;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.digitalSystems.extendsfood.api.controller.CategoriaProdutoController;
 import com.digitalSystems.extendsfood.api.controller.CidadeController;
 import com.digitalSystems.extendsfood.api.controller.CozinhaController;
 import com.digitalSystems.extendsfood.api.controller.EstadoController;
+import com.digitalSystems.extendsfood.api.controller.EstatisticasController;
 import com.digitalSystems.extendsfood.api.controller.FluxoPedidoController;
 import com.digitalSystems.extendsfood.api.controller.FormaPagamentoController;
 import com.digitalSystems.extendsfood.api.controller.GrupoController;
@@ -38,7 +38,7 @@ public class ExtendsLinks {
 			new TemplateVariable("sort", VariableType.REQUEST_PARAM));
 
 	// PEDIDO
-	public Link linkToPedidos() {
+	public Link linkToPedidos(String rel) {
 		TemplateVariables filtroVariables = new TemplateVariables(
 				new TemplateVariable("clienteId", VariableType.REQUEST_PARAM),
 				new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
@@ -47,7 +47,7 @@ public class ExtendsLinks {
 
 		String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
 
-		return new Link(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariables)), "pedidos");
+		return new Link(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
 	}
 
 	public Link linkToConfirmacaoPedido(Long pedidoId, String rel) {
@@ -186,6 +186,14 @@ public class ExtendsLinks {
 	public Link linkToCozinha(Long cozinhaId) {
 		return linkToCozinha(cozinhaId, IanaLinkRelations.SELF.value());
 	}
+	
+	public Link linkToCozinhas(String rel) {
+		return linkTo(CozinhaController.class).withRel(rel);
+	}
+	
+	public Link linkToCozinhas() {
+		return linkToCozinhas(IanaLinkRelations.SELF.value());
+	}
 
 	// CIDADE
 	public Link linkToCidade(Long cidadeId, String rel) {
@@ -257,7 +265,7 @@ public class ExtendsLinks {
 				.withRel(IanaLinkRelations.SELF.value());
 	}
 
-	public Link linkToCategoriaProdutoList(Long restauranteId, Long categoriaId, String rel) {
+	public Link linkToCategoriaProdutos(Long restauranteId, String rel) {
 
 		String pedidosUrl = linkTo(methodOn(CategoriaProdutoController.class).listar(restauranteId, null)).toUri()
 				.toString();
@@ -313,5 +321,24 @@ public class ExtendsLinks {
 	    return linkTo(methodOn(GrupoPermissaoController.class)
 	            .desassociar(grupoId, permissaoId)).withRel(rel);
 	}
+	
+	//Estatisticas
+	
+	public Link linkToEstatisticas(String rel) {
+	    return linkTo(EstatisticasController.class).withRel(rel);
+	}
+
+	public Link linkToEstatisticasVendasDiarias(String rel) {
+	    TemplateVariables filtroVariables = new TemplateVariables(
+	            new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
+	    
+	    String pedidosUrl = linkTo(methodOn(EstatisticasController.class)
+	            .consultarVendas(null)).toUri().toString();
+	    
+	    return new Link(UriTemplate.of(pedidosUrl, filtroVariables), rel);
+	}   
 
 }

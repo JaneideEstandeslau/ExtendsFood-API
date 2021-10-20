@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public class Venda {
+public class Venda extends RepresentationModel<Venda>{
 
 	private LocalDateTime dataInicio;
 	private LocalDateTime dataFim;

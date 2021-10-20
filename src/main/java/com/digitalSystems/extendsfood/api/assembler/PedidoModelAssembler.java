@@ -35,7 +35,7 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 		modelMapper.map(pedido, pedidoModel);
 
 		// Adiciona a URI para encontrar todos os pedidos do Restaurante
-		pedidoModel.add(extendsLinks.linkToPedidos());
+		pedidoModel.add(extendsLinks.linkToPedidos("pedidos"));
 		
 		//adiciona as URIs para mudar o status di pedido
 		if(pedido.podeSerConfirmado()) {

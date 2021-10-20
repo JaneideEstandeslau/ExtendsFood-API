@@ -38,8 +38,8 @@ public class CategoriaProdutoModelAssembler
 
 		modelMapper.map(categoriaProduto, categoriaProdutoModel);
 
-		categoriaProdutoModel.add(extendsLinks.linkToCategoriaProdutoList(
-				categoriaProduto.getRestaurante().getId(), categoriaProduto.getId(), "categorias"));
+		categoriaProdutoModel.add(extendsLinks.linkToCategoriaProdutos(
+				categoriaProduto.getRestaurante().getId(), "categorias"));
 		
 		categoriaProdutoModel.getRestaurante().add(extendsLinks.linkToRestaurante(
 				categoriaProduto.getRestaurante().getId()));
@@ -58,8 +58,8 @@ public class CategoriaProdutoModelAssembler
 		CategoriaProdutoResumoModel categoriaProdutoModel = modelMapper.map(categoriaProduto,
 				CategoriaProdutoResumoModel.class);
 
-		categoriaProdutoModel.add(extendsLinks.linkToCategoriaProdutoList(
-				categoriaProduto.getRestaurante().getId(), categoriaProduto.getId(), "categorias"));
+		categoriaProdutoModel.add(extendsLinks.linkToCategoriaProdutos(
+				categoriaProduto.getRestaurante().getId(), "categorias"));
 
 		return categoriaProdutoModel;
 	}
