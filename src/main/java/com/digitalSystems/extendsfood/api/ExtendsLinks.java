@@ -37,6 +37,7 @@ public class ExtendsLinks {
 			new TemplateVariable("size", VariableType.REQUEST_PARAM),
 			new TemplateVariable("sort", VariableType.REQUEST_PARAM));
 
+	
 	// PEDIDO
 	public Link linkToPedidos(String rel) {
 		TemplateVariables filtroVariables = new TemplateVariables(
