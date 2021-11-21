@@ -18,6 +18,7 @@ public class PedidoSpecs {
 
 	public static Specification<Pedido> filtrarPedidos(PedidoFilter filtro) {
 		
+		System.out.println("Test");
 		return (root, query, builder) -> {
             
 			if (Pedido.class.equals(query.getResultType())) {
