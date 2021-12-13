@@ -65,7 +65,7 @@ public class PedidoController implements PedidoControllerOpenApi{
 	@GetMapping
     public PagedModel<PedidoResumoModel> pesuisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		
-		System.out.println("Teste");
+		System.out.println("Teste teste");
 		Pageable pageableTraduzido = traduzirPageable(pageable);
 		
         Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.filtrarPedidos(filtro), pageableTraduzido);
