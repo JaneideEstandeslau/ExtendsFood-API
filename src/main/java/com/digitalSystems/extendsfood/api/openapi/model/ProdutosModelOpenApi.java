@@ -4,27 +4,27 @@ import java.util.List;
 
 import org.springframework.hateoas.Links;
 
-import com.digitalSystems.extendsfood.api.model.PedidoResumoModel;
+import com.digitalSystems.extendsfood.api.model.ProdutoModel;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel("PedidosResumoModel")
+@ApiModel("ProdutosModel")
 @Getter
 @Setter
-public class PedidosResumoModelOpenApi {
+public class ProdutosModelOpenApi {
 	
-	private PedidosEmbeddedModelOpenApi _embedded;
+	private ProdutosEmbeddedModelOpenApi _embedded;
 	private Links _links;
 	private PageModelOpenApi page;
 
-	@ApiModel("PedidosEmbeddedModel")
+	@ApiModel("ProdutosEmbeddedModel")
 	@Data
-	public class PedidosEmbeddedModelOpenApi {
+	public class ProdutosEmbeddedModelOpenApi {
 
-		private List<PedidoResumoModel> pedidos;
+		private List<ProdutoModel> produtos;
 
 	}
 }

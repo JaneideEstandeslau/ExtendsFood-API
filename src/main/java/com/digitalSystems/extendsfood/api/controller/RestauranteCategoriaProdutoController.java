@@ -1,14 +1,13 @@
 package com.digitalSystems.extendsfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,18 +44,24 @@ public class RestauranteCategoriaProdutoController implements RestauranteCategor
 	
 	@Autowired
 	private ProdutoModelAssembler produtoAssembler;
+	
+	@Autowired
+	private PagedResourcesAssembler<Produto> pagedResourcesAssembler;
 
 	@GetMapping
-	public Page<ProdutoModel> listar(@PathVariable Long restauranteId, @PathVariable Long categoriaId,
+	public PagedModel<ProdutoModel> listar(@PathVariable Long restauranteId, @PathVariable Long categoriaId,
 			@PageableDefault(size = 10) Pageable pageable) {
 
 		Page<Produto> produtosPage = produtoRepository
 				.findAll(ProdutoSpecs.buscarProdutosdaCategoriaDoRestaurante(restauranteId, categoriaId), pageable);
 
-		List<ProdutoModel> produtosModel = produtoAssembler.toCollectionModel(produtosPage.getContent());
+//		List<ProdutoModel> produtosModel = produtoAssembler.toCollectionModel(produtosPage.getContent());
+//
+//		Page<ProdutoModel> produtoModelPage = new PageImpl<>(produtosModel, pageable, produtosPage.getTotalElements());
 
-		Page<ProdutoModel> produtoModelPage = new PageImpl<>(produtosModel, pageable, produtosPage.getTotalElements());
-
+		PagedModel<ProdutoModel> produtoModelPage = pagedResourcesAssembler
+				.toModel(produtosPage, produtoAssembler);
+		
 		return produtoModelPage;
 	}
 	

@@ -2,6 +2,8 @@ package com.digitalSystems.extendsfood.api.openapi.controller;
 
 import java.util.List;
 
+import org.springframework.hateoas.CollectionModel;
+
 import com.digitalSystems.extendsfood.api.exceptionHandler.Problem;
 import com.digitalSystems.extendsfood.api.model.CozinhaModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.CozinhaInput;
@@ -16,7 +18,7 @@ import io.swagger.annotations.ApiResponses;
 public interface CozinhaControllerOpenApi {
 
 	@ApiOperation("Lista as Cozinhas")
-	public List<CozinhaModel> listar();
+	public CollectionModel<CozinhaModel> listar();
 
 	@ApiOperation("Busca uma Cozinha por ID")
 	@ApiResponses({
