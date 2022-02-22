@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.digitalSystems.extendsfood.api.ExtendsLinks;
 import com.digitalSystems.extendsfood.api.assembler.ProdutoModelAssembler;
 import com.digitalSystems.extendsfood.api.disassempler.ProdutoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.ProdutoModel;

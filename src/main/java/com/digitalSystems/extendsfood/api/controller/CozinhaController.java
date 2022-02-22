@@ -27,17 +27,17 @@ import com.digitalSystems.extendsfood.domain.service.CozinhaService;
 
 @RestController
 @RequestMapping(value = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CozinhaController implements CozinhaControllerOpenApi{
+public class CozinhaController implements CozinhaControllerOpenApi {
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 
 	@Autowired
 	private CozinhaService cozinhaService;
-	
+
 	@Autowired
 	private CozinhaModelAssembler cozinhaAssembler;
-	
+
 	@Autowired
 	private CozinhaInputDisassembler cozinhaDesassembler;
 
@@ -49,7 +49,7 @@ public class CozinhaController implements CozinhaControllerOpenApi{
 	@GetMapping("/{cozinhaId}")
 	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
 		Cozinha cozinha = cozinhaService.buscarOuFalhar(cozinhaId);
-		
+
 		return cozinhaAssembler.toModel(cozinha);
 	}
 
@@ -57,7 +57,7 @@ public class CozinhaController implements CozinhaControllerOpenApi{
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
 		Cozinha cozinha = cozinhaDesassembler.toDomainObject(cozinhaInput);
-		
+
 		return cozinhaAssembler.toModel(cozinhaService.salvar(cozinha));
 	}
 
@@ -75,6 +75,6 @@ public class CozinhaController implements CozinhaControllerOpenApi{
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long cozinhaId) {
 		cozinhaService.excluir(cozinhaId);
-			
+
 	}
 }

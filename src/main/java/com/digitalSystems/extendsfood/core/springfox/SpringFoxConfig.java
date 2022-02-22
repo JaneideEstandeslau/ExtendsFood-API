@@ -79,8 +79,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		return new Docket(DocumentationType.SWAGGER_2)
 
 				.select()// Seleciona os endpoints que devem ser expostos na definição do json
-				.apis(RequestHandlerSelectors.basePackage("com.digitalSystems.extendsfood")).paths(PathSelectors.any())
-				.build().useDefaultResponseMessages(false)// Desabilita os Codigos de erros padrão
+				.apis(RequestHandlerSelectors.basePackage("com.digitalSystems.extendsfood"))
+				.paths(PathSelectors.any())
+				.build()
+				.useDefaultResponseMessages(false)// Desabilita os Codigos de erros padrão
 				.globalResponseMessage(RequestMethod.GET, globalGetResponseMessages())// Descreve os status de resposta
 																						// de erro globalmente nos
 																						// métodos
@@ -89,8 +91,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.globalResponseMessage(RequestMethod.DELETE, globalDeleteResponseMessages())
 
 				.additionalModels(typeResolver.resolve(Problem.class))// Adiciona o Problem no Modelo de representação
+				
 				.ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class,
 						Resource.class, File.class, InputStream.class)
+				
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)// substitui o Pageable pelo
 																					// PageableModelOpenApi
 				// Faz a substituição do Page<PedidoResumoModel> para
@@ -100,33 +104,45 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(PagedModel.class, CategoriaProdutoResumoModel.class),
 						CategoriasProdutoResumoModelOpenApi.class))
+				
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, CidadeModel.class), CidadesModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, CozinhaModel.class), CozinhasModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, EstadoModel.class), EstadosModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, FormaPagamentoModel.class),
 						FormaPagamentoModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, GrupoModel.class), GruposModelOpenApi.class))
+				
 				.alternateTypeRules(
 						AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, PermissaoModel.class),
 								PermissoesModelOpenApi.class))
+				
 				.alternateTypeRules(
 						AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, PedidoResumoModel.class),
 								PedidosResumoModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(PagedModel.class, ProdutoModel.class), ProdutosModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, RestauranteBasicoModel.class),
 						RestaurantesBasicoModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, UsuarioModel.class), UsuariosModelOpenApi.class))
 
-				.apiInfo(apiInfo()).tags(new Tag("Cidades", "Gerencia as cidades"))
+				.apiInfo(apiInfo())
+				.tags(new Tag("Cidades", "Gerencia as cidades"))
 				.tags(new Tag("Categorias dos Produtos", "Gerencia as Categorias dos Produtos"))
 				.tags(new Tag("Cozinha", "Gerencia as Cozinha"))
 				.tags(new Tag("Dias da Semana", "Gerencia os Dias da Semana"))
@@ -141,36 +157,67 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 	// Adiciona os possiveis Status de Erro para o método GET
 	private List<ResponseMessage> globalGetResponseMessages() {
 		return Arrays.asList(
-				new ResponseMessageBuilder().code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-						.message("Erro interno do servidor").responseModel(new ModelRef("Problema")).build(),
-				new ResponseMessageBuilder().code(HttpStatus.NOT_ACCEPTABLE.value())
-						.message("Recurso não possui representação que poderia ser aceita pelo consumidor").build());
+				
+				new ResponseMessageBuilder()
+					.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.message("Erro interno do servidor")
+					.responseModel(new ModelRef("Problema"))
+				.build(),
+				
+				new ResponseMessageBuilder()
+					.code(HttpStatus.NOT_ACCEPTABLE.value())
+					.message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+				.build());
 	}
 
 	// Adiciona os possiveis Status de Erro para os métodos POST e PUT
 	private List<ResponseMessage> globalPostPutResponseMessages() {
-		return Arrays.asList(new ResponseMessageBuilder().code(HttpStatus.BAD_REQUEST.value())
-				.message("Requisição inválida (erro do cliente)").responseModel(new ModelRef("Problema")).build(),
-				new ResponseMessageBuilder().code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-						.message("Erro interno no servidor").responseModel(new ModelRef("Problema")).build(),
-				new ResponseMessageBuilder().code(HttpStatus.NOT_ACCEPTABLE.value())
-						.message("Recurso não possui representação que poderia ser aceita pelo consumidor").build(),
-				new ResponseMessageBuilder().code(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
-						.message("Requisição recusada porque o corpo está em um formato não suportado")
-						.responseModel(new ModelRef("Problema")).build());
+		return Arrays.asList(
+				new ResponseMessageBuilder()
+					.code(HttpStatus.BAD_REQUEST.value())
+					.message("Requisição inválida (erro do cliente)")
+					.responseModel(new ModelRef("Problema"))
+				.build(),
+				
+				new ResponseMessageBuilder()
+					.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.message("Erro interno no servidor")
+					.responseModel(new ModelRef("Problema"))
+				.build(),
+				
+				new ResponseMessageBuilder()
+					.code(HttpStatus.NOT_ACCEPTABLE.value())
+					.message("Recurso não possui representação que poderia ser aceita pelo consumidor")
+				.build(),
+				
+				new ResponseMessageBuilder()
+					.code(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
+					.message("Requisição recusada porque o corpo está em um formato não suportado")
+					.responseModel(new ModelRef("Problema"))
+				.build());
 	}
 
 	// Adiciona os possiveis Status de Erro para o método DELETE
 	private List<ResponseMessage> globalDeleteResponseMessages() {
-		return Arrays.asList(new ResponseMessageBuilder().code(HttpStatus.BAD_REQUEST.value())
-				.message("Requisição inválida (erro do cliente)").responseModel(new ModelRef("Problema")).build(),
-				new ResponseMessageBuilder().code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-						.message("Erro interno do servidor").responseModel(new ModelRef("Problema")).build());
+		return Arrays.asList(
+				new ResponseMessageBuilder()
+					.code(HttpStatus.BAD_REQUEST.value())
+					.message("Requisição inválida (erro do cliente)")
+					.responseModel(new ModelRef("Problema"))
+				.build(),
+				
+				new ResponseMessageBuilder()
+					.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+					.message("Erro interno do servidor")
+					.responseModel(new ModelRef("Problema"))
+				.build());
 	}
 
 	// Modifica informações no cabeçalho da documentação
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("ExtendsFood API").description("API aberta para clientes e restaurantes")
+		return new ApiInfoBuilder()
+				.title("ExtendsFood API")
+				.description("API aberta para clientes e restaurantes")
 				.version("1")
 				.contact(
 						new Contact("Digidal Systems", "https://www.digivalSystems.com", "contato@digidal.systems.com"))
