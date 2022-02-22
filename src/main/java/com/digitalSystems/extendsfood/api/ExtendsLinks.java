@@ -186,11 +186,11 @@ public class ExtendsLinks {
 	public Link linkToCozinha(Long cozinhaId) {
 		return linkToCozinha(cozinhaId, IanaLinkRelations.SELF.value());
 	}
-
+	
 	public Link linkToCozinhas(String rel) {
 		return linkTo(CozinhaController.class).withRel(rel);
 	}
-
+	
 	public Link linkToCozinhas() {
 		return linkToCozinhas(IanaLinkRelations.SELF.value());
 	}
@@ -272,70 +272,73 @@ public class ExtendsLinks {
 
 		return new Link(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES), rel);
 	}
-
-	// Foto Poduto
-
+	
+	//Foto Poduto
+	
 	public Link linkToFotoProduto(Long restauranteId, Long categoriaId, Long produtoId, String rel) {
-		return linkTo(methodOn(RestauranteProdutoFotoController.class).buscar(restauranteId, categoriaId, produtoId))
-				.withRel(rel);
+	    return linkTo(methodOn(RestauranteProdutoFotoController.class)
+	            .buscar(restauranteId, categoriaId, produtoId)).withRel(rel);
 	}
 
 	public Link linkToFotoProduto(Long restauranteId, Long categoriaId, Long produtoId) {
-		return linkToFotoProduto(restauranteId, categoriaId, produtoId, IanaLinkRelations.SELF.value());
+	    return linkToFotoProduto(restauranteId, categoriaId, produtoId, IanaLinkRelations.SELF.value());
 	}
-
-	// Grupo
-
+	
+	//Grupo
+	
 	public Link linkToGrupos() {
 		return linkToGrupos(IanaLinkRelations.SELF.value());
 	}
-
+	
 	public Link linkToGrupos(String rel) {
 		return linkTo(GrupoController.class).withRel(rel);
 	}
-
+	
 	public Link linkToAssociarUsuarioAoGrupo(Long usuarioId, String rel) {
 		return linkTo(methodOn(UsuarioGrupoController.class).associar(usuarioId, null)).withRel(rel);
 	}
-
+	
 	public Link linkToDesassociarUsuarioAoGrupo(Long usuarioId, Long grupoId, String rel) {
 		return linkTo(methodOn(UsuarioGrupoController.class).desassociar(usuarioId, grupoId)).withRel(rel);
 	}
-
-	// Permissao
-
+	
+	//Permissao
+	
 	public Link linkToGrupoPermissao(Long grupoId, String rel) {
 		return linkTo(methodOn(GrupoPermissaoController.class).listar(grupoId)).withRel(rel);
 	}
-
+	
 	public Link linkToGrupoPermissao(Long grupoId) {
 		return linkToGrupoPermissao(grupoId, IanaLinkRelations.SELF.value());
 	}
-
+	
 	public Link linkToGrupoPermissaoAssociacao(Long grupoId, String rel) {
-		return linkTo(methodOn(GrupoPermissaoController.class).associar(grupoId, null)).withRel(rel);
+	    return linkTo(methodOn(GrupoPermissaoController.class)
+	            .associar(grupoId, null)).withRel(rel);
 	}
 
 	public Link linkToGrupoPermissaoDesassociacao(Long grupoId, Long permissaoId, String rel) {
-		return linkTo(methodOn(GrupoPermissaoController.class).desassociar(grupoId, permissaoId)).withRel(rel);
+	    return linkTo(methodOn(GrupoPermissaoController.class)
+	            .desassociar(grupoId, permissaoId)).withRel(rel);
 	}
-
-	// Estatisticas
-
+	
+	//Estatisticas
+	
 	public Link linkToEstatisticas(String rel) {
-		return linkTo(EstatisticasController.class).withRel(rel);
+	    return linkTo(EstatisticasController.class).withRel(rel);
 	}
 
 	public Link linkToEstatisticasVendasDiarias(String rel) {
-		TemplateVariables filtroVariables = new TemplateVariables(
-				new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
-				new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
-				new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM),
-				new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
-
-		String pedidosUrl = linkTo(methodOn(EstatisticasController.class).consultarVendas(null)).toUri().toString();
-
-		return new Link(UriTemplate.of(pedidosUrl, filtroVariables), rel);
-	}
+	    TemplateVariables filtroVariables = new TemplateVariables(
+	            new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
+	    
+	    String pedidosUrl = linkTo(methodOn(EstatisticasController.class)
+	            .consultarVendas(null)).toUri().toString();
+	    
+	    return new Link(UriTemplate.of(pedidosUrl, filtroVariables), rel);
+	}   
 
 }
