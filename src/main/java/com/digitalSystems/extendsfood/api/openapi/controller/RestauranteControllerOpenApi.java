@@ -9,6 +9,8 @@ import com.digitalSystems.extendsfood.api.model.RestauranteModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.RestauranteInput;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -18,6 +20,10 @@ import io.swagger.annotations.ApiResponses;
 public interface RestauranteControllerOpenApi {
 
 	@ApiOperation(value = "Lista restaurantes")
+	@ApiImplicitParams({
+	    @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome, tipo, valor",
+	            name = "projecao", paramType = "query", type = "string")
+	})
 	CollectionModel<RestauranteBasicoModel> listar();
 
 	@ApiOperation("Busca um restaurante por ID")
