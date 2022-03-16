@@ -65,7 +65,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2
+@EnableSwagger2 //Habilita o suporte ao Swagger 2
 @Import(BeanValidatorPluginsConfiguration.class) // São beans que vão interpretar as anotações de validação como,
 													// por exempro, @notnull e adicionar ao Json.
 public class SpringFoxConfig implements WebMvcConfigurer {
@@ -79,7 +79,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		return new Docket(DocumentationType.SWAGGER_2)
 
 				.select()// Seleciona os endpoints que devem ser expostos na definição do json
-				.apis(RequestHandlerSelectors.basePackage("com.digitalSystems.extendsfood"))
+				.apis(RequestHandlerSelectors.basePackage("com.digitalSystems.extendsfood")) // escaneie tudo que
+																								// estiver dentro desse
+																								// pacote e adicione no
+																								// JSON
 				.paths(PathSelectors.any())
 				.build()
 				.useDefaultResponseMessages(false)// Desabilita os Codigos de erros padrão
