@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 @Configuration
 @EnableAuthorizationServer // Habilita o authorizarion server
@@ -28,6 +31,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private RedisConnectionFactory redisConnectionFactory;
 
 	// configura os clients que podem acessar esse authorization server
 	// configura os clientes que são permitidos acessar do authorization server e
@@ -95,7 +101,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.authenticationManager(authenticationManager)//Usado no password
 			.userDetailsService(userDetailsService)//Usado no refresh token
 			.reuseRefreshTokens(false) //Configura a não reutilização de refresh token
+			.tokenStore(redisTokenStore())
 			.tokenGranter(tokenGranter(endpoints));
+	}
+	
+	private TokenStore redisTokenStore() {
+		return new RedisTokenStore(redisConnectionFactory);
 	}
 	
 	//Configura todos os TokenGranter mais o PKCE
