@@ -3,8 +3,8 @@ package com.digitalSystems.extendsfood.auth;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,8 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 @Configuration
 @EnableAuthorizationServer // Habilita o authorizarion server
@@ -32,8 +31,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
-	@Autowired
-	private RedisConnectionFactory redisConnectionFactory;
+	
 
 	// configura os clients que podem acessar esse authorization server
 	// configura os clientes que são permitidos acessar do authorization server e
@@ -101,14 +99,22 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.authenticationManager(authenticationManager)//Usado no password
 			.userDetailsService(userDetailsService)//Usado no refresh token
 			.reuseRefreshTokens(false) //Configura a não reutilização de refresh token
-			.tokenStore(redisTokenStore())
+			.accessTokenConverter(jwtAccessTokenConverter())
 			.tokenGranter(tokenGranter(endpoints));
 	}
 	
-	private TokenStore redisTokenStore() {
-		return new RedisTokenStore(redisConnectionFactory);
+	//Vai converte as informações de um usuário logado para JWT e vice-versa
+	@Bean
+	public JwtAccessTokenConverter jwtAccessTokenConverter() {
+		
+		String chave = "jhgfh35gj8g3h1jkgiughfdbjhhfdgdh23189156789dfbshfghjkbsgh";
+		
+		JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+		jwtAccessTokenConverter.setSigningKey(chave);//Define a chave secreta para gerar o Hesh
+		
+		return jwtAccessTokenConverter;
 	}
-	
+	 
 	//Configura todos os TokenGranter mais o PKCE
 	// Instancia o Authorization Code com PKCE e retorna a instancia do TokenGranter
 	// com o PKCE e todos os outros TokenGranter client_credentials, implicit
