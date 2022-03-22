@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,11 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 @Configuration
 @EnableAuthorizationServer // Habilita o authorizarion server
@@ -30,6 +35,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private JwtKeyStoreProperties jwtKeyStoreProperties; 
 	
 	
 
@@ -84,7 +92,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 //		security.checkTokenAccess("isAuthenticated()"); //expressão de segurança
-		security.checkTokenAccess("permitAll()");//Quem tem acesso ao check token? Quem estiver autenticado
+		security.checkTokenAccess("permitAll()")//Quem tem acesso ao check token? Quem estiver autenticado
+		.tokenKeyAccess("permitAll()");//Libera acesso a chave publica
 //		.allowFormAuthenticationForClients();//Habilita para o client não precisar informar a secret
 		
 	}
@@ -99,7 +108,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.authenticationManager(authenticationManager)//Usado no password
 			.userDetailsService(userDetailsService)//Usado no refresh token
 			.reuseRefreshTokens(false) //Configura a não reutilização de refresh token
-			.accessTokenConverter(jwtAccessTokenConverter())
+			.accessTokenConverter(jwtAccessTokenConverter())//Converte o token para JWT
+			.approvalStore(approvalStore(endpoints.getTokenStore()))
 			.tokenGranter(tokenGranter(endpoints));
 	}
 	
@@ -107,12 +117,27 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
 		
-		String chave = "jhgfh35gj8g3h1jkgiughfdbjhhfdgdh23189156789dfbshfghjkbsgh";
+		var jwtAccessTokenConverter = new JwtAccessTokenConverter();
 		
-		JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-		jwtAccessTokenConverter.setSigningKey(chave);//Define a chave secreta para gerar o Hesh
+		var jksResource = new ClassPathResource(jwtKeyStoreProperties.getPath());//Referencia o arquivo JKS
+		var keyStorePass = jwtKeyStoreProperties.getPassword();//Senha para abrir o arquivo JKS
+		var keyPairAlias = jwtKeyStoreProperties.getKaypairAlias();//Identificação para o par de chaves
+		
+		//Abre o arquivo JKS
+		var keyStoreKeyFactory = new KeyStoreKeyFactory(jksResource, keyStorePass.toCharArray());
+		
+		var keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias); //pega o par de chave
+		
+		jwtAccessTokenConverter.setKeyPair(keyPair);
 		
 		return jwtAccessTokenConverter;
+	}
+	
+	private ApprovalStore approvalStore(TokenStore tokenStore) {
+		var approvalStore = new TokenApprovalStore();
+		approvalStore.setTokenStore(tokenStore);
+		
+		return approvalStore;
 	}
 	 
 	//Configura todos os TokenGranter mais o PKCE
