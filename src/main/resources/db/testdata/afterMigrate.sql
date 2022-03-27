@@ -177,7 +177,7 @@ insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id, endereco
 insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id, endereco_usuario_id, ativo_usuario) values (3, "58.140.695", "AV Elpidio de Almeida", "210", "Sandra Cavalcante", 1, 2, true);
 insert into endereco (id, cep, rua, numero, bairro, endereco_cidade_id, endereco_usuario_id, ativo_usuario) values (4, "58.140.695", "Vigario Calixto", "1002", "Centro", 1,3, true);
 
-insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 
 insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
 
