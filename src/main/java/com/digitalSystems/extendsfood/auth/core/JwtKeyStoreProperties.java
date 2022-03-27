@@ -1,4 +1,4 @@
-package com.digitalSystems.extendsfood.auth;
+package com.digitalSystems.extendsfood.auth.core;
 
 
 import javax.validation.constraints.NotBlank;

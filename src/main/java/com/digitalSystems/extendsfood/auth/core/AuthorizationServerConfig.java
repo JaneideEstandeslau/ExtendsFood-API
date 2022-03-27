@@ -1,4 +1,4 @@
-package com.digitalSystems.extendsfood.auth;
+package com.digitalSystems.extendsfood.auth.core;
 
 import java.util.Arrays;
 
@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
@@ -104,13 +105,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	//UserDetailsService Interface principal que carrega dados específicos do usuário. Necessario para o refresh_token.
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+		
+		var enhancerChain = new TokenEnhancerChain();
+		enhancerChain.setTokenEnhancers(Arrays.asList(new JwtCustomClaimsTokenEnhancer(), jwtAccessTokenConverter()));
+		
 		endpoints
 			.authenticationManager(authenticationManager)//Usado no password
-			.userDetailsService(userDetailsService)//Usado no refresh token
+			.userDetailsService(userDetailsService)//Carrega informações do usuáio
 			.reuseRefreshTokens(false) //Configura a não reutilização de refresh token
 			.accessTokenConverter(jwtAccessTokenConverter())//Converte o token para JWT
+			.tokenEnhancer(enhancerChain)//Adiciona novas informações ao payload do JWT
 			.approvalStore(approvalStore(endpoints.getTokenStore()))
-			.tokenGranter(tokenGranter(endpoints));
+			.tokenGranter(tokenGranter(endpoints));//Adiciona o desafio PKCE
 	}
 	
 	//Vai converte as informações de um usuário logado para JWT e vice-versa
