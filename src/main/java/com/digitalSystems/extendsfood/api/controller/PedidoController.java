@@ -30,6 +30,7 @@ import com.digitalSystems.extendsfood.api.model.inputEntidade.PedidoInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.PedidoControllerOpenApi;
 import com.digitalSystems.extendsfood.core.data.PageWrapper;
 import com.digitalSystems.extendsfood.core.data.PageableTranslator;
+import com.digitalSystems.extendsfood.core.security.ExtendsSecurity;
 import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.filter.PedidoFilter;
@@ -62,6 +63,9 @@ public class PedidoController implements PedidoControllerOpenApi{
 	@Autowired
 	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 	
+	@Autowired
+	private ExtendsSecurity extendsSecurity;
+	
 	@GetMapping
     public PagedModel<PedidoResumoModel> pesuisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		
@@ -81,7 +85,7 @@ public class PedidoController implements PedidoControllerOpenApi{
 	public List<PedidoUsuario> buscarPedidosUsuario(){
 		
 		Usuario cliente = new Usuario();
-		cliente.setId(1L);
+		cliente.setId(extendsSecurity.getUsuarioId());
 		
 		return  emissaoPedidoService.buscarPedidosUsuario(cliente);		
 	}
@@ -101,8 +105,8 @@ public class PedidoController implements PedidoControllerOpenApi{
 
             // TODO pegar usuário autenticado
             novoPedido.setCliente(new Usuario());
-            novoPedido.getCliente().setId(1L);
-
+            novoPedido.getCliente().setId(extendsSecurity.getUsuarioId());
+            
             novoPedido = emissaoPedidoService.emitir(novoPedido);
 
             return pedidoAssembler.toModel(novoPedido);

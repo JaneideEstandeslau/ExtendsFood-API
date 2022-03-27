@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.digitalSystems.extendsfood.domain.event.ConfirmarCadastradoEvent;
@@ -33,6 +34,9 @@ public class UsuarioService {
 
 	@Autowired
 	private CidadeService cidadeService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;  
 
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
@@ -40,8 +44,12 @@ public class UsuarioService {
 		usuarioRepository.detach(usuario);
 
 		validarUsuario(usuario);
+		
+		if (usuario.isNovo()) {
+			usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+		}
 
-		usuario = usuarioRepository.save(usuario);		
+		usuario = usuarioRepository.save(usuario);	
 
 		ConfirmarCadastradoEvent usuarioCadastradoEvent = new ConfirmarCadastradoEvent(this, usuario);
 		applicationEventPublisher.publishEvent(usuarioCadastradoEvent);
@@ -63,13 +71,11 @@ public class UsuarioService {
 
 		Usuario usuario = buscarOuFalhar(usuarioId);
 
-		if (usuario.senhasCoincidem(senhaAtual)) {
-			usuario.setSenha(novaSenha);
-			usuarioRepository.save(usuario);	
-		} 
-		else {
-			throw new NegocioException("Senha atual informada não coincide com a senha do usuário.");
-		}
+		if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
+	        throw new NegocioException("Senha atual informada não coincide com a senha do usuário.");
+	    }
+	    
+	    usuario.setSenha(passwordEncoder.encode(novaSenha));
 	}
 
 	@Transactional

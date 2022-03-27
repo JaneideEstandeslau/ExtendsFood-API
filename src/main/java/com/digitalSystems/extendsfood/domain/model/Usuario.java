@@ -66,8 +66,8 @@ public class Usuario {
 		getEnderecos().forEach(Endereco::enderecoInativo);
 	}
 	
-	public Boolean senhasCoincidem(String senhaAtual) {
-		return getSenha().equals(senhaAtual);
+	public boolean isNovo() {
+	    return getId() == null;
 	}
 	
 	public boolean removerGrupo(Grupo grupo) {
