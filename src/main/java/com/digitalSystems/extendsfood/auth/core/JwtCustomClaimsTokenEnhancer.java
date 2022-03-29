@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
-//Adiicona novas informações no payload do token JWT amtes dele ser assinado
+//Adiciona novas informações no payload do token JWT amtes dele ser assinado
 public class JwtCustomClaimsTokenEnhancer implements TokenEnhancer{
 
 	//incrementa o access token

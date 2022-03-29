@@ -52,7 +52,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.withClient("extendsfood-web")// identificação do cliente
 				.secret(passwordEncoder.encode("web123"))
 				.authorizedGrantTypes("password", "refresh_token")//Fluxos
-				.scopes("write", "read")
+				.scopes("WRITE", "READ")
 				.accessTokenValiditySeconds(60 * 60 * 6) // validade de 6 horas
 				.refreshTokenValiditySeconds(24 * 60 * 60) // validade de 1 dia
 				
@@ -60,7 +60,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.withClient("foodanalytics")
 				.secret(passwordEncoder.encode("analitics23"))
 				.authorizedGrantTypes("authorization_code")
-				.scopes("write", "read")
+				.scopes("WRITE", "READ")
 				.redirectUris("http://aplicacao-cliente")
 				
 				//URL para slicitar code sem PKCE
@@ -74,7 +74,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.and()
 				.withClient("webadmin")
 				.authorizedGrantTypes("implicit")
-				.scopes("write", "read")
+				.scopes("WRITE", "READ")
 				.redirectUris("http://aplicacao-cliente")
 				//http://localhost:8081/oauth/authorize?response_type=token&client_id=webadmin&state=abc&redirect_uri=http://aplicacao-cliente
 				
@@ -82,7 +82,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.withClient("aplicacao-back-externa")
 				.secret(passwordEncoder.encode("externa123"))
 				.authorizedGrantTypes("client_credentials")
-				.scopes("write", "read")
+				.scopes("WRITE", "READ")
 			.and()
 				.withClient("checktoken")
 				.secret(passwordEncoder.encode("check123"));// Para evitar que o rsource server se autentique como um
@@ -150,6 +150,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	// Instancia o Authorization Code com PKCE e retorna a instancia do TokenGranter
 	// com o PKCE e todos os outros TokenGranter client_credentials, implicit
 	private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
+		
 		var pkceAuthorizationCodeTokenGranter = new PkceAuthorizationCodeTokenGranter(endpoints.getTokenServices(),
 				endpoints.getAuthorizationCodeServices(), endpoints.getClientDetailsService(),
 				endpoints.getOAuth2RequestFactory());
