@@ -27,6 +27,7 @@ import com.digitalSystems.extendsfood.api.assembler.FotoProdutoModelAssembler;
 import com.digitalSystems.extendsfood.api.model.FotoProdutoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.FotoProdutoInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.model.FotoProduto;
 import com.digitalSystems.extendsfood.domain.model.Produto;
 import com.digitalSystems.extendsfood.domain.service.CatalogoFotoProdutoService;
@@ -51,6 +52,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	@Autowired
 	private FotoProdutoModelAssembler fotoProdutoModelAssembler;
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long categoriaId,
 			@PathVariable Long produtoId) {
@@ -93,6 +95,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		}
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long categoriaId,
 			@PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput,
@@ -114,6 +117,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		return fotoProdutoModelAssembler.toModel(fotoSalva);
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removerFotoProduto(@PathVariable Long restauranteId, @PathVariable Long categoriaId,

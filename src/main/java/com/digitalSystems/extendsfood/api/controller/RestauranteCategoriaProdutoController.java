@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digitalSystems.extendsfood.api.ExtendsLinks;
 import com.digitalSystems.extendsfood.api.assembler.ProdutoModelAssembler;
 import com.digitalSystems.extendsfood.api.disassempler.ProdutoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.ProdutoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.ProdutoInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.RestauranteCategoriaProdutoControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.model.Produto;
 import com.digitalSystems.extendsfood.domain.repository.ProdutoRepository;
 import com.digitalSystems.extendsfood.domain.service.ProdutoService;
@@ -49,6 +49,7 @@ public class RestauranteCategoriaProdutoController implements RestauranteCategor
 	@Autowired
 	private PagedResourcesAssembler<Produto> pagedResourcesAssembler;
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public PagedModel<ProdutoModel> listar(@PathVariable Long restauranteId, @PathVariable Long categoriaId,
 			@PageableDefault(size = 10) Pageable pageable) {
@@ -66,6 +67,7 @@ public class RestauranteCategoriaProdutoController implements RestauranteCategor
 		return produtoModelPage;
 	}
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping("/{produtoId}")
 	public ProdutoModel buscarProdutoCategoriaRestaurante(@PathVariable Long restauranteId, 
 			@PathVariable Long categoriaId, @PathVariable Long produtoId) {
@@ -75,6 +77,7 @@ public class RestauranteCategoriaProdutoController implements RestauranteCategor
 		return produtoAssembler.toModel(produto);
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoModel adicionar(@RequestBody @Valid ProdutoInput produtoInput, @PathVariable Long restauranteId,
@@ -86,6 +89,7 @@ public class RestauranteCategoriaProdutoController implements RestauranteCategor
 
 	}
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping("/{produtoId}")
 	public ProdutoModel atualizar(@RequestBody @Valid ProdutoInput produtoInput,  @PathVariable Long restauranteId, 
 			@PathVariable Long categoriaId,  @PathVariable Long produtoId) {

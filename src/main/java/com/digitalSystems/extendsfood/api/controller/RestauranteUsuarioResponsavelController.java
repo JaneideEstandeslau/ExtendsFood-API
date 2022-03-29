@@ -17,6 +17,7 @@ import com.digitalSystems.extendsfood.api.ExtendsLinks;
 import com.digitalSystems.extendsfood.api.assembler.UsuarioModelAssembler;
 import com.digitalSystems.extendsfood.api.model.UsuarioModel;
 import com.digitalSystems.extendsfood.api.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.model.Restaurante;
 import com.digitalSystems.extendsfood.domain.service.RestauranteService;
 
@@ -33,6 +34,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 	@Autowired
 	private UsuarioModelAssembler usuarioModelAssembler;
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = restauranteService.buscarOuFalhar(restauranteId);
@@ -50,6 +52,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 		return usuariosModel;
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
@@ -58,6 +61,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 		return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {

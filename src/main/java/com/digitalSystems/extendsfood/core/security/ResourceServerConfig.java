@@ -1,5 +1,6 @@
 package com.digitalSystems.extendsfood.core.security;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -8,8 +9,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
 @Configuration
 @EnableWebSecurity //Adiciona as configurações do Spring Security
@@ -29,12 +32,12 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {//Classe
 				.jwtAuthenticationConverter(jwtAuthenticationConverter());
 	}	
 	
-	//extrai as permissoes do usuário do token e converter em GrantedAuthority
+	//Carrega as permissoes do usuário do token e converter em GrantedAuthority
 	private JwtAuthenticationConverter jwtAuthenticationConverter() {
 		
 		var jwtAuthenticationConverter = new JwtAuthenticationConverter();
 		
-		//define as autorizações concedidas a esse usuário
+		//define as autorizações concedidas ao usuário e os escopos concedidos ao cliente
 		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
 			
 			var authorities = jwt.getClaimAsStringList("authorities");
@@ -43,9 +46,19 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {//Classe
 				authorities = Collections.emptyList();
 			}
 			
-			return authorities.stream()
+			//Carrega as Perssions
+			Collection<GrantedAuthority> grantedAuthoritiesPermission = 
+					authorities.stream()
 					.map(SimpleGrantedAuthority::new)
 					.collect(Collectors.toList());
+			
+			//Carrega os SCOPES
+			var scopesAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+			Collection<GrantedAuthority> grantedAuthoritiesScope = scopesAuthoritiesConverter.convert(jwt);
+			
+			grantedAuthoritiesScope.addAll(grantedAuthoritiesPermission);
+			
+			return grantedAuthoritiesScope;
 		});
 		
 		return jwtAuthenticationConverter;
