@@ -30,6 +30,7 @@ import com.digitalSystems.extendsfood.api.model.inputEntidade.PedidoInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.PedidoControllerOpenApi;
 import com.digitalSystems.extendsfood.core.data.PageWrapper;
 import com.digitalSystems.extendsfood.core.data.PageableTranslator;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.core.security.ExtendsSecurity;
 import com.digitalSystems.extendsfood.domain.exception.EntidadeNaoEncontradaException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
@@ -90,6 +91,7 @@ public class PedidoController implements PedidoControllerOpenApi{
 		return  emissaoPedidoService.buscarPedidosUsuario(cliente);		
 	}
     
+	@CheckSecurity.Pedidos.PodeBuscar
     @GetMapping("/{pedidoId}")
     public PedidoModel buscar(@PathVariable Long pedidoId) {
         Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId);
@@ -103,7 +105,6 @@ public class PedidoController implements PedidoControllerOpenApi{
         try {
             Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
-            // TODO pegar usuário autenticado
             novoPedido.setCliente(new Usuario());
             novoPedido.getCliente().setId(extendsSecurity.getUsuarioId());
             
