@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.digitalSystems.extendsfood.domain.model.Pedido;
 import com.digitalSystems.extendsfood.domain.repository.PedidoRepository;
-import com.digitalSystems.extendsfood.domain.service.EnvioEmailService.Mensagem;
 
 @Service
 public class FluxoPedidoService {

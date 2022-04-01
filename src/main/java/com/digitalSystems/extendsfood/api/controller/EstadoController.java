@@ -21,6 +21,7 @@ import com.digitalSystems.extendsfood.api.disassempler.EstadoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.EstadoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.EstadoInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.EstadoControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.model.Estado;
 import com.digitalSystems.extendsfood.domain.repository.EstadoRepository;
 import com.digitalSystems.extendsfood.domain.service.EstadoService;
@@ -41,11 +42,13 @@ public class EstadoController implements EstadoControllerOpenApi{
 	@Autowired
 	private EstadoInputDisassembler estadoDisassembler;
 
+	@CheckSecurity.Estados.PodeConsultar
 	@GetMapping
 	public CollectionModel<EstadoModel> listar() {
 		return estadoAssembler.toCollectionModel(estadoRepository.findAll());
 	}
 
+	@CheckSecurity.Estados.PodeConsultar
 	@GetMapping("/{estadoId}")
 	public EstadoModel buscar(@PathVariable Long estadoId) {
 		Estado estado = estadoService.buscarOuFalhar(estadoId);
@@ -53,6 +56,7 @@ public class EstadoController implements EstadoControllerOpenApi{
 		return estadoAssembler.toModel(estado);
 	}
 
+	@CheckSecurity.Estados.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
@@ -62,6 +66,7 @@ public class EstadoController implements EstadoControllerOpenApi{
 		return estadoAssembler.toModel(estadoService.salvar(estado));
 	}
 
+	@CheckSecurity.Estados.PodeEditar
 	@PutMapping("/{estadoId}")
 	public EstadoModel atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
 		Estado estadoAtual = estadoService.buscarOuFalhar(estadoId);
@@ -71,6 +76,7 @@ public class EstadoController implements EstadoControllerOpenApi{
 		return estadoAssembler.toModel(estadoService.salvar(estadoAtual));
 	}
 
+	@CheckSecurity.Estados.PodeEditar
 	@DeleteMapping("/{estadoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long estadoId) {

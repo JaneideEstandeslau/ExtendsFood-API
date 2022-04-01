@@ -21,6 +21,7 @@ import com.digitalSystems.extendsfood.api.disassempler.CidadeInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.CidadeModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.CidadeInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.CidadeControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.exception.EstadoNaoEncontradoException;
 import com.digitalSystems.extendsfood.domain.exception.NegocioException;
 import com.digitalSystems.extendsfood.domain.model.Cidade;
@@ -43,11 +44,13 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Autowired
 	private CidadeInputDisassembler cidadeDisassembler;
 
+	@CheckSecurity.Cidades.PodeConsultar
 	@GetMapping
 	public CollectionModel<CidadeModel> listar() {
 		return cidadeAssembler.toCollectionModel(cidadeRepository.findAll());
 	}
 
+	@CheckSecurity.Cidades.PodeConsultar
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
 		Cidade cidade = cidadeService.buscarOuFalhar(cidadeId);
@@ -55,6 +58,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		return cidadeAssembler.toModel(cidade);
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
@@ -69,6 +73,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		}  
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
 	@PutMapping("/{cidadeId}")
 	public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
 
@@ -85,6 +90,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long cidadeId) {

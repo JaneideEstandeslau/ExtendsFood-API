@@ -27,6 +27,7 @@ import com.digitalSystems.extendsfood.api.model.CategoriaProdutoModel;
 import com.digitalSystems.extendsfood.api.model.CategoriaProdutoResumoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.CategoriaProdutoInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.CategoriaProdutoControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.model.CategoriaProduto;
 import com.digitalSystems.extendsfood.domain.repository.CategoriaProdutoRepository;
 import com.digitalSystems.extendsfood.domain.service.CategoriaProdutoService;
@@ -54,6 +55,7 @@ public class CategoriaProdutoController implements CategoriaProdutoControllerOpe
 	@Autowired
 	private PagedResourcesAssembler<CategoriaProduto> pagedResourcesAssembler;
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public PagedModel<CategoriaProdutoResumoModel> listar(@PathVariable Long restauranteId,
 			@PageableDefault(size = 10) Pageable pageable) {
@@ -67,6 +69,8 @@ public class CategoriaProdutoController implements CategoriaProdutoControllerOpe
 		return categoriasPagedModel;
 		
 	}
+	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping("/{categoriaProdutoId}")
 	public CategoriaProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long categoriaProdutoId) {
 		
@@ -75,6 +79,7 @@ public class CategoriaProdutoController implements CategoriaProdutoControllerOpe
 		return categoriaProdutoAssembler.toModel(categoriaProduto);
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CategoriaProdutoResumoModel adicionar(@PathVariable Long restauranteId, 
@@ -85,6 +90,7 @@ public class CategoriaProdutoController implements CategoriaProdutoControllerOpe
 		return categoriaProdutoResumoAssembler.toModel(categoriaProdutoService.salvar(categoriaProduto, restauranteId));
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping("/{categoriaProdutoId}")
 	public CategoriaProdutoResumoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long categoriaProdutoId,
 			@RequestBody @Valid CategoriaProdutoInput categoriaProdutoInput) {
@@ -97,6 +103,7 @@ public class CategoriaProdutoController implements CategoriaProdutoControllerOpe
 
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@DeleteMapping("/{categoriaProdutoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long restauranteId, @PathVariable Long categoriaProdutoId) {

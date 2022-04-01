@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.digitalSystems.extendsfood.api.ExtendsLinks;
 import com.digitalSystems.extendsfood.api.openapi.controller.EstatisticasControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.filter.VendaFilter;
 import com.digitalSystems.extendsfood.domain.model.dto.Venda;
 import com.digitalSystems.extendsfood.domain.model.dto.VendaDiaria;
@@ -32,6 +33,7 @@ public class EstatisticasController implements EstatisticasControllerOpenApi{
 	@Autowired
 	private VendaReportService vendaReportService;
 
+	@CheckSecurity.Estatisticas.PodeConsultar
 	@GetMapping(path = "/vendas", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Venda consultarVendas(@Valid VendaFilter filtro) {
 		
@@ -43,6 +45,7 @@ public class EstatisticasController implements EstatisticasControllerOpenApi{
 		return venda;
 	}
 	
+	@CheckSecurity.Estatisticas.PodeConsultar
 	@GetMapping(path = "/vendas", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<byte[]> consultarVendasPdf(@Valid VendaFilter filtro) {
 
@@ -57,6 +60,7 @@ public class EstatisticasController implements EstatisticasControllerOpenApi{
 				.body(bytesPdf);
 	}
 
+	@CheckSecurity.Estatisticas.PodeConsultar
 	@Override
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public Venda estatisticas() {

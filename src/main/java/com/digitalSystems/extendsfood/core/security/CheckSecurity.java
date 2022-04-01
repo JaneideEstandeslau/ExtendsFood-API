@@ -56,6 +56,96 @@ public @interface CheckSecurity {
 		@Target(METHOD)
 		public @interface PodeBuscar { }
 		
+		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_PEDIDOS') or "
+				+ "@extendsSecurity.gerenciaRestaurante(#filtro.restauranteId) or "
+				+ "@extendsSecurity.getUsuarioId() == #filtro.clienteId")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodePesquisar {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('GERENCIAR_PEDIDOS') or "
+				+ "@extendsSecurity.gerenciaRestauranteDoPedido(#pedidoId)")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeGerenciarPedido {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeCriar {}
+		
+	}
+	
+	public @interface FormasPagamento{
+		
+		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_FORMAS_PAGAMENTO')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {}
+	}
+	
+	public @interface Cidades {
+		
+		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_CIDADES')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {}
+	}
+	
+	public @interface Estados {
+		
+		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_ESTADOS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {}
+	}
+	
+	public @interface UsuariosGruposPermissoes {
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and @extendsSecurity.getUsuarioId() == #usuarioId")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeAlterarPropriaSenha {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and @extendsSecurity.getUsuarioId() == #usuarioId or "
+				+ "hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeAlterarUsuario {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {}
+		
+		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {}
+		
+	}
+	
+	public @interface Estatisticas {
+		
+		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('GERAR_RELATORIOS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {}
 	}
 	
 }

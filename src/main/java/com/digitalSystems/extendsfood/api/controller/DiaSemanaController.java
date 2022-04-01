@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.digitalSystems.extendsfood.api.assembler.DiaSemanaModelAssembler;
 import com.digitalSystems.extendsfood.api.model.DiaSemanaModel;
 import com.digitalSystems.extendsfood.api.openapi.controller.DiaSemanaControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.model.DiaSemana;
 import com.digitalSystems.extendsfood.domain.repository.ProdutoRepository;
 
@@ -24,6 +25,7 @@ public class DiaSemanaController implements DiaSemanaControllerOpenApi{
 	@Autowired
 	private DiaSemanaModelAssembler diaSemanaAssembler;
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public List<DiaSemanaModel> listar(){		
 		List<DiaSemana> diasSemana = produtoRepository.findByDiaSemana();

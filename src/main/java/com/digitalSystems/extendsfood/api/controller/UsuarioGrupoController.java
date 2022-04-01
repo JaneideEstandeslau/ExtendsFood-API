@@ -17,6 +17,7 @@ import com.digitalSystems.extendsfood.api.ExtendsLinks;
 import com.digitalSystems.extendsfood.api.assembler.GrupoModelAssembler;
 import com.digitalSystems.extendsfood.api.model.GrupoModel;
 import com.digitalSystems.extendsfood.api.openapi.controller.UsuarioGrupoControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
 import com.digitalSystems.extendsfood.domain.service.UsuarioService;
 
@@ -33,6 +34,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
     @Autowired
     private GrupoModelAssembler grupoModelAssembler;
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public CollectionModel<GrupoModel> listar(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioService.buscarOuFalhar(usuarioId);
@@ -48,6 +50,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
         return gruposModel;
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
@@ -56,6 +59,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
         return ResponseEntity.noContent().build();
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PutMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long usuarioId, @PathVariable Long grupoId) {

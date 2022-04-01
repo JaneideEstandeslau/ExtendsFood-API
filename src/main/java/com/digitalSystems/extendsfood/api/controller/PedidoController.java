@@ -67,6 +67,7 @@ public class PedidoController implements PedidoControllerOpenApi{
 	@Autowired
 	private ExtendsSecurity extendsSecurity;
 	
+	@CheckSecurity.Pedidos.PodePesquisar
 	@GetMapping
     public PagedModel<PedidoResumoModel> pesuisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		
@@ -99,6 +100,7 @@ public class PedidoController implements PedidoControllerOpenApi{
         return pedidoAssembler.toModel(pedido);
     }   
     
+	@CheckSecurity.Pedidos.PodeCriar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {

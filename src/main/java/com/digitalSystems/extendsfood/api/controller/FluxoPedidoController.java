@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.digitalSystems.extendsfood.api.openapi.controller.FluxoPedidoControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.service.FluxoPedidoService;
 
 @RestController
@@ -20,6 +21,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi{
 	@Autowired
 	private FluxoPedidoService fluxoPedidoService;
 	
+	@CheckSecurity.Pedidos.PodeGerenciarPedido
 	@PutMapping("/confirmar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> confirmarPedido(@PathVariable Long pedidoId) {
@@ -28,6 +30,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi{
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Pedidos.PodeGerenciarPedido
 	@PutMapping("/saiu-para-entrega")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> pedidoSaiuParaEntrega(@PathVariable Long pedidoId) {
@@ -36,6 +39,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi{
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Pedidos.PodeGerenciarPedido
 	@PutMapping("/entregar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> entregarPedido(@PathVariable Long pedidoId) {
@@ -44,6 +48,7 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi{
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Pedidos.PodeGerenciarPedido
 	@PutMapping("/cancelar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> cancelarPedido(@PathVariable Long pedidoId) {

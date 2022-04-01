@@ -23,6 +23,7 @@ import com.digitalSystems.extendsfood.api.disassempler.GrupoInputDisassembler;
 import com.digitalSystems.extendsfood.api.model.GrupoModel;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.GrupoInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.GrupoControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.model.Grupo;
 import com.digitalSystems.extendsfood.domain.repository.GrupoRepository;
 import com.digitalSystems.extendsfood.domain.service.GrupoService;
@@ -43,12 +44,14 @@ public class GrupoController implements GrupoControllerOpenApi{
 	@Autowired
 	private GrupoInputDisassembler grupoDisassembler;
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<GrupoModel> listar() {
 		List<Grupo> todosGrupos = grupoRepository.findAll();
 		return grupoAssembler.toCollectionModel(todosGrupos);
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("/{grupoId}")
 	public GrupoModel buscar(@PathVariable Long grupoId) {
 		Grupo grupo = grupoService.buscarOuFalhar(grupoId);
@@ -56,6 +59,7 @@ public class GrupoController implements GrupoControllerOpenApi{
 		return grupoAssembler.toModel(grupo);
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {		
@@ -64,6 +68,7 @@ public class GrupoController implements GrupoControllerOpenApi{
 		return grupoAssembler.toModel(grupoService.salvar(grupo));
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PutMapping("/{grupoId}")
 	public GrupoModel atualizar(@PathVariable Long grupoId, @RequestBody @Valid GrupoInput grupoInput) {
 		Grupo grupoAtual = grupoService.buscarOuFalhar(grupoId);
@@ -73,6 +78,7 @@ public class GrupoController implements GrupoControllerOpenApi{
 		return grupoAssembler.toModel(grupoService.salvar(grupoAtual));
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@DeleteMapping("/{grupoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long grupoId) {

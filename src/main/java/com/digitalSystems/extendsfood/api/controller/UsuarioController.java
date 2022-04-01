@@ -26,6 +26,7 @@ import com.digitalSystems.extendsfood.api.model.inputEntidade.SenhaInput;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.UsuarioComSenhaInput;
 import com.digitalSystems.extendsfood.api.model.inputEntidade.UsuarioInput;
 import com.digitalSystems.extendsfood.api.openapi.controller.UsuarioControllerOpenApi;
+import com.digitalSystems.extendsfood.core.security.CheckSecurity;
 import com.digitalSystems.extendsfood.domain.model.Endereco;
 import com.digitalSystems.extendsfood.domain.model.Usuario;
 import com.digitalSystems.extendsfood.domain.repository.UsuarioRepository;
@@ -53,11 +54,13 @@ public class UsuarioController implements UsuarioControllerOpenApi{
 	@Autowired
 	private UsuarioEnderecoModelAssembler usuarioEnderecoDisassembler;
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar() {
 		return usuarioAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
 		Usuario usuario = usuarioService.buscarOuFalhar(usuarioId);
@@ -73,6 +76,7 @@ public class UsuarioController implements UsuarioControllerOpenApi{
 		return usuarioAssembler.toModel(usuarioService.salvar(usuario));
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
 	@PutMapping("/{usuarioId}")
 	public UsuarioModel atualizar(@RequestBody @Valid UsuarioInput usuarioInput, @PathVariable Long usuarioId) {
 		
@@ -83,6 +87,7 @@ public class UsuarioController implements UsuarioControllerOpenApi{
 		return usuarioAssembler.toModel(usuarioService.atuaizar(usuarioAtual));
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
 	@PutMapping("/{usuarioId}/endereco")
 	public UsuarioEnderecoModel atualizarEndereco(@RequestBody @Valid EnderecoUsuarioInput enderecoUsuarioInput, 
 			@PathVariable Long usuarioId) {
@@ -94,6 +99,7 @@ public class UsuarioController implements UsuarioControllerOpenApi{
 		return usuarioEnderecoDisassembler.toModel(usuario);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void atualizarSenha(@RequestBody @Valid SenhaInput senhaInput, @PathVariable Long usuarioId) {

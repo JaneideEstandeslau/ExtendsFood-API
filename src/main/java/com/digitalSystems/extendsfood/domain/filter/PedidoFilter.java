@@ -19,6 +19,9 @@ public class PedidoFilter {
 	@ApiModelProperty(example = "1", value = "ID do Produto para filtro da pesquisa")
 	private Long produtoId;
 	
+	@ApiModelProperty(example = "1", value = "ID do Usuario para filtro da Pesquisa")
+	private Long clienteId;
+	
 	@ApiModelProperty(example = "1", value = "ID do Restaurante para filtro da pesquisa")
 	private Long restauranteId;
 	

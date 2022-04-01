@@ -50,6 +50,10 @@ public class PedidoSpecs {
 				predicates.add(builder.equal(root.get("restaurante"), filtro.getRestauranteId()));
 			}
 			
+			if (filtro.getClienteId() != null) {
+				predicates.add(builder.equal(root.get("cliente"), filtro.getClienteId()));
+			}
+			
 			if (filtro.getDataCriacaoInicio() != null) {
 				predicates.add(builder.greaterThanOrEqualTo(root.get("dataCriacao"), 
 						filtro.getDataCriacaoInicio()));
