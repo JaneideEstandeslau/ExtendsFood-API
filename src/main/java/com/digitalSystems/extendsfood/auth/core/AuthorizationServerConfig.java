@@ -2,6 +2,8 @@ package com.digitalSystems.extendsfood.auth.core;
 
 import java.util.Arrays;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,9 +31,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 																						// algumas configuraçõe
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	@Autowired
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
@@ -40,6 +39,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
 	private JwtKeyStoreProperties jwtKeyStoreProperties; 
 	
+	@Autowired
+	private DataSource dataSource;
 	
 
 	// configura os clients que podem acessar esse authorization server
@@ -47,46 +48,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	// receber o access token
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients
-			.inMemory()
-				.withClient("extendsfood-web")// identificação do cliente
-				.secret(passwordEncoder.encode("web123"))
-				.authorizedGrantTypes("password", "refresh_token")//Fluxos
-				.scopes("WRITE", "READ")
-				.accessTokenValiditySeconds(60 * 60 * 6) // validade de 6 horas
-				.refreshTokenValiditySeconds(24 * 60 * 60) // validade de 1 dia
-				
-			.and()
-				.withClient("foodanalytics")
-				.secret(passwordEncoder.encode("analitics23"))
-				.authorizedGrantTypes("authorization_code")
-				.scopes("WRITE", "READ")
-				.redirectUris("http://aplicacao-cliente")
-				
-				//URL para slicitar code sem PKCE
-				//http://localhost:8081/oauth/authorize?response_type=code&client_id=foodanalytics&state=abc&redirect_uri=http://aplicacao-cliente
-				
-				//URL para solicitar code com PKCE e com method plain
-				//http://localhost:8081/oauth/authorize?response_type=code&client_id=foodanalytics&redirect_uri=http://aplicacao-cliente&code_challenge=aasbfdifbdkld652165dgdfgjdfkhghdjfhg&code_challenge_method=plain
-				
-				//URL para solicitar code com PKCE e com method s256
-				//http://localhost:8081/oauth/authorize?response_type=code&client_id=foodanalytics&redirect_uri=http://aplicacao-cliente&code_challenge=eKNGQmU3qETjyVHlLNNlaCKOEIZPXfow-lN7RVUv6Js&code_challenge_method=s256
-			.and()
-				.withClient("webadmin")
-				.authorizedGrantTypes("implicit")
-				.scopes("WRITE", "READ")
-				.redirectUris("http://aplicacao-cliente")
-				//http://localhost:8081/oauth/authorize?response_type=token&client_id=webadmin&state=abc&redirect_uri=http://aplicacao-cliente
-				
-			.and()
-				.withClient("aplicacao-back-externa")
-				.secret(passwordEncoder.encode("externa123"))
-				.authorizedGrantTypes("client_credentials")
-				.scopes("WRITE", "READ")
-			.and()
-				.withClient("checktoken")
-				.secret(passwordEncoder.encode("check123"));// Para evitar que o rsource server se autentique como um
-															// client foi diado um client só para o resource server
+		clients.jdbc(dataSource);
 	}
 	
 	//Configura o acesso ao endpoints de autorização
