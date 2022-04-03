@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.digitalSystems.extendsfood.api.ExtendsLinks;
 import com.digitalSystems.extendsfood.api.controller.PedidoController;
 import com.digitalSystems.extendsfood.api.model.PedidoModel;
+import com.digitalSystems.extendsfood.core.security.ExtendsSecurity;
 import com.digitalSystems.extendsfood.domain.model.Pedido;
 
 @Component
@@ -22,6 +23,9 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
 	@Autowired
 	private ExtendsLinks extendsLinks;
+	
+	@Autowired
+	private ExtendsSecurity extendsSecurity;
 
 	public PedidoModelAssembler() {
 		super(PedidoController.class, PedidoModel.class);
@@ -37,18 +41,21 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 		// Adiciona a URI para encontrar todos os pedidos do Restaurante
 		pedidoModel.add(extendsLinks.linkToPedidos("pedidos"));
 		
-		//adiciona as URIs para mudar o status di pedido
-		if(pedido.podeSerConfirmado()) {
-			pedidoModel.add(extendsLinks.linkToConfirmacaoPedido(pedido.getId(), "Confirmar"));			
-		}
-		if(pedido.podeSairParaEntrega()) {
-			pedidoModel.add(extendsLinks.linkToPedidoSaiuParaEntrega(pedido.getId(), "Saiu para entrega"));			
-		}
-		if(pedido.podeSerEntregue()) {
-			pedidoModel.add(extendsLinks.linkToEntregarPedido(pedido.getId(), "Entregar"));			
-		}
-		if(pedido.podeSerCancelado()) {
-			pedidoModel.add(extendsLinks.linkToCancelarPedido(pedido.getId(), "Cancelar"));			
+		//adiciona as URIs para mudar o status do pedido
+		if(extendsSecurity.podeGerenciarPedidos(pedido.getId())) {
+			
+			if(pedido.podeSerConfirmado()) {
+				pedidoModel.add(extendsLinks.linkToConfirmacaoPedido(pedido.getId(), "Confirmar"));			
+			}
+			if(pedido.podeSairParaEntrega()) {
+				pedidoModel.add(extendsLinks.linkToPedidoSaiuParaEntrega(pedido.getId(), "Saiu para entrega"));			
+			}
+			if(pedido.podeSerEntregue()) {
+				pedidoModel.add(extendsLinks.linkToEntregarPedido(pedido.getId(), "Entregar"));			
+			}
+			if(pedido.podeSerCancelado()) {
+				pedidoModel.add(extendsLinks.linkToCancelarPedido(pedido.getId(), "Cancelar"));			
+			}
 		}
 
 		// Adiciona a URI para encontrar o recurso de Restaurante
