@@ -180,7 +180,7 @@ insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values 
 
 insert into pedido (id, restaurante_id, usuario_cliente_id, forma_pagamento_id, endereco_id,
     status, data_criacao, sub_total, taxa_frete, valor_total)
-values (1, 1, 1, 1, 1, 'AGUARDANDO_CONFIRMACAO', current_timestamp, 298.90, 10, 308.90);
+values (1, 1, 6, 1, 1, 'AGUARDANDO_CONFIRMACAO', current_timestamp, 298.90, 10, 308.90);
 
 insert into item_pedido (id, pedido_id, produto_id, quantidade, preco_unitario, preco_total)
 values (1, 1, 1, 1, 78.9, 78.9);
