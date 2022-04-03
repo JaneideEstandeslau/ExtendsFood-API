@@ -50,21 +50,21 @@ public @interface CheckSecurity {
 		
 		@PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
 		@PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') or "
-				+ "@extendsSecurity.getUsuarioId() == returnObject.cliente.id or "
+				+ "@extendsSecurity.usuarioAutenticadoIgual(returnObject.cliente.id) or "
 				+ "@extendsSecurity.gerenciaRestaurante(returnObject.restaurante.id)")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeBuscar { }
 		
-		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_PEDIDOS') or "
+		@PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULTAR_PEDIDOS') or "
 				+ "@extendsSecurity.gerenciaRestaurante(#filtro.restauranteId) or "
-				+ "@extendsSecurity.getUsuarioId() == #filtro.clienteId")
+				+ "@extendsSecurity.usuarioAutenticadoIgual(#filtro.clienteId))")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodePesquisar {}
 		
-		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('GERENCIAR_PEDIDOS') or "
-				+ "@extendsSecurity.gerenciaRestauranteDoPedido(#pedidoId)")
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('GERENCIAR_PEDIDOS') or "
+				+ "@extendsSecurity.gerenciaRestauranteDoPedido(#pedidoId))")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeGerenciarPedido {}
@@ -117,13 +117,13 @@ public @interface CheckSecurity {
 	
 	public @interface UsuariosGruposPermissoes {
 		
-		@PreAuthorize("hasAuthority('SCOPE_WRITE') and @extendsSecurity.getUsuarioId() == #usuarioId")
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and @extendsSecurity.usuarioAutenticadoIgual(#usuarioId)")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeAlterarPropriaSenha {}
 		
-		@PreAuthorize("hasAuthority('SCOPE_WRITE') and @extendsSecurity.getUsuarioId() == #usuarioId or "
-				+ "hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES')")
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and (@extendsSecurity.usuarioAutenticadoIgual(#usuarioId) or "
+				+ "hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES'))")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeAlterarUsuario {}

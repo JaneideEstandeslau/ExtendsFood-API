@@ -23,6 +23,7 @@ delete from item_pedido_item_complemento;
 delete from dia_semana;
 delete from produto_dia_semana;
 delete from foto_produto;
+delete from oauth_client_details;
 
 set foreign_key_checks = 1;
 
@@ -197,7 +198,38 @@ values (3, 2, 6, 1, 79, 79);
 
 insert into item_pedido_item_complemento (item_pedido_id, item_complemento_id) values (1, 1), (1, 2), (2, 2);
 
+insert into oauth_client_details (
+  client_id, resource_ids, client_secret, 
+  scope, authorized_grant_types, web_server_redirect_uri, authorities,
+  access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+  'extendsfood-web', null, '$2a$12$CIzhyBVqztDOcRfN63P9vuWd1YUXSSHJ1BL7wvLeHz9XbM5ZcU9FO',
+  'READ,WRITE', 'password', null, null,
+  60 * 60 * 6, 60 * 24 * 60 * 60, null
+);
 
+insert into oauth_client_details (
+  client_id, resource_ids, client_secret, 
+  scope, authorized_grant_types, web_server_redirect_uri, authorities,
+  access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+  'foodanalytics', null, '$2a$12$B1h2kMc3f.4T2ZGRl./d/.N9Tku9dDAjGoAQ2ITDkgoeLBuG0vfM.',
+  'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082', null,
+  null, null, null
+);
+
+insert into oauth_client_details (
+  client_id, resource_ids, client_secret, 
+  scope, authorized_grant_types, web_server_redirect_uri, authorities,
+  access_token_validity, refresh_token_validity, autoapprove
+)
+values (
+  'faturamento', null, '$2a$12$5qOEkBGgATeEp7.d4twUfuDnPVo4sKDniZ502C8jBH3gUE4B43cO2',
+  'READ,WRITE', 'client_credentials', null, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS',
+  null, null, null
+);
 
 
 
