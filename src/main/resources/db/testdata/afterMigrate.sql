@@ -206,7 +206,7 @@ insert into oauth_client_details (
 values (
   'extendsfood-web', null, '$2a$12$CIzhyBVqztDOcRfN63P9vuWd1YUXSSHJ1BL7wvLeHz9XbM5ZcU9FO',
   'READ,WRITE', 'password', null, null,
-  60 * 60 * 6, 60 * 24 * 60 * 60, null
+  60 * 60 * 6, 60 * 24 * 60 * 60, false
 );
 
 insert into oauth_client_details (
@@ -217,7 +217,7 @@ insert into oauth_client_details (
 values (
   'foodanalytics', null, '$2a$12$B1h2kMc3f.4T2ZGRl./d/.N9Tku9dDAjGoAQ2ITDkgoeLBuG0vfM.',
   'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082', null,
-  null, null, null
+  null, null, false
 );
 
 insert into oauth_client_details (
@@ -228,7 +228,7 @@ insert into oauth_client_details (
 values (
   'faturamento', null, '$2a$12$5qOEkBGgATeEp7.d4twUfuDnPVo4sKDniZ502C8jBH3gUE4B43cO2',
   'READ,WRITE', 'client_credentials', null, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS',
-  null, null, null
+  null, null, false
 );
 
 

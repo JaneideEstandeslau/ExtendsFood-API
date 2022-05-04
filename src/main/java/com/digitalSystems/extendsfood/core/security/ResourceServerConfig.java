@@ -27,7 +27,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {//Classe
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.formLogin() //existe um formulário de login que deve ser usado na request /oauth
+			.formLogin().loginPage("/login") //existe um formulário de login que deve ser usado na request /oauth
 			.and()
 			.authorizeRequests()
 				.antMatchers("/oauth/**").authenticated()//Precisa estar autemtica para acesar o /oauth

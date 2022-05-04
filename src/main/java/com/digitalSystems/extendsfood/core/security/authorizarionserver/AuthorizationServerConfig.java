@@ -1,5 +1,7 @@
 package com.digitalSystems.extendsfood.core.security.authorizarionserver;
 
+import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 import javax.sql.DataSource;
@@ -22,6 +24,11 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 
 @Configuration
 @EnableAuthorizationServer // Habilita o authorizarion server
@@ -79,24 +86,33 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.tokenGranter(tokenGranter(endpoints));//Adiciona o desafio PKCE
 	}
 	
+	@Bean
+	public JWKSet jwkSet() {
+		RSAKey.Builder builder = new RSAKey.Builder((RSAPublicKey) keyPair().getPublic())
+				.keyUse(KeyUse.SIGNATURE)
+				.algorithm(JWSAlgorithm.RS256)
+				.keyID("extendsfood-key-id");
+		
+		return new JWKSet(builder.build());
+	}
+	
 	//Vai converte as informações de um usuário logado para JWT e vice-versa
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
-		
 		var jwtAccessTokenConverter = new JwtAccessTokenConverter();
-		
-		var keyStorePass = jwtKeyStoreProperties.getPassword();//Senha para abrir o arquivo JKS
-		var keyPairAlias = jwtKeyStoreProperties.getKaypairAlias();//Identificação para o par de chaves
-		
-		//Abre o arquivo JKS
-		var keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(),
-				keyStorePass.toCharArray());
-		
-		var keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias); //pega o par de chave
-		
-		jwtAccessTokenConverter.setKeyPair(keyPair);
+		jwtAccessTokenConverter.setKeyPair(keyPair());
 		
 		return jwtAccessTokenConverter;
+	}
+	
+	private KeyPair keyPair() {
+		var keyStorePass = jwtKeyStoreProperties.getPassword();
+		var keyPairAlias = jwtKeyStoreProperties.getKaypairAlias();
+		
+		var keyStoreKeyFactory = new KeyStoreKeyFactory(
+				jwtKeyStoreProperties.getJksLocation(), keyStorePass.toCharArray());
+		
+		return keyStoreKeyFactory.getKeyPair(keyPairAlias);
 	}
 	
 	private ApprovalStore approvalStore(TokenStore tokenStore) {
