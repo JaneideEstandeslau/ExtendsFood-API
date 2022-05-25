@@ -19,8 +19,6 @@ public class EmailProperties {
 	@NotNull
 	private String remetente;
 	
-	private String destinatario;
-	
 	private Implementacao impl = Implementacao.FAKE;
 	
 	

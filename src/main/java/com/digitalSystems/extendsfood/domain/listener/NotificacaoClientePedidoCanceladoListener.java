@@ -24,6 +24,7 @@ public class NotificacaoClientePedidoCanceladoListener {
 				.assunto(pedido.getRestaurante().getNome() + " - Pedido cancelado")
 				.templatePath("/email/pedido-cancelado.html")
 				.parametro("pedido", pedido)
+				.destinatario(pedido.getCliente().getEmail())
 				.build();
 		
 		envioEmail.enviar(mensagem);

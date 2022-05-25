@@ -6,6 +6,7 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.digitalSystems.extendsfood.domain.event.ConfirmarCadastradoEvent;
+import com.digitalSystems.extendsfood.domain.model.Usuario;
 import com.digitalSystems.extendsfood.domain.service.EnvioEmailService;
 import com.digitalSystems.extendsfood.domain.service.EnvioEmailService.Mensagem;
 
@@ -18,10 +19,13 @@ public class NotificarClienteAtivarContaListener {
 	@TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
 	public void aoCadastrarCliente(ConfirmarCadastradoEvent event) {
 		
+		Usuario cliente = event.getUsuario();
+		
 		var mensagem = Mensagem.builder()
 				.assunto("Confirmação de Cadastro")
 				.templatePath("/email/confirmacao_cadastro.html")
-				.parametro("usuario", event.getUsuario())
+				.parametro("usuario", cliente)
+				.destinatario(cliente.getEmail())
 				.build();
 		
 		envioEmail.enviar(mensagem);

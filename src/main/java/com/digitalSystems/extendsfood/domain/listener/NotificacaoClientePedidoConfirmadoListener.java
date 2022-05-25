@@ -24,6 +24,7 @@ public class NotificacaoClientePedidoConfirmadoListener {
 				.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
 				.templatePath("/email/pedido-confirmado.html")
 				.parametro("pedido", pedido)
+				.destinatario(pedido.getCliente().getEmail())
 				.build();
 		
 		envioEmail.enviar(mensagem);
