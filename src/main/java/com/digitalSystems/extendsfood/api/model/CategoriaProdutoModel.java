@@ -23,4 +23,5 @@ public class CategoriaProdutoModel extends RepresentationModel<CategoriaProdutoM
 	
 	@ApiModelProperty(position = 20)
 	private List<PodutoResumoModel> produtos;
+	
 }
