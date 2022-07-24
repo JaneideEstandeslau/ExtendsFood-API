@@ -51,8 +51,8 @@ public class UsuarioService {
 
 		usuario = usuarioRepository.save(usuario);	
 
-//		ConfirmarCadastradoEvent usuarioCadastradoEvent = new ConfirmarCadastradoEvent(this, usuario);
-//		applicationEventPublisher.publishEvent(usuarioCadastradoEvent);
+		ConfirmarCadastradoEvent usuarioCadastradoEvent = new ConfirmarCadastradoEvent(this, usuario);
+		applicationEventPublisher.publishEvent(usuarioCadastradoEvent);
 
 		return usuario;
 	}
